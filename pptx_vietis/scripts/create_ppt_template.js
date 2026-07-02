@@ -39,13 +39,13 @@ function addSubtext(slide, text) {
 function addBox(slide, x, y, w, h, symbol, title, body, bgColor, borderColor, titleColor) {
   let textItems = [];
   if (symbol) {
-    // 1 space spacing, slightly smaller size (22) for baseline alignment
-    textItems.push({ text: symbol + " ", options: { fontSize: 22, fontFace: 'Segoe UI Emoji', color: titleColor } });
+    // slightly smaller size (22) for baseline alignment
+    textItems.push({ text: symbol, options: { fontSize: 22, fontFace: 'Segoe UI Emoji', color: titleColor } });
   }
   
   if (title) {
     // paraSpaceAfter: 4 controls the gap between title and body natively without inserting a blank line
-    textItems.push({ text: title, options: { fontSize: 18, bold: true, color: titleColor, fontFace: 'Arial', breakLine: true, paraSpaceAfter: 4 } });
+    textItems.push({ text: " " + title, options: { fontSize: 18, bold: true, color: titleColor, fontFace: 'Arial', breakLine: true, paraSpaceAfter: 4 } });
   }
   
   if (body) {
