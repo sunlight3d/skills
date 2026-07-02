@@ -37,6 +37,7 @@ It also securely points to the essential assets required for the master slide:
    - The symbol emoji should be a single character if provided.
    - You MUST ensure x, y, width, and height are well-measured so the boxes don't overlap. (Grid usually is 10 inches wide by 5.625 inches tall).
 4. Do NOT mess with the internal logic of `addBox()` (e.g. `margin: 10`, `paraSpaceAfter: 4`). These specific values were painstakingly calibrated to prevent text from overflowing and to ensure perfect vertical alignment between icons and text.
+5. **IMPORTANT SPACING RULE**: If you ever need to manually construct text items with emojis, **do NOT** put spaces inside the emoji font text block (e.g., `text: symbol + " "`). Emoji fonts (like Segoe UI Emoji) calculate space widths unpredictably when wrapping. Always put the space in the standard text block (e.g., `text: " " + title` with Arial font) to keep spacing consistent.
 
 ## Execution
 Run the resulting Node.js script:
