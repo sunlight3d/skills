@@ -21,16 +21,19 @@ for DIR in "${DIRS[@]}"; do
         
         cd "$repo_dir" || continue
         
-        # Check if there are uncommitted changes
-        if ! git diff-index --quiet HEAD --; then
-            echo "⚠️  Uncommitted changes detected in $repo_dir. Skipping auto-sync to prevent data loss."
-            continue
+        # Convert HTTPS GitHub remote URL to SSH to allow passwordless push
+        origin_url=$(git remote get-url origin 2>/dev/null || true)
+        if [[ "$origin_url" =~ ^https://(www\.)?github\.com/ ]]; then
+            ssh_url=$(echo "$origin_url" | sed 's|^https://github.com/|git@github.com:|; s|^https://www.github.com/|git@github.com:|')
+            echo "🔄 Converting remote URL from HTTPS to SSH: $origin_url -> $ssh_url"
+            git remote set-url origin "$ssh_url"
         fi
-
-        # Check if there are untracked files
+        
+        # Check if there are changes (uncommitted or untracked)
         if [ -n "$(git status --porcelain)" ]; then
-             echo "⚠️  Working tree is not clean in $repo_dir. Skipping auto-sync."
-             continue
+            echo "⚠️  Uncommitted changes/untracked files detected in $repo_dir. Auto-committing..."
+            git add -A
+            git commit -m "auto-sync: auto commit changes on $(date '+%Y-%m-%d %H:%M:%S')"
         fi
         
         # Pull latest changes (rebase to avoid merge commits if possible)
