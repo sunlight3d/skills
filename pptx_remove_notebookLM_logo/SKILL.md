@@ -10,6 +10,12 @@ description: >-
 ## Overview
 This skill automatically covers the NotebookLM logo watermark (typically located at the bottom-right corner of full-slide images) by inserting a white rectangle with no border at the bottom-right of each slide. It supports both remote Google Slides presentations via the Google Slides API and local PowerPoint (`.pptx`) files.
 
+## Configuration
+By default, the white cover rectangle is configured with the following dimensions:
+- **Width**: `2,200,000 EMU` (~173 pt)
+- **Height**: `325,000 EMU` (~25.6 pt)
+This size is optimized to cover the NotebookLM watermark logo in the bottom-right corner of standard 16:9 slides.
+
 ## Dependencies
 - `uv` Python package manager (required to run the utility script)
 - `python-pptx` (auto-installed by `uv run` for local PowerPoint manipulation)
