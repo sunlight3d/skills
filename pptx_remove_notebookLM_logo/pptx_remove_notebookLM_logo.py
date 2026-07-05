@@ -29,7 +29,7 @@ import google.auth.transport.requests
 
 # Default configuration (EMUs)
 RECT_WIDTH = 2200000  # ~173 pt
-RECT_HEIGHT = 650000  # ~51 pt
+RECT_HEIGHT = 325000  # ~25.6 pt
 
 def get_access_token(credentials_path):
     scopes = ['https://www.googleapis.com/auth/presentations']
