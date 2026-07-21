@@ -1,0 +1,12 @@
+# Ignore Google Cloud credentials
+credentials.json
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environments if created later
+venv/
+env/
+.env/
