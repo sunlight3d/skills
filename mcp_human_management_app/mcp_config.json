@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "mcp_human_management_app": {
+      "serverUrl": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "X-Goog-Api-Key": "${STITCH_API_KEY}"
+      }
+    }
+  }
+}
