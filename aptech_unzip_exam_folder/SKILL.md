@@ -6,7 +6,7 @@ description: "Dọn dẹp và làm phẳng cấu trúc thư mục bài thi. Nế
 # Aptech Unzip Exam Folder (Làm phẳng cấu trúc thư mục bài thi)
 
 ## Overview
-Skill này được sử dụng khi người dùng cung cấp một thư mục chứa nhiều bài làm của thí sinh (ví dụ: `C:\Users\nguye\Downloads\Bài làm`). Đôi khi bài làm bị nén trong một thư mục lồng nhau (một thư mục con duy nhất bên trong thư mục bài làm). Skill này sẽ giúp loại bỏ thư mục lồng đó bằng cách chuyển toàn bộ file/folder ra ngoài và xóa thư mục rỗng.
+Skill này được sử dụng khi người dùng cung cấp một thư mục chứa nhiều bài làm của thí sinh (ví dụ: `C:\Users\nguye\Downloads\Bài làm`). Đôi khi bài làm bị nén trong các thư mục lồng nhau nhiều lớp (ví dụ: thư mục A chỉ chứa duy nhất thư mục B, B lại chứa C...). Skill này sẽ quét đệ quy (recursive) để tự động làm phẳng toàn bộ cấu trúc lồng nhau đó, đưa dữ liệu thực sự ra ngoài và xóa các thư mục rỗng.
 
 ## Hướng dẫn các bước cho Agent
 
