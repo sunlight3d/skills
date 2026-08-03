@@ -26,7 +26,7 @@ Skill này được thiết kế để tự động hóa quy trình chấm bài 
     *   **Lưu ý quan trọng:** Bắt lỗi nghiêm ngặt đối với các lỗi cú pháp (Syntax Error), lỗi logic, hoặc code "lai tạp" giữa các ngôn ngữ (ví dụ viết cú pháp Java trong JavaScript).
 5.  **Tổng hợp điểm và Viết nhận xét:**
     *   Tính tổng điểm dựa trên hệ số điểm của từng tiêu chí.
-    *   **Nhận xét chung:** Viết tóm tắt về tình trạng bài làm. **Quy tắc cốt lõi: Không nhận xét quá tích cực hoặc khen ngợi thái quá để sinh viên không chủ quan.** Nêu bật trực tiếp các lỗi sai, sự ẩu thả (nếu có), và nhắc nhở sinh viên cần test code trước khi nộp.
+    *   **Nhận xét chung (Bắt buộc):** Luôn phải xuất ra một phần "Nhận xét chung" rõ ràng ở cuối cùng (để người dùng dễ dàng copy vào form/bảng chấm điểm). Viết tóm tắt tình trạng bài làm. **Quy tắc cốt lõi: Không nhận xét quá tích cực hoặc khen ngợi thái quá để sinh viên không chủ quan.** Nêu bật trực tiếp các lỗi sai, sự ẩu thả (nếu có), và nhắc nhở sinh viên cần test code trước khi nộp.
     *   **Nhận xét chi tiết từng tiêu chí:** Đưa ra điểm số đạt được, mô tả rõ ràng tại sao đạt/không đạt (trích dẫn lỗi cụ thể trong file nào, dòng nào nếu có).
 6.  **Trả kết quả:**
     *   Hiển thị tổng điểm, nhận xét chung và nhận xét chi tiết cho người dùng một cách rõ ràng.
