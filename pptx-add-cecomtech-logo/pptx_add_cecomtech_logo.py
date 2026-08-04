@@ -27,19 +27,14 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # URL to the uploaded logo image (publicly accessible)
-DEFAULT_IMAGE_URL = 'https://h.uguu.se/pkFCbePt.png'
+DEFAULT_IMAGE_URL = 'https://d.uguu.se/aLPqbciv.png'
 
-def process_google_slides(presentation_id, credentials_path, image_url):
-    scopes = ['https://www.googleapis.com/auth/presentations']
-    creds = service_account.Credentials.from_service_account_file(credentials_path, scopes=scopes)
-
-    slides_service = build('slides', 'v1', credentials=creds)
-
+def process_google_slides(slides_service, presentation_id, image_url):
     try:
         presentation = slides_service.presentations().get(presentationId=presentation_id).execute()
     except Exception as e:
-        print(f"Error fetching presentation: {e}")
-        sys.exit(1)
+        print(f"  Error fetching presentation {presentation_id}: {e}")
+        return
         
     slides = presentation.get('slides', [])
     page_size = presentation.get('pageSize', {})
@@ -55,9 +50,26 @@ def process_google_slides(presentation_id, credentials_path, image_url):
     pos_y = slide_height - IMG_HEIGHT_EMU - MARGIN
 
     requests = []
+    skipped = 0
     for slide in slides:
         slide_id = slide.get('objectId')
         
+        # Check if already has logo by looking at elements near pos_x, pos_y
+        already_has_logo = False
+        elements = slide.get('pageElements', [])
+        for el in elements:
+            transform = el.get('transform', {})
+            tx = transform.get('translateX', 0)
+            ty = transform.get('translateY', 0)
+            # 1000 EMU tolerance
+            if abs(tx - pos_x) < 1000 and abs(ty - pos_y) < 1000:
+                already_has_logo = True
+                break
+                
+        if already_has_logo:
+            skipped += 1
+            continue
+            
         rect_id = f"cover_rect_{slide_id}_{uuid.uuid4().hex[:8]}"
         img_id = f"cover_img_{slide_id}_{uuid.uuid4().hex[:8]}"
         
@@ -130,23 +142,54 @@ def process_google_slides(presentation_id, credentials_path, image_url):
         })
 
     if requests:
-        print(f"Adding Cecomtech logo to {len(slides)} slides...")
+        print(f"  Adding Cecomtech logo to {len(requests) // 3} slides (skipped {skipped})...")
         body = {'requests': requests}
         slides_service.presentations().batchUpdate(presentationId=presentation_id, body=body).execute()
-        print("Done!")
+        print("  Done!")
     else:
-        print("No slides found in the presentation.")
+        print(f"  No action needed. Skipped {skipped} slides.")
+
+def get_presentations_in_folder(drive_service, folder_id):
+    query = f"'{folder_id}' in parents and mimeType='application/vnd.google-apps.presentation' and trashed=false"
+    results = []
+    page_token = None
+    while True:
+        response = drive_service.files().list(q=query, spaces='drive', fields='nextPageToken, files(id, name)', pageToken=page_token).execute()
+        results.extend(response.get('files', []))
+        page_token = response.get('nextPageToken', None)
+        if page_token is None:
+            break
+    return results
 
 def main():
     parser = argparse.ArgumentParser(description="Add Cecomtech logo to the bottom right of Google Slides to cover previous logos.")
-    parser.add_argument("presentation_id", help="The Google Slides presentation ID")
+    parser.add_argument("id", help="The Google Slides presentation ID or Google Drive Folder ID")
+    parser.add_argument("--folder", action="store_true", help="Treat the ID as a Google Drive Folder ID and process all presentations inside it")
     parser.add_argument("--credentials", default="/Users/hoangnd/Documents/funix-auto-sheet-f464a0b5957e.json",
                         help="Path to Google Service Account Credentials JSON")
     parser.add_argument("--image-url", default=DEFAULT_IMAGE_URL,
                         help="URL of the logo image to insert")
     
     args = parser.parse_args()
-    process_google_slides(args.presentation_id, args.credentials, args.image_url)
+    
+    # We need both presentations and drive scopes if processing a folder
+    scopes = ['https://www.googleapis.com/auth/presentations', 'https://www.googleapis.com/auth/drive.readonly']
+    creds = service_account.Credentials.from_service_account_file(args.credentials, scopes=scopes)
+    
+    slides_service = build('slides', 'v1', credentials=creds)
+    
+    if args.folder:
+        drive_service = build('drive', 'v3', credentials=creds)
+        print(f"Searching for presentations in folder {args.id}...")
+        presentations = get_presentations_in_folder(drive_service, args.id)
+        print(f"Found {len(presentations)} presentations.")
+        
+        for i, p in enumerate(presentations):
+            print(f"[{i+1}/{len(presentations)}] Processing '{p['name']}' (ID: {p['id']})")
+            process_google_slides(slides_service, p['id'], args.image_url)
+    else:
+        print(f"Processing single presentation (ID: {args.id})")
+        process_google_slides(slides_service, args.id, args.image_url)
 
 if __name__ == '__main__':
     main()
