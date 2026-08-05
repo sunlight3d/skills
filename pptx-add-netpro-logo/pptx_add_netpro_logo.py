@@ -27,7 +27,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # URL to the uploaded logo image (publicly accessible)
-DEFAULT_IMAGE_URL = 'https://h.uguu.se/RnZMDFfb.png'
+DEFAULT_IMAGE_URL = 'https://d.uguu.se/qCTMcHpz.png'
 
 def process_google_slides(presentation_id, credentials_path, image_url):
     scopes = ['https://www.googleapis.com/auth/presentations']
