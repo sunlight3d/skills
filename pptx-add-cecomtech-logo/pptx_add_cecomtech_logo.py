@@ -41,28 +41,26 @@ def process_google_slides(slides_service, presentation_id, image_url):
     slide_width = page_size.get('width', {}).get('magnitude', 16256000)
     slide_height = page_size.get('height', {}).get('magnitude', 9144000)
 
-    # Dimensions for Cecomtech logo (3786 x 1120) -> width 2000000 EMU
-    IMG_WIDTH_EMU = 2000000
+    # Dimensions for Cecomtech logo (3786 x 1120). Scaled to 2200000 width to cover NotebookLM watermark.
+    IMG_WIDTH_EMU = 2200000
     IMG_HEIGHT_EMU = int(IMG_WIDTH_EMU * (1120 / 3786))
 
-    MARGIN = 100000
-    pos_x = slide_width - IMG_WIDTH_EMU - MARGIN
-    pos_y = slide_height - IMG_HEIGHT_EMU - MARGIN
+    MARGIN_X = 0
+    MARGIN_Y = 38100
+    pos_x = slide_width - IMG_WIDTH_EMU - MARGIN_X
+    pos_y = slide_height - IMG_HEIGHT_EMU - MARGIN_Y
 
     requests = []
     skipped = 0
     for slide in slides:
         slide_id = slide.get('objectId')
         
-        # Delete old logos if they exist at pos_x, pos_y
+        # Delete old logos and rectangles created by this script
         elements = slide.get('pageElements', [])
         for el in elements:
-            transform = el.get('transform', {})
-            tx = transform.get('translateX', 0)
-            ty = transform.get('translateY', 0)
-            # 1000 EMU tolerance
-            if abs(tx - pos_x) < 1000 and abs(ty - pos_y) < 1000:
-                requests.append({'deleteObject': {'objectId': el.get('objectId')}})
+            el_id = el.get('objectId', '')
+            if el_id.startswith('cover_img_') or el_id.startswith('cover_rect_'):
+                requests.append({'deleteObject': {'objectId': el_id}})
                 
         img_id = f"cover_img_{slide_id}_{uuid.uuid4().hex[:8]}"
         
