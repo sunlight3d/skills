@@ -66,8 +66,6 @@ def process_google_slides(slides_service, presentation_id, image_url):
                 
         img_id = f"cover_img_{slide_id}_{uuid.uuid4().hex[:8]}"
         
-        # 1. (Skipped white rectangle)
-        
         # 2. Add the new logo on top
         requests.append({
             'createImage': {
