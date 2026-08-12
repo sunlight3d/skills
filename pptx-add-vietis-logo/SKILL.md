@@ -12,7 +12,7 @@ This skill automatically covers any previous logos (like NotebookLM watermarks) 
 It can process a single Google Slides presentation or automatically discover and process all presentations inside a specified Google Drive folder.
 
 ## Configuration
-The script calculates the size of the logo maintaining aspect ratio (3246x1280) with a fixed width of `2,000,000 EMU` (~157 pt). It leaves a small margin of `100,000 EMU` from the bottom-right edges to perfectly cover most typical corner watermarks.
+The script calculates the size of the logo maintaining aspect ratio (1149x453) with a fixed width of `2,000,000 EMU` (~157 pt). It leaves a small margin of `100,000 EMU` from the bottom-right edges to perfectly cover most typical corner watermarks.
 
 ## Dependencies
 - `uv` Python package manager (required to run the utility script)
