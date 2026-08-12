@@ -41,8 +41,8 @@ def process_google_slides(slides_service, presentation_id, image_url):
     slide_width = page_size.get('width', {}).get('magnitude', 16256000)
     slide_height = page_size.get('height', {}).get('magnitude', 9144000)
 
-    # Dimensions for VietIS logo (1149 x 453). Scaled to 2200000 width to cover NotebookLM watermark.
-    IMG_WIDTH_EMU = 2200000
+    # Dimensions for VietIS logo (1149 x 453). Scaled to 1980000 width.
+    IMG_WIDTH_EMU = 1980000
     IMG_HEIGHT_EMU = int(IMG_WIDTH_EMU * (453 / 1149))
 
     MARGIN_X = 0
