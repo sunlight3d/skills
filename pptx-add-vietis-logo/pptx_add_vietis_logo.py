@@ -110,7 +110,7 @@ def main():
     parser = argparse.ArgumentParser(description="Add VietIS logo to the bottom right of Google Slides to cover previous logos.")
     parser.add_argument("id", help="The Google Slides presentation ID or Google Drive Folder ID")
     parser.add_argument("--folder", action="store_true", help="Treat the ID as a Google Drive Folder ID and process all presentations inside it")
-    parser.add_argument("--credentials", default="/Users/hoangnd/Documents/funix-auto-sheet-f464a0b5957e.json",
+    parser.add_argument("--credentials", default="/Users/hoangnd/Documents/connect-gemini-api-471309-2da0973af1ba.json",
                         help="Path to Google Service Account Credentials JSON")
     parser.add_argument("--image-url", default=DEFAULT_IMAGE_URL,
                         help="URL of the logo image to insert")
