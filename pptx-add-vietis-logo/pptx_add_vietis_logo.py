@@ -29,7 +29,7 @@ from googleapiclient.discovery import build
 # URL to the uploaded logo image (publicly accessible)
 DEFAULT_IMAGE_URL = 'https://raw.githubusercontent.com/sunlight3d/skills/master/pptx-add-vietis-logo/logo_vietis.png'
 
-def process_google_slides(slides_service, presentation_id, image_url):
+def process_google_slides(slides_service, presentation_id, image_url, remove_only=False):
     try:
         presentation = slides_service.presentations().get(presentationId=presentation_id).execute()
     except Exception as e:
@@ -65,7 +65,8 @@ def process_google_slides(slides_service, presentation_id, image_url):
         img_id = f"cover_img_{slide_id}_{uuid.uuid4().hex[:8]}"
         
         # 2. Add the new logo on top
-        requests.append({
+        if not remove_only:
+            requests.append({
             'createImage': {
                 'objectId': img_id,
                 'url': image_url,
@@ -84,10 +85,11 @@ def process_google_slides(slides_service, presentation_id, image_url):
                     }
                 }
             }
-        })
+            })
 
     if requests:
-        print(f"  Adding VietIS logo to {len(requests) // 3} slides (skipped {skipped})...")
+        action_name = "Removing" if remove_only else "Adding"
+        print(f"  {action_name} VietIS logo on {len(slides)} slides (skipped {skipped})...")
         body = {'requests': requests}
         slides_service.presentations().batchUpdate(presentationId=presentation_id, body=body).execute()
         print("  Done!")
@@ -114,6 +116,7 @@ def main():
                         help="Path to Google Service Account Credentials JSON")
     parser.add_argument("--image-url", default=DEFAULT_IMAGE_URL,
                         help="URL of the logo image to insert")
+    parser.add_argument("--remove-only", action="store_true", help="Remove existing logos without adding new ones")
     
     args = parser.parse_args()
     
@@ -131,10 +134,10 @@ def main():
         
         for i, p in enumerate(presentations):
             print(f"[{i+1}/{len(presentations)}] Processing '{p['name']}' (ID: {p['id']})")
-            process_google_slides(slides_service, p['id'], args.image_url)
+            process_google_slides(slides_service, p['id'], args.image_url, args.remove_only)
     else:
         print(f"Processing single presentation (ID: {args.id})")
-        process_google_slides(slides_service, args.id, args.image_url)
+        process_google_slides(slides_service, args.id, args.image_url, args.remove_only)
 
 if __name__ == '__main__':
     main()
