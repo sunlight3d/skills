@@ -29,7 +29,7 @@ from googleapiclient.discovery import build
 # URL to the uploaded logo image (publicly accessible)
 DEFAULT_IMAGE_URL = 'https://raw.githubusercontent.com/sunlight3d/skills/master/pptx-add-cecomtech-logo/logo_cecomtech.png'
 
-def process_google_slides(slides_service, presentation_id, image_url):
+def process_google_slides(slides_service, presentation_id, image_url, skip_existing=False):
     try:
         presentation = slides_service.presentations().get(presentationId=presentation_id).execute()
     except Exception as e:
@@ -55,8 +55,15 @@ def process_google_slides(slides_service, presentation_id, image_url):
     for slide in slides:
         slide_id = slide.get('objectId')
         
-        # Delete old logos and rectangles created by this script
+        # Check for existing logos
         elements = slide.get('pageElements', [])
+        has_existing = any(el.get('objectId', '').startswith('cover_img_') for el in elements)
+        
+        if skip_existing and has_existing:
+            skipped += 1
+            continue
+
+        # Delete old logos and rectangles created by this script
         for el in elements:
             el_id = el.get('objectId', '')
             if el_id.startswith('cover_img_') or el_id.startswith('cover_rect_'):
@@ -114,6 +121,7 @@ def main():
                         help="Path to Google Service Account Credentials JSON")
     parser.add_argument("--image-url", default=DEFAULT_IMAGE_URL,
                         help="URL of the logo image to insert")
+    parser.add_argument("--skip-existing", action="store_true", help="Skip slides that already have a logo inserted by this script")
     
     args = parser.parse_args()
     
@@ -131,10 +139,10 @@ def main():
         
         for i, p in enumerate(presentations):
             print(f"[{i+1}/{len(presentations)}] Processing '{p['name']}' (ID: {p['id']})")
-            process_google_slides(slides_service, p['id'], args.image_url)
+            process_google_slides(slides_service, p['id'], args.image_url, args.skip_existing)
     else:
         print(f"Processing single presentation (ID: {args.id})")
-        process_google_slides(slides_service, args.id, args.image_url)
+        process_google_slides(slides_service, args.id, args.image_url, args.skip_existing)
 
 if __name__ == '__main__':
     main()
