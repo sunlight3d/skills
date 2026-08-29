@@ -108,11 +108,15 @@ def get_presentations_in_folder(drive_service, folder_id):
             break
     return results
 
+DEFAULT_CREDS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'credentials.json')
+if not os.path.exists(DEFAULT_CREDS):
+    DEFAULT_CREDS = '/Users/hoangnd/Documents/connect-gemini-api-471309-f8bf3d1a89f5.json'
+
 def main():
     parser = argparse.ArgumentParser(description="Add QNET logo to the bottom right of Google Slides to cover previous logos.")
     parser.add_argument("id", help="The Google Slides presentation ID or Google Drive Folder ID")
     parser.add_argument("--folder", action="store_true", help="Treat the ID as a Google Drive Folder ID and process all presentations inside it")
-    parser.add_argument("--credentials", default="/Users/hoangnd/Documents/connect-gemini-api-471309-2da0973af1ba.json",
+    parser.add_argument("--credentials", default=DEFAULT_CREDS,
                         help="Path to Google Service Account Credentials JSON")
     parser.add_argument("--image-url", default=DEFAULT_IMAGE_URL,
                         help="URL of the logo image to insert")
