@@ -473,8 +473,8 @@ class DataGenerator:
                 field_rule["auto_increment"] = (meta.inferred_type == "integer")
                 field_rule["start"] = meta.min_val or 1
 
-            # Nếu là số -> lấy min / max từ template làm căn cứ
-            if meta.inferred_type in ("integer", "float"):
+            # Nếu là số (ngoại trừ ID) -> lấy min / max từ template làm căn cứ
+            if meta.inferred_type in ("integer", "float") and meta.semantic_type != "id":
                 if meta.min_val is not None:
                     field_rule["min"] = meta.min_val
                 if meta.max_val is not None:
@@ -540,13 +540,10 @@ class DataGenerator:
             for fname, meta in self.fields_meta.items():
                 rule = self.rules.get(fname, {})
 
-                # Kiểm tra auto increment
+                # Kiểm tra auto increment (lấy giá trị hiện tại, chưa tăng vội)
                 if rule.get("auto_increment", False):
                     val = auto_inc_counters[fname]
-                    auto_inc_counters[fname] += rule.get("step", 1)
                     record[fname] = val
-                    if fname in unique_trackers:
-                        unique_trackers[fname].add(val)
                     continue
 
                 val = self._generate_field_value(fname, meta, rule, full_name, gender, index)
@@ -557,15 +554,26 @@ class DataGenerator:
                     while val in unique_trackers[fname] and retry_unique < 50:
                         val = self._generate_field_value(fname, meta, rule, full_name, gender, index + retry_unique + 1)
                         retry_unique += 1
-                    unique_trackers[fname].add(val)
 
                 record[fname] = val
 
             # Validate nhanh bản ghi này
             val_res = self.validator.validate_record(record)
             if val_res.is_valid:
+                # Ghi nhận unique và tăng auto increment
+                for fname, r_rule in self.rules.items():
+                    if r_rule.get("auto_increment", False):
+                        auto_inc_counters[fname] += r_rule.get("step", 1)
+                    if r_rule.get("unique", False) and fname in record:
+                        unique_trackers[fname].add(record[fname])
                 return record
 
+        # Fallback ghi nhận unique và tăng auto inc nếu hết số lần retry
+        for fname, r_rule in self.rules.items():
+            if r_rule.get("auto_increment", False):
+                auto_inc_counters[fname] += r_rule.get("step", 1)
+            if r_rule.get("unique", False) and fname in record:
+                unique_trackers[fname].add(record[fname])
         return record
 
     def _generate_field_value(
