@@ -513,12 +513,23 @@ class DataGenerator:
             if rule.get("auto_increment", False):
                 auto_inc_counters[fname] = rule.get("start", 1)
 
+        print_interval = max(count // 10, 50000) if count >= 50000 else 0
+
         for i in range(count):
+            if print_interval and (i + 1) % print_interval == 0:
+                percent = int((i + 1) * 100 / count)
+                sys.stdout.write(f"   ⏳ Tiến độ: {i + 1:,} / {count:,} bản ghi ({percent}%)...\n")
+                sys.stdout.flush()
             record = self._generate_single_record(i, auto_inc_counters, unique_trackers)
             records.append(record)
 
-        # Thẩm định lại toàn bộ tập dữ liệu
-        is_valid, errors = self.validator.validate_dataset(records)
+        # Thẩm định lại toàn bộ tập dữ liệu (với dataset lớn hơn 100k bản ghi, lấy mẫu 50,000 bản ghi để tối ưu tốc độ)
+        if count > 100000:
+            sample_records = random.sample(records, 50000)
+            is_valid, errors = self.validator.validate_dataset(sample_records)
+        else:
+            is_valid, errors = self.validator.validate_dataset(records)
+
         if not is_valid:
             sys.stderr.write(f"[Cảnh báo Validation] Phát hiện {len(errors)} vấn đề: {errors[:3]}\n")
 
