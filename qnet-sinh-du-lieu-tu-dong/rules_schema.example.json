@@ -1,0 +1,32 @@
+{
+  "id": {
+    "unique": true,
+    "auto_increment": true,
+    "start": 1,
+    "step": 1
+  },
+  "name": {
+    "semantic": "vietnamese_name"
+  },
+  "department": {
+    "choices": [
+      "IT",
+      "HR",
+      "Kế toán",
+      "Kinh doanh",
+      "Marketing",
+      "R&D",
+      "Ban Giám đốc"
+    ]
+  },
+  "salary": {
+    "min": 15000000,
+    "max": 60000000,
+    "step": 500000
+  },
+  "created_at": {
+    "date_format": "%Y-%m-%dT%H:%M:%S",
+    "start_date": "2026-01-01",
+    "end_date": "2026-12-31"
+  }
+}
