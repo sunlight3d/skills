@@ -85,6 +85,16 @@ def main():
         c3_sum.value = f"=SUM({formula_range})"
         c3_sum.font = Font(bold=True)
         
+        c4_sum = ws.cell(row=sum_row, column=4)
+        c4_sum.value = f"=SUM(D4:D{sum_row-1})"
+        c4_sum.font = Font(bold=True)
+
+        c5_sum = ws.cell(row=sum_row, column=5)
+        c5_sum.value = f"=SUM(E4:E{sum_row-1})"
+        c5_sum.font = Font(bold=True)
+
+        ws['I9'] = f"=D{sum_row}"
+        
         out_file = os.path.join(out_dir, fname)
         wb.save(out_file)
         print(f"Created {out_file} successfully.")

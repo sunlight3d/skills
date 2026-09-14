@@ -1,49 +1,58 @@
 ---
 name: aptech-cham-bai
-description: "Sử dụng skill này khi người dùng yêu cầu tạo phiếu chấm, sinh phiếu chấm, hoặc cung cấp một thư mục chứa các file đề thi (.doc, .docx) để tạo thành các file Excel rubric chấm điểm."
+description: "Sử dụng skill này khi người dùng yêu cầu tạo phiếu chấm, bóc tách đề bài (.doc, .docx), tự động chấm bài làm học viên và cập nhật toàn bộ điểm số cùng lời phê chi tiết vào file ChamBai.xlsx."
 ---
 
-# Aptech Chấm Bài (Tự động sinh phiếu chấm Excel từ đề thi)
+# Aptech Chấm Bài Tự Động (End-to-End: Bóc tách Đề -> Chấm Điểm -> Ghi ChamBai.xlsx & Lời Phê)
 
 ## Overview
-Skill này giúp tự động bóc tách các yêu cầu chấm điểm từ các file đề thi Word (.doc, .docx) và tạo ra các file phiếu chấm Excel tương ứng vào thư mục `debai`. File Excel sẽ được tạo dựa trên một template chuẩn, giữ nguyên công thức tính điểm và cấu trúc đẹp mắt.
+Skill này giúp tự động hóa toàn bộ quy trình chấm thi thực hành của sinh viên Aptech:
+1. **Bóc tách đề thi Word** (`.doc`, `.docx`) để tạo các file rubric Excel chuẩn vào thư mục `debai`.
+2. **Dọn dẹp bài làm học viên** trong thư mục `bailam` (giải nén, làm phẳng cấu trúc thư mục lồng nhau đơn lẻ).
+3. **Tiến hành chấm bài tự động**: Khớp bài thi với đề bài, phân tích mã nguồn theo từng tiêu chí trong rubric.
+4. **Cập nhật trực tiếp vào file `ChamBai.xlsx`**:
+   - Tạo sheet chi tiết cho từng học viên (clone format rubric, điền điểm, công thức tính tổng điểm `=SUM(...)` và lời phê chi tiết cho từng câu).
+   - Cập nhật bảng tổng hợp `Result` (Tên học viên, điểm số liên kết công thức, môn thi, và lời phê / nhận xét tổng quát).
 
-## Hướng dẫn các bước cho Agent
+---
 
-Khi skill này được gọi, bạn hãy thực hiện theo trình tự sau:
+## Quy trình Thực hiện cho Agent
 
-### Bước 1: Trích xuất nội dung từ file đề thi
-1. Liệt kê các file `.doc` và `.docx` trong thư mục mà người dùng cung cấp.
-2. Với mỗi file, hãy đọc nội dung của nó.
-   - Đối với `.docx`, bạn có thể dùng `pandoc` hoặc giải nén file `.docx` để đọc `word/document.xml`.
-   - Đối với `.doc` (nếu có), bạn có thể chạy một đoạn script powershell nhỏ dùng COM object của Word để trích xuất text, hoặc in ra các chuỗi printable nếu COM không hoạt động.
+Khi skill này được gọi (ví dụ: `"/aptech-cham-bai thư mục debai và bailam trong Downloads"`), bạn hãy thực hiện theo trình tự sau:
 
-### Bước 2: Dùng tư duy (LLM) để phân tích yêu cầu
-- Dựa trên văn bản đã trích xuất, hãy phân tích để tìm ra các "Yêu cầu" và "Điểm số" tương ứng của đề bài.
-- Tổng hợp lại dưới dạng danh sách các tuple `(Requirement, Score)`. Giữ nguyên văn các câu chữ chi tiết từ đề bài. Đảm bảo tổng điểm trùng khớp với đề bài (thường là 20 điểm).
+### Bước 1: Trích xuất nội dung đề thi & Sinh Rubric Excel
+1. Quét thư mục `debai` tìm các file đề thi `.doc` và `.docx`.
+2. Đọc nội dung văn bản (trên macOS dùng `textutil -convert txt <file> -stdout` hoặc thư viện đọc văn bản).
+3. Phân tích các tiêu chí yêu cầu và điểm số tương ứng (thường tổng điểm = 20.0).
+4. Tạo file `data.json` và chạy script sinh rubric Excel:
+   ```bash
+   python "/Users/hoangnd/.gemini/config/skills/aptech-cham-bai/scripts/generate_rubrics.py" "/path/to/data.json" "/path/to/debai" "/Users/hoangnd/.gemini/config/skills/aptech-cham-bai/assets/template.xlsx"
+   ```
 
-### Bước 3: Chuẩn bị file JSON dữ liệu
-Tạo một file `data.json` tạm thời trong thư mục của người dùng (ví dụ `C:\Users\nguye\Downloads\data.json`) chứa mảng các cấu trúc như sau:
-```json
-[
-  {
-    "filename": "NodeJS_PE1.xlsx",
-    "word_filename": "NodeJS_PE1.doc",
-    "reqs": [
-      ["Create book", 4.0],
-      ["Update book", 4.0]
-    ]
-  }
-]
+### Bước 2: Dọn dẹp & Chuẩn bị thư mục bài làm (`bailam`)
+- Quét và giải nén các file nén (`.zip`, `.rar`, `.7z`) nếu có.
+- Tự động làm phẳng cấu trúc thư mục (nếu một thư mục học viên chỉ chứa duy nhất 1 thư mục con bên trong, di chuyển toàn bộ nội dung ra ngoài và xóa thư mục con đó, loại bỏ `.DS_Store`).
+
+### Bước 3: Đảm bảo File Mẫu `ChamBai.xlsx`
+- Kiểm tra file `~/Downloads/ChamBai.xlsx`. Nếu chưa có, tự động sao chép từ file mẫu gốc trong thư mục mã nguồn `/Volumes/data/code/connect/chambai/ChamBai.xlsx`.
+
+### Bước 4: Chạy Chấm bài & Cập nhật `ChamBai.xlsx`
+Bạn có thể gọi trực tiếp script CLI Headless AutoGrader đã được tích hợp sẵn:
+
+```bash
+/Volumes/data/code/connect/chambai/.venv/bin/python /Volumes/data/code/connect/chambai/cli_chambai.py \
+    --debai "/path/to/debai" \
+    --bailam "/path/to/bailam" \
+    --template "/path/to/ChamBai.xlsx"
 ```
 
-### Bước 4: Chạy script tạo Excel
-Gọi đoạn script Python được tích hợp sẵn trong skill này để tự động sinh file.
-Lệnh chạy:
-```powershell
-python "C:\Users\nguye\.gemini\config\skills\aptech-cham-bai\scripts\generate_rubrics.py" "C:\path\to\data.json" "C:\path\to\target\dir\debai" "C:\Users\nguye\.gemini\config\skills\aptech-cham-bai\assets\template.xlsx"
-```
-*Lưu ý: Bạn phải dùng đường dẫn tuyệt đối cho tất cả các đối số. Script này yêu cầu `openpyxl`, hãy đảm bảo chạy bằng python có cài sẵn thư viện này (ví dụ python trong thư mục `.venv` của dự án chambai).*
+#### Quy chuẩn Lời phê / Nhận xét (Bắt buộc):
+- **Ngắn gọn, tự nhiên, tiếng Việt có dấu chuẩn**, không dùng câu chữ máy móc lặp lại.
+- Nếu học viên **chưa làm** hoặc bỏ sót tiêu chí nào: ghi rõ `"Chưa làm"`.
+- Nếu làm sai hoặc chưa hoàn thiện: chỉ rõ lỗi sai cụ thể (ví dụ: *"Chưa validate form nhập liệu"*, *"Sai tỷ lệ tính thuế bonus"*, *"Thiếu nút quay lại danh sách"*).
+- Nếu hoàn thành tốt: để trống hoặc nhận xét khen ngợi ngắn gọn.
+- **Lời phê tổng kết**: Được tự động tổng hợp và ghi vào **Cột 6 (Lời phê / Nhận xét)** trong sheet `Result` của file `ChamBai.xlsx`.
 
-### Bước 5: Thông báo hoàn tất
-Khi script chạy xong, bạn có thể xóa file `data.json` nếu muốn, sau đó thông báo cho người dùng biết các file Excel phiếu chấm đã được sinh thành công trong thư mục `debai`.
+### Bước 5: Báo cáo Hoàn tất
+- In ra bảng tóm tắt kết quả (Tên học viên | Môn | Điểm tổng kết | Lời phê tổng quát).
+- Cung cấp đường dẫn file `ChamBai.xlsx` đã hoàn thiện để người dùng mở kiểm tra.
