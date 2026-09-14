@@ -73,6 +73,52 @@ def write_sheet_data(spreadsheet_id: str, range_name: str, values: list[list[str
     except Exception as e:
         return f"Error writing to sheet: {str(e)}"
 
+@mcp.tool()
+def create_spreadsheet_in_folder(title: str, folder_id: str) -> str:
+    """
+    Creates a new Google Sheet inside a specified Google Drive folder.
+    
+    Args:
+        title: The title of the new spreadsheet.
+        folder_id: The ID of the Google Drive folder.
+    """
+    try:
+        from google.auth.transport.requests import AuthorizedSession
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        creds_path = os.path.join(script_dir, 'credentials.json')
+        
+        if not os.path.exists(creds_path):
+            return f"Error: Could not find credentials.json at {creds_path}."
+            
+        credentials = Credentials.from_service_account_file(creds_path, scopes=SCOPES)
+        authed_session = AuthorizedSession(credentials)
+        
+        drive_create_url = "https://www.googleapis.com/drive/v3/files"
+        headers = {
+            "Content-Type": "application/json"
+        }
+        body = {
+            "name": title,
+            "mimeType": "application/vnd.google-apps.spreadsheet",
+            "parents": [folder_id]
+        }
+        
+        create_resp = authed_session.post(drive_create_url, json=body, headers=headers, timeout=10)
+        if create_resp.status_code != 200:
+            return f"Error creating spreadsheet: {create_resp.status_code} - {create_resp.text}"
+            
+        sh_data = create_resp.json()
+        sh_id = sh_data['id']
+        sh_url = f"https://docs.google.com/spreadsheets/d/{sh_id}/edit"
+        
+        return json.dumps({
+            "spreadsheet_id": sh_id,
+            "spreadsheet_url": sh_url,
+            "message": f"Successfully created spreadsheet '{title}' in folder '{folder_id}'."
+        }, indent=2)
+    except Exception as e:
+        return f"Error: {str(e)}"
+
 if __name__ == "__main__":
     # Run the server using stdin/stdout transport
     mcp.run()
