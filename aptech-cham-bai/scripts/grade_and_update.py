@@ -276,6 +276,12 @@ Cấu trúc JSON bắt buộc: [{{"yêu_cầu": "Tóm tắt yêu cầu từ rubr
                     cmt_cell.value = ""
                 details_log.append(f"   + {short_req} : 0.0/{max_score} (Chưa làm)")
 
+            if cmt_cell.value:
+                cmt_cell.alignment = Alignment(wrap_text=True, vertical='center')
+                tgt_ws.row_dimensions[row[0].row].height = None
+
+        tgt_ws.column_dimensions['F'].width = 45
+
         sum_cell_address = None
         if sum_row_idx is not None:
             col_letter = get_column_letter(col_score)
@@ -339,7 +345,10 @@ Cấu trúc JSON bắt buộc: [{{"yêu_cầu": "Tóm tắt yêu cầu từ rubr
             result_ws.cell(row=target_row, column=3, value=total_score)
         result_ws.cell(row=target_row, column=5, value=subject)
         if summary_comment:
-            result_ws.cell(row=target_row, column=6, value=summary_comment)
+            cell_cmt = result_ws.cell(row=target_row, column=6, value=summary_comment)
+            cell_cmt.alignment = Alignment(wrap_text=True, vertical='center')
+            result_ws.row_dimensions[target_row].height = None
+        result_ws.column_dimensions['F'].width = 45
 
         student_count, last_row = 0, start_row - 1
         for r in range(start_row, result_ws.max_row + 5):
