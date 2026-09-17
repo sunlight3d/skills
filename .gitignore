@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .DS_Store
 credentials.json
+config.json
+*.token.json
+token.json
