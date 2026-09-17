@@ -613,7 +613,7 @@ def main():
         default="auto",
         help="Cơ chế gửi: auto (tự chọn), macos-mail (Mac Mail), outlook (Windows Outlook), service-account (Google Workspace), smtp (App Password)"
     )
-    parser.add_argument("--sender", default=None, help="Email người gửi (ví dụ: tieuanhaudio@gmail.com)")
+    parser.add_argument("--sender", default=None, help="Email người gửi (ví dụ: mathplus.edu.vn1987@gmail.com)")
     parser.add_argument("--impersonate-user", default=None, help="Email user Google Workspace cần impersonate khi dùng service-account")
     parser.add_argument(
         "--open-drafts",

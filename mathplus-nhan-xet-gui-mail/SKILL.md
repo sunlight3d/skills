@@ -71,7 +71,7 @@ Agent **BẮT BUỘC** hiển thị bảng tóm tắt kết quả cho người d
 Hệ thống hỗ trợ 3 cơ chế gửi qua tham số `--mailer`:
 
 ### 1. Cơ chế macOS Mail (`--mailer macos-mail`) - Khuyên dùng (Zero-Password)
-- **Hoàn toàn không cần nhập mật khẩu hay App Password**: Tự động tận dụng tài khoản Google (`tieuanhaudio@gmail.com`) hoặc iCloud đã đăng nhập sẵn trong ứng dụng **Mail** của macOS.
+- **Hoàn toàn không cần nhập mật khẩu hay App Password**: Tự động tận dụng tài khoản Google (`mathplus.edu.vn1987@gmail.com`) hoặc iCloud đã đăng nhập sẵn trong ứng dụng **Mail** của macOS.
 - Nếu muốn xem trước bản nháp hiển thị trực tiếp trên màn hình macOS Mail để người dùng tự bấm gửi:
   Thêm cờ `--open-drafts`.
 - Lệnh gửi thực tế:
