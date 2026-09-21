@@ -37,8 +37,8 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # URL to the uploaded logo image (publicly accessible on GitHub raw)
-DEFAULT_IMAGE_URL = 'https://raw.githubusercontent.com/sunlight3d/skills/master/pptx-add-vn-logo/logo_vn.png'
-LOCAL_LOGO_NAME = 'logo_vn.png'
+DEFAULT_IMAGE_URL = 'https://raw.githubusercontent.com/sunlight3d/skills/master/pptx-add-vn-logo/logo_vn.jpg'
+LOCAL_LOGO_NAME = 'logo_vn.jpg'
 
 # Dimensions for Logo VN:
 # Original aspect ratio: 1200 x 339
