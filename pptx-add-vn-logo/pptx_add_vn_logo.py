@@ -27,6 +27,12 @@ import sys
 import uuid
 import argparse
 from pathlib import Path
+
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+except Exception:
+    pass
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
