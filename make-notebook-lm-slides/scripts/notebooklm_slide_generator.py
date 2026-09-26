@@ -599,7 +599,16 @@ def process_markdown_list(
 
     for idx, md_file in enumerate(files, start=1):
         base_name = os.path.splitext(os.path.basename(md_file))[0]
-        part_output = os.path.join(parts_dir, f"{base_name}.pptx")
+        part_tag = base_name.split("-")[0]
+        short_output = os.path.join(parts_dir, f"{part_tag}.pptx")
+        full_output = os.path.join(parts_dir, f"{base_name}.pptx")
+
+        if os.path.exists(short_output) and os.path.getsize(short_output) > 100000 and not force:
+            part_output = short_output
+        elif os.path.exists(full_output) and os.path.getsize(full_output) > 100000 and not force:
+            part_output = full_output
+        else:
+            part_output = short_output
         saved_file = process_single_file(
             page=page,
             md_path=md_file,
