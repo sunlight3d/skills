@@ -132,8 +132,21 @@ def get_notebook_page(cdp_port: int = DEFAULT_CDP_PORT, notebook_key: str = "") 
 
 
 def close_any_viewer(page: Page):
-    """Close any open artifact viewer, slide deck preview, or source panel."""
+    """Close any open artifact viewer, slide deck preview, dialogs, or source panel."""
+    # 1. Close open dialogs first via evaluate
+    try:
+        page.evaluate("""() => {
+            const closeBtn = document.querySelector('mat-dialog-container button[aria-label*="Close"]') ||
+                             document.querySelector('[role="dialog"] button[aria-label*="Close"]');
+            if (closeBtn) closeBtn.click();
+        }""")
+        time.sleep(0.3)
+    except Exception:
+        pass
+
+    # 2. Close artifact viewers & slide deck previews
     selectors = [
+        "mat-dialog-container button[aria-label*='Close']",
         "button[aria-label='Close slide deck']",
         "button[aria-label*='Close']",
         "button[aria-label*='Collapse']",
@@ -144,14 +157,29 @@ def close_any_viewer(page: Page):
         try:
             btns = page.locator(sel).all()
             for b in btns:
-                if b.is_visible():
-                    b.click(timeout=1000)
-                    time.sleep(0.5)
+                try:
+                    if b.is_visible():
+                        b.click(force=True, timeout=1000)
+                        time.sleep(0.3)
+                except Exception:
+                    pass
         except Exception:
             pass
 
     try:
         page.keyboard.press("Escape")
+        time.sleep(0.2)
+        page.keyboard.press("Escape")
+        time.sleep(0.2)
+    except Exception:
+        pass
+
+    try:
+        page.evaluate("""() => {
+            document.querySelectorAll('.cdk-overlay-backdrop').forEach(el => {
+                el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+            });
+        }""")
         time.sleep(0.3)
     except Exception:
         pass
@@ -162,7 +190,7 @@ def ensure_source_panel_expanded(page: Page):
     try:
         exp_btn = page.locator('button[aria-label*="Expand source panel"]').first
         if exp_btn.count() > 0 and exp_btn.is_visible():
-            exp_btn.click(timeout=1500)
+            exp_btn.click(force=True, timeout=1500)
             time.sleep(1)
     except Exception:
         pass
@@ -173,7 +201,7 @@ def ensure_studio_panel_expanded(page: Page):
     try:
         exp_btn = page.locator('button[aria-label*="Expand studio panel"]').first
         if exp_btn.count() > 0 and exp_btn.is_visible():
-            exp_btn.click(timeout=1500)
+            exp_btn.click(force=True, timeout=1500)
             time.sleep(1)
     except Exception:
         pass
@@ -196,19 +224,19 @@ def remove_first_source(page: Page) -> bool:
         ).first
         if more_btn.count() == 0:
             return False
-        more_btn.click(timeout=3000)
+        more_btn.click(force=True, timeout=3000)
         time.sleep(0.8)
 
         rem_item = page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text="Remove source").or_(
             page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text="Xóa nguồn")
         ).first
-        rem_item.click(timeout=3000)
+        rem_item.click(force=True, timeout=3000)
         time.sleep(0.8)
 
         del_btn = page.locator("mat-dialog-container button, [role='dialog'] button").filter(has_text="Delete").or_(
             page.locator("mat-dialog-container button, [role='dialog'] button").filter(has_text="Xóa")
         ).first
-        del_btn.click(timeout=3000)
+        del_btn.click(force=True, timeout=3000)
         time.sleep(1.5)
         return True
     except Exception as e:
@@ -218,6 +246,7 @@ def remove_first_source(page: Page) -> bool:
 
 def clear_all_sources(page: Page, max_attempts: int = 10) -> bool:
     """Clear all sources so each generation runs strictly on one isolated source."""
+    close_any_viewer(page)
     for _ in range(max_attempts):
         cnt = get_source_count(page)
         if cnt == 0:
@@ -244,11 +273,15 @@ def add_source_from_file(page: Page, md_path: str) -> bool:
 
     print(f"  Adding source: '{title}' ({len(content)} chars)...")
 
+    # Ensure clean state before clicking Add source
+    close_any_viewer(page)
+    ensure_source_panel_expanded(page)
+
     # 1. Click Add source
     add_btn = page.locator(
         "button[aria-label*='Add source'], button[aria-label*='Thêm nguồn'], button:has-text('Add sources'), button:has-text('Add source'), button:has-text('Thêm nguồn')"
     ).first
-    add_btn.click(timeout=10000)
+    add_btn.click(force=True, timeout=10000)
     print("    [1/4] Clicked 'Add source'")
     time.sleep(1.5)
 
@@ -256,7 +289,7 @@ def add_source_from_file(page: Page, md_path: str) -> bool:
     copied_btn = page.locator(
         "button[aria-label*='Copied text'], [role='button'][aria-label*='Copied text'], button:has-text('Copied text'), [role='button']:has-text('Copied text'), button:has-text('Văn bản đã sao chép')"
     ).first
-    copied_btn.click(timeout=10000)
+    copied_btn.click(force=True, timeout=10000)
     print("    [2/4] Clicked 'Copied text'")
     time.sleep(1.5)
 
@@ -273,7 +306,7 @@ def add_source_from_file(page: Page, md_path: str) -> bool:
     insert_btn = page.locator("button").filter(has_text="Insert").or_(
         page.locator("button").filter(has_text="Chèn")
     ).first
-    insert_btn.click(timeout=10000)
+    insert_btn.click(force=True, timeout=10000)
     print("    [4/4] Clicked 'Insert'")
 
     # 5. Wait for source to register
@@ -335,11 +368,11 @@ def generate_slide_deck(page: Page, prompt_text: str = DEFAULT_PROMPT, lang: str
         if sel.count() > 0:
             sel_text = sel.inner_text()
             if lang not in sel_text:
-                sel.click()
+                sel.click(force=True)
                 time.sleep(0.8)
                 lang_opt = page.locator("mat-option, [role='option']").filter(has_text=lang).first
                 if lang_opt.count() > 0:
-                    lang_opt.click()
+                    lang_opt.click(force=True)
                     print(f"  Selected language: {lang}")
                 time.sleep(0.5)
 
@@ -360,7 +393,7 @@ def generate_slide_deck(page: Page, prompt_text: str = DEFAULT_PROMPT, lang: str
             print("  'Generate now' button not found, retrying...")
             continue
 
-        gen_btn.click()
+        gen_btn.click(force=True)
         print("  Clicked 'Generate now' button")
         time.sleep(3)
         return True
@@ -425,13 +458,13 @@ def download_and_save_deck(page: Page, dest_path: str, timeout: int = 120) -> st
         page.locator("artifact-library-item, .artifact-item-button").filter(has_text="tablet")
     ).first
     button_in_deck = top_deck.locator("button.artifact-stretched-button, button").first
-    button_in_deck.click()
+    button_in_deck.click(force=True)
     print("  Opened top Slide Deck artifact")
     time.sleep(2.5)
 
     # 2. Click More options
     more_btn = page.locator(".artifact-header button[aria-label='More options'], .artifact-header button").filter(has_text="more_vert").first
-    more_btn.click()
+    more_btn.click(force=True)
     print("  Clicked 'More options'")
     time.sleep(1)
 
@@ -442,7 +475,7 @@ def download_and_save_deck(page: Page, dest_path: str, timeout: int = 120) -> st
             pptx_item = page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text="PowerPoint").or_(
                 page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text=".pptx")
             ).first
-            pptx_item.click()
+            pptx_item.click(force=True)
 
         download = download_info.value
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
