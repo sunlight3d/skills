@@ -151,7 +151,7 @@ def close_any_viewer(page: Page):
 def ensure_source_panel_expanded(page: Page):
     """Ensure the left-side source panel is expanded so source items are visible in the DOM."""
     try:
-        exp_btn = page.locator('button[aria-label*="Expand source panel"], button:has-text("side_nav_expand")').first
+        exp_btn = page.locator('button[aria-label*="Expand source panel"]').first
         if exp_btn.count() > 0 and exp_btn.is_visible():
             exp_btn.click(timeout=1500)
             time.sleep(1)
@@ -162,7 +162,7 @@ def ensure_source_panel_expanded(page: Page):
 def ensure_studio_panel_expanded(page: Page):
     """Ensure the right-side studio panel is expanded so artifact buttons are visible in the DOM."""
     try:
-        exp_btn = page.locator('button[aria-label*="Expand studio panel"], button:has-text("side_nav_collapse")').first
+        exp_btn = page.locator('button[aria-label*="Expand studio panel"]').first
         if exp_btn.count() > 0 and exp_btn.is_visible():
             exp_btn.click(timeout=1500)
             time.sleep(1)
