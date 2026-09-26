@@ -103,22 +103,35 @@ print("Đã tạo xong:", final_pptx)
 
 ---
 
+## Các chế độ hoạt động (Supported Drivers)
+
+Skill hỗ trợ 2 chế độ tự động hóa linh hoạt:
+
+### Chế độ 1: Playwright CDP (Khuyên dùng cho Opera / Cốc Cốc / Chromium độc lập)
+- Script: `scripts/notebooklm_slide_generator.py`
+- Kết nối trực tiếp vào trình duyệt qua cổng DevTools CDP (`--remote-debugging-port=9222`).
+- Sử dụng Playwright API mạnh mẽ, tự động vượt qua mọi rào cản actionability, CDK overlay, và download interception.
+
+### Chế độ 2: Google Chrome AppleScript + Base64 JS (Không cần khởi động lại Chrome)
+- Script: `scripts/notebooklm_chrome_generator.py`
+- Tự động tìm tab NotebookLM đang mở trong Google Chrome của người dùng, thực thi lệnh an toàn qua mã hóa Base64 mà không cần mở cờ `--remote-debugging-port`.
+- Tự động bắt sự kiện chuột phức tạp (`PointerEvent`, `MouseEvent`), nhận diện file tải về tạm thời của Chrome (`.com.google.Chrome.*`) và chuyển thành `.pptx`.
+
+---
+
 ## Cơ chế kỹ thuật chuyên sâu (Technical Architecture)
 
-1. **Playwright CDP Direct Connection**:
-   - Sử dụng `connect_over_cdp("http://localhost:9222")` thay vì AppleScript JS Injection.
-   - Giải quyết triệt để lỗi vô hiệu hóa JavaScript qua Apple Events trên Opera và các trình duyệt Chromium mới.
+1. **Playwright CDP Direct Connection & AppleScript Base64 Bridge**:
+   - Chế độ CDP: Sử dụng `connect_over_cdp("http://localhost:9222")` giải quyết triệt để vấn đề Opera chặn Apple Events.
+   - Chế độ Chrome: Mã hóa Base64 toàn bộ chuỗi JavaScript thực thi qua AppleScript, loại bỏ 100% các lỗi escaping ký tự nháy kép hoặc dấu gạch chéo.
 
-2. **Chính xác hóa phần tử Form**:
+2. **Chính xác hóa phần tử Form & Kích hoạt Angular Reactive Forms**:
    - Ô tiêu đề trong dialog *Copied text* là một thẻ `<input class="title-input">` (không phải textarea).
    - Ô nội dung là `<textarea class="copied-text-input-textarea">`.
-   - Sử dụng `locator.fill()` của Playwright để kích hoạt toàn bộ sự kiện DOM (`input`, `change`, Angular form validation), làm cho nút *Insert* chuyển từ `disabled` sang khả dụng.
+   - Sử dụng `document.execCommand('insertText')` hoặc `locator.fill()` để Angular cập nhật state của FormGroup và kích hoạt nút *Insert*.
 
-3. **Tự động đóng Viewer & Panel**:
-   - Hàm `close_any_viewer()` tự động tìm và click các nút:
-     - `button[aria-label="Close slide deck"]`
-     - `button:has-text("collapse_content")`
-     - `button:has-text("close")`
+3. **Tự động đóng Viewer & CDK Backdrop Overlays**:
+   - Hàm `close_any_viewer()` tự động đóng các modal mở sẵn, click đóng dialog, bấm phím Escape ảo và giải phóng các lớp phủ `.cdk-overlay-backdrop` chắn chuột.
    - Đảm bảo thẻ nút `basic-create-artifact-button[data-create-button-type='8']` (Slide Deck) luôn xuất hiện trên giao diện Studio.
 
 4. **Quản lý Giới hạn Tốc độ (Rate Limit Detection)**:
@@ -128,3 +141,4 @@ print("Đã tạo xong:", final_pptx)
 5. **Ghép nối Slide giữ nguyên định dạng (Lossless Slide Merging)**:
    - File PPTX do NotebookLM xuất ra gồm các slide trình bày dưới dạng ảnh full-bleed (Shape Type 13 - `PICTURE`).
    - Hàm `merge_presentations` trích xuất `image.blob` nguyên gốc từ các slide thành phần và ghép vào presentation chính, giữ nguyên độ phân giải và tỉ lệ 16:9 gốc.
+
