@@ -573,8 +573,12 @@ def process_single_file(
             if attempt < max_retries:
                 print("Retrying in 10 seconds...")
                 time.sleep(10)
-                close_any_viewer(page)
-                clear_all_sources(page)
+                try:
+                    page = get_notebook_page()
+                    close_any_viewer(page)
+                    clear_all_sources(page)
+                except Exception:
+                    pass
             else:
                 raise
 
