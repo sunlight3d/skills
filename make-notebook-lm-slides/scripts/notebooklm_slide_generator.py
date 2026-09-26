@@ -84,12 +84,13 @@ def ensure_browser_running(
 def get_notebook_page(cdp_port: int = DEFAULT_CDP_PORT, notebook_key: str = "") -> Page:
     """Connect to browser via CDP and locate or open the NotebookLM tab."""
     global _playwright, _browser, _page
-    if _page is not None:
+    if _page is not None and _browser is not None:
         try:
             _page.evaluate("1+1")
             return _page
         except Exception:
             _page = None
+            _browser = None
 
     ensure_browser_running(cdp_port=cdp_port)
 
@@ -97,7 +98,15 @@ def get_notebook_page(cdp_port: int = DEFAULT_CDP_PORT, notebook_key: str = "") 
         _playwright = sync_playwright().start()
 
     if _browser is None:
-        _browser = _playwright.chromium.connect_over_cdp(f"http://localhost:{cdp_port}")
+        try:
+            _browser = _playwright.chromium.connect_over_cdp(f"http://127.0.0.1:{cdp_port}")
+        except Exception:
+            try:
+                _playwright.stop()
+            except Exception:
+                pass
+            _playwright = sync_playwright().start()
+            _browser = _playwright.chromium.connect_over_cdp(f"http://127.0.0.1:{cdp_port}")
 
     # Search existing pages for notebook_key or notebook.google.com
     for ctx in _browser.contexts:
