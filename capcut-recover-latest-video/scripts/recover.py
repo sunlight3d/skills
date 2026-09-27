@@ -13,8 +13,13 @@ import argparse
 import subprocess
 from datetime import datetime
 
-VIDEO_RECORD_DIR = os.path.expanduser("~/Movies/CapCut/User Data/VideoRecord")
-DEFAULT_BACKUP_DIR = os.path.expanduser("~/Movies/CapCut_Recording_Backup")
+if sys.platform == "win32":
+    local_app_data = os.environ.get("LOCALAPPDATA", os.path.expanduser("~\\AppData\\Local"))
+    VIDEO_RECORD_DIR = os.path.join(local_app_data, "CapCut", "User Data", "VideoRecord")
+    DEFAULT_BACKUP_DIR = os.path.join(os.path.expanduser("~"), "Videos", "CapCut_Recording_Backup")
+else:
+    VIDEO_RECORD_DIR = os.path.expanduser("~/Movies/CapCut/User Data/VideoRecord")
+    DEFAULT_BACKUP_DIR = os.path.expanduser("~/Movies/CapCut_Recording_Backup")
 
 def find_ffprobe():
     for p in ["/opt/homebrew/bin/ffprobe", "/usr/local/bin/ffprobe", "ffprobe"]:
@@ -95,23 +100,49 @@ def get_latest_sessions(video_dir):
 
 def kill_capcut():
     try:
-        res = subprocess.run(["pkill", "-9", "-i", "capcut"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return res.returncode == 0
+        if sys.platform == "win32":
+            res = subprocess.run(["taskkill", "/F", "/IM", "CapCut.exe"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return res.returncode == 0
+        else:
+            res = subprocess.run(["pkill", "-9", "-i", "capcut"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return res.returncode == 0
     except Exception as e:
         print(f"Lỗi khi dừng CapCut: {e}", file=sys.stderr)
         return False
 
 def is_capcut_running():
     try:
-        res = subprocess.run(["pgrep", "-i", "capcut"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return res.returncode == 0
+        if sys.platform == "win32":
+            res = subprocess.run(["tasklist", "/FI", "IMAGENAME eq CapCut.exe"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            return "CapCut.exe" in res.stdout
+        else:
+            res = subprocess.run(["pgrep", "-i", "capcut"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return res.returncode == 0
     except Exception:
+        return False
+
+def open_in_file_manager(folder_path):
+    """Mở thư mục trong Finder (macOS), Windows Explorer (Windows) hoặc File Manager mặc định (Linux)."""
+    try:
+        if sys.platform == "darwin":
+            subprocess.run(["open", folder_path], check=False)
+        elif sys.platform == "win32":
+            if hasattr(os, "startfile"):
+                os.startfile(folder_path)
+            else:
+                subprocess.run(["explorer", os.path.normpath(folder_path)], check=False)
+        elif sys.platform.startswith("linux"):
+            subprocess.run(["xdg-open", folder_path], check=False)
+        return True
+    except Exception as e:
+        print(f"Lỗi khi mở trình quản lý file: {e}", file=sys.stderr)
         return False
 
 def main():
     parser = argparse.ArgumentParser(description="Khôi phục video CapCut mới nhất khi bị treo và đóng tiến trình.")
     parser.add_argument("--dest", default=DEFAULT_BACKUP_DIR, help="Thư mục lưu bản sao lưu (mặc định: ~/Movies/CapCut_Recording_Backup)")
     parser.add_argument("--no-kill", action="store_true", help="Không tự động tắt tiến trình CapCut")
+    parser.add_argument("--no-open", action="store_true", help="Không tự động mở thư mục sao lưu trong Finder / Windows Explorer")
     parser.add_argument("--dry-run", action="store_true", help="Chỉ kiểm tra và liệt kê file mà không copy hay tắt CapCut")
     args = parser.parse_args()
 
@@ -173,6 +204,11 @@ def main():
     print("==================================================")
     for sf in saved_files:
         print(f"👉 File an toàn: file://{sf}")
+
+    if not args.no_open and saved_files:
+        fm_name = "Finder" if sys.platform == "darwin" else ("Windows Explorer" if sys.platform == "win32" else "File Manager")
+        print(f"\n📂 Đang mở thư mục trong {fm_name}: {args.dest}")
+        open_in_file_manager(args.dest)
 
 if __name__ == "__main__":
     main()

@@ -14,9 +14,10 @@ Thực tế, dữ liệu video màn hình và camera đã được CapCut ghi th
 Skill này giúp:
 1. Tự động quét và phát hiện các file video quay màn hình (`Capcut_RecordScreen_*.mp4`) và camera (`Capcut_RecordCamera_*.mp4`) mới nhất.
 2. Kiểm tra tính toàn vẹn của file (kích thước, thời lượng, khả năng phát) bằng `ffprobe`.
-3. Tự động sao lưu an toàn sang thư mục dự phòng `~/Movies/CapCut_Recording_Backup/`.
-4. Trả về đường dẫn file dự phòng có thể bấm trực tiếp (`file://...`).
-5. Tắt dứt điểm tiến trình CapCut đang bị treo (`pkill -9 -i capcut`) để giải phóng tài nguyên CPU/RAM.
+3. Tự động sao lưu an toàn sang thư mục dự phòng `~/Movies/CapCut_Recording_Backup/` (trên macOS) hoặc `%USERPROFILE%\Videos\CapCut_Recording_Backup\` (trên Windows).
+4. Tự động mở cửa sổ Finder (macOS) hoặc Windows Explorer (Windows) hiển thị ngay thư mục chứa file đã cứu.
+5. Trả về đường dẫn file dự phòng có thể bấm trực tiếp (`file://...`).
+6. Tắt dứt điểm tiến trình CapCut đang bị treo để giải phóng tài nguyên CPU/RAM.
 
 ---
 
@@ -44,13 +45,16 @@ python3 "/Volumes/data/code/skills/capcut-recover-latest-video/scripts/recover.p
   `python3 .../recover.py --dry-run`
 - Chỉ sao lưu mà không tắt CapCut:
   `python3 .../recover.py --no-kill`
+- Không tự động mở Finder / Windows Explorer:
+  `python3 .../recover.py --no-open`
 - Chỉ định thư mục lưu bản backup khác:
   `python3 .../recover.py --dest "/đường/dẫn/khác"`
 
 ### Bước 2: Đọc kết quả từ script
-Script sẽ in ra:
-- Tên các file video vừa cứu được kèm dung lượng (MB) và thời lượng (phút:giây).
-- Đường dẫn tuyệt đối của các file đã sao lưu.
+Script sẽ:
+- Sao lưu các file video vừa cứu và tự động mở thư mục trong Finder (macOS) hoặc Windows Explorer (Windows).
+- In ra tên các file kèm dung lượng (MB) và thời lượng (phút:giây).
+- In đường dẫn tuyệt đối của các file đã sao lưu.
 - Trạng thái tắt tiến trình CapCut bị treo.
 
 ### Bước 3: Phản hồi cho người dùng
