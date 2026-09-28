@@ -94,7 +94,8 @@ def process_google_slides(slides_service, presentation_id, image_url, skip_exist
         })
 
     if requests:
-        print(f"  Adding Cecomtech logo to {len(requests) // 3} slides (skipped {skipped})...")
+        num_added = sum(1 for r in requests if 'createImage' in r)
+        print(f"  Adding Cecomtech logo to {num_added} slides (skipped {skipped})...")
         body = {'requests': requests}
         slides_service.presentations().batchUpdate(presentationId=presentation_id, body=body).execute()
         print("  Done!")
