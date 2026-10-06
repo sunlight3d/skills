@@ -43,12 +43,18 @@ Khi người dùng kích hoạt skill hoặc yêu cầu giải thích một ch�
   - `Emerald / Green (#10b981)`: Cách chuẩn, tối ưu, thành công, 60 FPS, mượt mà.
   - `Violet / Purple (#8b5cf6)`: Bộ nhớ RAM, cấu trúc dữ liệu.
 
-### 3.3. Quy tắc Cỡ Chữ (Font Size Hierarchy - Phải To và Rõ)
-- **Body / Đoạn văn bản trong thẻ**: Tối thiểu `17px - 18px` (`text-base md:text-lg`).
-- **Tiêu đề mục (Section Heading)**: `text-2xl md:text-4xl font-black`.
-- **Tiêu đề chính (Page Title)**: `text-3xl md:text-5xl font-black`.
-- **Chỉ số số liệu (Metrics / Numbers)**: `text-2xl` đến `text-4xl font-mono font-bold`.
-- **Hạn chế tối đa chữ nhỏ**: Tránh dùng `text-xs` cho nội dung đọc chính; chỉ dùng cho nhãn danh mục phụ hoặc badge.
+### 3.3. Quy tắc Cỡ Chữ & Khoảng Cách Đệm (Padding & Line-Height Bắt Buộc)
+- **Khoảng cách đệm (Padding) & Giãn dòng (Line-height)**:
+  - Thẻ `body`: Bắt buộc có `line-height: 1.75;` hoặc `leading-relaxed`.
+  - Tiêu đề (`h1`, `h2`, `h3`): Bắt buộc dùng `leading-normal` hoặc `leading-snug`, TUYỆT ĐỐI KHÔNG dùng `leading-tight` gây dính chữ sát nhau giữa 2 dòng.
+  - Khoảng cách giữa Tiêu đề và Mô tả bên dưới: Tối thiểu `space-y-6` hoặc `my-6`, có khoảng thở rộng rãi.
+  - Padding trong các khối/card: Dùng `p-8 md:p-10` hoặc `p-8 md:p-12`. Khoảng cách giữa các card: `gap-8`.
+  - Khoảng cách giữa các phần lớn: `space-y-20` và `py-14`.
+- **Cỡ chữ**:
+  - Body / Đoạn văn bản trong thẻ: Tối thiểu `17px - 18px` (`text-base md:text-lg`).
+  - Tiêu đề mục (Section Heading): `text-2xl md:text-4xl font-black`.
+  - Tiêu đề chính (Page Title): `text-3xl md:text-5xl font-black`.
+  - Chỉ số số liệu (Metrics / Numbers): `text-2xl` đến `text-4xl font-mono font-bold`.
 
 ### 3.4. Quy tắc BẮT BUỘC về Ký tự và Mũi tên (Zero LaTeX Error)
 - **TUYỆT ĐỐI KHÔNG DÙNG**: `$\rightarrow$`, `$\Rightarrow$`, `$\dots$`, `$1000$`.
