@@ -63,6 +63,30 @@ Khi người dùng kích hoạt skill hoặc yêu cầu giải thích một ch�
   - FontAwesome icon: `<i class="fa-solid fa-arrow-right text-cyan-400 mx-1"></i>`
   - Ký hiệu tiền tệ: `$1000` viết trực tiếp không dùng escape latex.
 
+### 3.5. Quy tắc BẮT BUỘC Viết Rõ Thuật Ngữ Tiếng Anh Viết Tắt (Acronym Expansion)
+- **Tuyệt đối không để từ viết tắt cộc lốc** khi độc giả tiếp cận kiến thức (như `RDB`, `TPS`, `AOF`, `RESP`, `IOPS`, `OOM`, `TTL`, `LRU`, `LFU`, `WAL`, `COW`...).
+- **BẮT BUỘC viết đầy đủ tên tiếng Anh kèm giải thích tiếng Việt** rõ ràng ngay tại tiêu đề, nhãn hoặc đoạn mở đầu:
+  - Ví dụ:
+    - `RDB` → **RDB (Redis Database - Sao lưu ảnh chụp snapshot định kỳ)**
+    - `TPS` → **TPS (Transactions Per Second - Số giao dịch xử lý mỗi giây)**
+    - `AOF` → **AOF (Append-Only File - Tệp ghi nhật ký nối tiếp)**
+    - `RESP` → **RESP (REdis Serialization Protocol - Giao thức tuần tự hóa dữ liệu Redis)**
+    - `IOPS` → **IOPS (Input/Output Operations Per Second - Số tác vụ đọc/ghi đĩa mỗi giây)**
+    - `TTL` → **TTL (Time To Live - Thời gian sống của dữ liệu)**
+    - `OOM` → **OOM (Out Of Memory - Tràn bộ nhớ)**
+    - `LRU / LFU` → **LRU (Least Recently Used - Lâu nhất không dùng) / LFU (Least Frequently Used - Ít tần suất sử dụng nhất)**
+
+### 3.6. Quy tắc BẮT BUỘC về Công Thức Giao Thức & Cấu Trúc Dữ Liệu (Protocol & Serialization Formula)
+- Khi giải thích các câu lệnh ghi tệp, gói tin mạng, hoặc giao thức tuần tự hóa (ví dụ: RESP của Redis, binary format, packet header):
+  - **Phải có công thức tổng quát và quy ước ký hiệu**:
+    - `*<N>`: Mảng gồm `<N>` phần tử / tham số (Array).
+    - `$<Len>`: Độ dài chuỗi (Bulk String) có độ dài `<Len>` ký tự/bytes.
+    - `\r\n`: Dấu ngắt dòng chuẩn CRLF (Carriage Return + Line Feed).
+  - **Phải có sơ đồ bóc tách trực quan từng thành phần của câu lệnh mẫu**:
+    - Ví dụ lệnh tăng: `*2\r\n$4\r\nINCR\r\n$10\r\nview_count\r\n` (bóc tách: `*2` là 2 tham số, `$4` độ dài lệnh, `INCR` tên lệnh, `$10` độ dài key, `view_count` tên key).
+    - Ví dụ lệnh gán: `*3\r\n$3\r\nSET\r\n$10\r\nview_count\r\n$7\r\n1000000\r\n`.
+  - Thiết kế thành các khối thẻ trực quan dạng giải phẫu (dissected blocks) với màu sắc neon phân biệt rõ từng phần.
+
 ---
 
 ## 4. Bố Cục Trang HTML Mẫu (Page Blueprint)
