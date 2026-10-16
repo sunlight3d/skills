@@ -11,6 +11,7 @@ import glob
 import json
 import base64
 import shutil
+import argparse
 import subprocess
 from io import BytesIO
 from typing import List, Tuple, Optional
@@ -23,11 +24,18 @@ DEFAULT_PROMPT = (
     "Montserrat / SVN-Gotham.Đảm bảo chữ tối trên nền sáng"
 )
 
-TARGET_NOTEBOOK_KEY = "84ee5207-a93e-4c9f-90d4-ac1e183f48a3"
+TARGET_NOTEBOOK_KEY = ""
 
 
-def get_chrome_notebook_tab(notebook_key: str = TARGET_NOTEBOOK_KEY) -> Tuple[int, int]:
+def set_target_notebook_key(key: str):
+    """Update global notebook key."""
+    global TARGET_NOTEBOOK_KEY
+    TARGET_NOTEBOOK_KEY = key
+
+
+def get_chrome_notebook_tab(notebook_key: Optional[str] = None) -> Tuple[int, int]:
     """Find the window and tab index of NotebookLM in Google Chrome."""
+    key = notebook_key if notebook_key is not None else TARGET_NOTEBOOK_KEY
     scpt = f'''
 tell application "Google Chrome"
     set wIndex to 1
@@ -35,7 +43,7 @@ tell application "Google Chrome"
         set tIndex to 1
         repeat with t in tabs of w
             set thisURL to URL of t
-            if thisURL contains "{notebook_key}" or (thisURL contains "notebook.google.com/notebook" and "{notebook_key}" is "") then
+            if ("{key}" is not "" and thisURL contains "{key}") or ("{key}" is "" and thisURL contains "notebook.google.com/notebook") then
                 return (wIndex as string) & "," & (tIndex as string)
             end if
             set tIndex to tIndex + 1
@@ -48,18 +56,18 @@ end tell
     p = subprocess.run(["osascript", "-"], input=scpt, text=True, capture_output=True)
     out = p.stdout.strip()
     if not out or "," not in out:
-        raise RuntimeError(f"Could not find open NotebookLM tab with key '{notebook_key}' in Google Chrome.")
+        raise RuntimeError(f"Could not find open NotebookLM tab with key '{key}' in Google Chrome.")
     w_str, t_str = out.split(",")[:2]
     return int(w_str), int(t_str)
 
 
-def chrome_eval(js_code: str, notebook_key: str = TARGET_NOTEBOOK_KEY) -> str:
+def chrome_eval(js_code: str, notebook_key: Optional[str] = None) -> str:
     """Execute arbitrary JavaScript in the Chrome NotebookLM tab using base64 encoding."""
     w_idx, t_idx = get_chrome_notebook_tab(notebook_key=notebook_key)
     b64 = base64.b64encode(js_code.encode("utf-8")).decode("ascii")
     scpt = f'''
 tell application "Google Chrome"
-    set res to execute (tab {t_idx} of window {w_idx}) javascript "eval(atob('{b64}'))"
+    set res to execute (tab {t_idx} of window {w_idx}) javascript "try {{ eval(atob('{b64}')); }} catch(e) {{ 'ERROR: ' + e.toString(); }}"
     return res as string
 end tell
 '''
@@ -293,7 +301,7 @@ def generate_slide_deck(prompt: str = DEFAULT_PROMPT, lang: str = "Tiếng Việ
     time.sleep(2)
 
     # 2. Fill prompt & check language
-    b64_prompt = base64.b64encode(prompt.encode("utf-8")).decode("ascii")
+    b64_prompt = base64.b64encode(json.dumps(prompt).encode("utf-8")).decode("ascii")
     js_fill = f'''(() => {{
         const dlg = document.querySelector('mat-dialog-container');
         if (!dlg) return JSON.stringify({{ error: 'dialog_not_found' }});
@@ -310,7 +318,8 @@ def generate_slide_deck(prompt: str = DEFAULT_PROMPT, lang: str = "Tiếng Việ
         if (ta) {{
             ta.focus();
             ta.select();
-            document.execCommand('insertText', false, atob('{b64_prompt}'));
+            const promptText = JSON.parse(atob('{b64_prompt}'));
+            document.execCommand('insertText', false, promptText);
         }}
         
         const btns = Array.from(dlg.querySelectorAll('button'));
@@ -534,9 +543,13 @@ def process_single_file(
     prompt: str = DEFAULT_PROMPT,
     lang: str = "Tiếng Việt",
     force: bool = False,
-    max_retries: int = 2
+    max_retries: int = 2,
+    notebook_key: Optional[str] = None
 ) -> str:
     """Complete end-to-end automation for a single Markdown source file."""
+    if notebook_key:
+        set_target_notebook_key(notebook_key)
+
     if not force and os.path.exists(dest_pptx_path) and os.path.getsize(dest_pptx_path) > 100000:
         print(f"File already exists: {dest_pptx_path} ({os.path.getsize(dest_pptx_path):,} bytes). Skipping.")
         return dest_pptx_path
@@ -604,9 +617,14 @@ def process_markdown_list(
     prompt: str = DEFAULT_PROMPT,
     parts_dir: str = "slides_parts",
     lang: str = "Tiếng Việt",
-    force: bool = False
+    force: bool = False,
+    notebook_key: Optional[str] = None,
+    no_merge: bool = False
 ) -> str:
     """Process a list of Markdown files, generating individual PPTX decks and merging them."""
+    if notebook_key:
+        set_target_notebook_key(notebook_key)
+
     print(f"Total Markdown files to process: {len(files)}")
     os.makedirs(parts_dir, exist_ok=True)
     generated_parts = []
@@ -629,9 +647,72 @@ def process_markdown_list(
             dest_pptx_path=part_output,
             prompt=prompt,
             lang=lang,
-            force=force
+            force=force,
+            notebook_key=notebook_key
         )
         generated_parts.append(saved_file)
 
-    merge_presentations(generated_parts, output_path)
+    if not no_merge and generated_parts:
+        merge_presentations(generated_parts, output_path)
     return output_path
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="NotebookLM Chrome Slide Deck Generator")
+    parser.add_argument("files", nargs="*", help="List of markdown files or glob patterns")
+    parser.add_argument("--prompt", "-p", default=DEFAULT_PROMPT, help="Prompt instruction for slide deck generation")
+    parser.add_argument("--output", "-o", default="merged_presentation.pptx", help="Path to final merged PPTX output")
+    parser.add_argument("--parts-dir", default="slides_parts", help="Directory where individual part PPTXs are stored")
+    parser.add_argument("--notebook-key", default="", help="Notebook UUID from URL")
+    parser.add_argument("--lang", default="Tiếng Việt", help="Target slide language")
+    parser.add_argument("--force", action="store_true", help="Force regenerate part slides even if they exist")
+    parser.add_argument("--no-merge", action="store_true", help="Do not merge individual PPTX parts into final deck")
+    return parser.parse_args()
+
+
+def main():
+    args = parse_arguments()
+
+    md_files = []
+    for item in args.files:
+        expanded = glob.glob(item)
+        if expanded:
+            md_files.extend(expanded)
+        elif os.path.exists(item):
+            md_files.append(item)
+
+    if not md_files:
+        print("Error: No markdown files specified. Provide files or glob pattern (e.g., slides/*.md)")
+        sys.exit(1)
+
+    import re
+    def extract_num(path):
+        m = re.search(r'(\d+)', os.path.basename(path))
+        return int(m.group(1)) if m else 9999
+
+    md_files = sorted(list(dict.fromkeys(md_files)), key=extract_num)
+
+    print("=" * 60)
+    print("MAKE-NOTEBOOK-LM-SLIDES (CHROME MODE)")
+    print(f"Total files:  {len(md_files)}")
+    print(f"Notebook Key: {args.notebook_key}")
+    print(f"Output:       {args.output}")
+    print(f"Parts dir:    {args.parts_dir}")
+    print(f"Language:     {args.lang}")
+    print("=" * 60)
+
+    final_output = process_markdown_list(
+        files=md_files,
+        output_path=args.output,
+        prompt=args.prompt,
+        parts_dir=args.parts_dir,
+        notebook_key=args.notebook_key,
+        lang=args.lang,
+        force=args.force,
+        no_merge=args.no_merge
+    )
+    print(f"\nALL DONE! Final output: {final_output}")
+
+
+if __name__ == "__main__":
+    main()

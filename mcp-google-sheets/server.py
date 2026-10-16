@@ -16,7 +16,7 @@ mcp = FastMCP("Google Sheets MCP")
 def get_gspread_client():
     # Look for credentials.json in the same directory as this script
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    creds_path = os.path.join(script_dir, 'credentials.json')
+    creds_path = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') or os.path.join(script_dir, 'credentials.json')
     
     if not os.path.exists(creds_path):
         raise FileNotFoundError(f"Could not find {creds_path}. Please place your Service Account credentials file here.")
@@ -85,7 +85,7 @@ def create_spreadsheet_in_folder(title: str, folder_id: str) -> str:
     try:
         from google.auth.transport.requests import AuthorizedSession
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        creds_path = os.path.join(script_dir, 'credentials.json')
+        creds_path = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') or os.path.join(script_dir, 'credentials.json')
         
         if not os.path.exists(creds_path):
             return f"Error: Could not find credentials.json at {creds_path}."
