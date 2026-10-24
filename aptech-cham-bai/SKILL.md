@@ -50,6 +50,18 @@ Có 2 phương thức chấm bài linh hoạt:
    - Agent trực tiếp phân tích mã nguồn (hoặc file `project.json` trong file `.sb3`), đánh giá chi tiết theo từng tiêu chí của đề bài, chấm điểm và tổng hợp lời phê.
    - Ghi kết quả vào `ChamBai.xlsx` bằng `openpyxl`.
 
+#### Quy chuẩn Điểm số & Làm tròn (Bắt buộc):
+- **Bước điểm là 0.5 (Chỉ nhận các giá trị bội số của 0.5)**:
+  - Điểm của từng tiêu chí và tổng điểm chỉ được phép là các mức: `0.0`, `0.5`, `1.0`, `1.5`, `2.0`, `2.5`, v.v.
+  - Tuyệt đối **không** chấm các mức điểm lẻ lắt nhắt như `0.1`, `0.2`, `0.25`, `0.3`, `0.7`, `0.8`...
+- **Điểm tối thiểu khác không là 0.5 (Min non-zero score = 0.5)**:
+  - Nếu một tiêu chí làm dở dang hoặc sai nhiều mà điểm định chấm dưới 0.5 (ví dụ: đáng `0.2` hay `0.3` điểm), thì **bắt buộc làm tròn thành 0** (`0.0`).
+  - Chỉ cho điểm từ `0.5` trở lên khi học viên hoàn thành được phần cơ bản có ý nghĩa của tiêu chí.
+- **Quy tắc làm tròn cụ thể**:
+  - Nếu `raw_score < 0.35` (bao gồm `0.1`, `0.2`, `0.3`): làm tròn thành `0.0`.
+  - Nếu `raw_score >= 0.35`: làm tròn theo bội số của 0.5 gần nhất (`round(raw_score * 2) / 2`).
+  - Điểm chấm không vượt quá Điểm chuẩn tối đa của tiêu chí đó.
+
 #### Quy chuẩn Định dạng & Lời phê (Bắt buộc):
 - **Ngắn gọn, tự nhiên, tiếng Việt có dấu chuẩn**, phản ánh đúng thực tế bài làm:
   - Nếu học viên **chưa làm** hoặc bỏ sót tiêu chí: ghi rõ `"Chưa làm"`.

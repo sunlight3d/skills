@@ -12,6 +12,10 @@ import lxml.etree as ET
 
 # Tìm đường dẫn XSLT chuyển đổi MathML -> OMML
 DEFAULT_XSLT_PATHS = [
+    r'C:\Program Files\Microsoft Office\root\Office16\MML2OMML.XSL',
+    r'C:\Program Files (x86)\Microsoft Office\root\Office16\MML2OMML.XSL',
+    r'C:\Program Files\Microsoft Office\Office16\MML2OMML.XSL',
+    r'C:\Program Files\Microsoft Office\Office15\MML2OMML.XSL',
     '/Applications/Microsoft Word.app/Contents/Resources/mathml2omml.xsl',
     '/Applications/Microsoft Word.app/Contents/Resources/MML2OMML.XSL',
     '/Library/Application Support/Microsoft/Office365/MML2OMML.XSL',

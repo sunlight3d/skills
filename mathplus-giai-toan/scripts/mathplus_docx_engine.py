@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Core Engine tạo tài liệu Word (.docx) chuẩn phong cách Trung tâm MathPlus Academy.
-Tích hợp:
-- Bảng thông tin 2 cột thương hiệu & khung học sinh
-- Chuyển đổi công thức toán học LaTeX -> OMML (Word Native Equations)
-- Khung bài tập dạng chuẩn & Khung lời giải chi tiết (Solution Box)
-- Chèn hình vẽ minh họa (Diagrams / Plots) với chú thích caption
-- Bảng tự đánh giá học sinh (Checklist) & Khung nhận xét giáo viên
-- Header & Footer trang nhã tự động
-- Đảm bảo 100% ECMA-376 OpenXML schema compliance
+Quy chuẩn thiết kế:
+- Chữ toàn bộ màu ĐEN TUYỀN (RGBColor(0, 0, 0) / #000000), nền trắng hoàn toàn.
+- Cỡ chữ toàn văn bản TỐI THIỂU 11pt (Pt(11) / sz=22).
+- Khung lời giải chi tiết (Solution Box) KHÔNG có sọc đen bên trái (bỏ hoàn toàn viền trái).
+- Chèn Logo MathPlus nguyên màu thương hiệu tại Header đầu trang.
+- Chuyển đổi 100% công thức toán học LaTeX -> OMML (Word Native Equations).
+- Đảm bảo 100% ECMA-376 OpenXML schema compliance.
 """
 
 import os
@@ -24,22 +23,32 @@ from docx.oxml.ns import nsdecls, qn
 
 from omml_converter import latex_to_omml
 
-# Bảng màu chuẩn MathPlus
-COLOR_PRIMARY_NAVY = RGBColor(15, 76, 129)     # #0F4C81 - Xanh Navy chủ đạo
-COLOR_DARK_TEXT = RGBColor(34, 34, 34)          # #222222 - Màu chữ dễ đọc
-COLOR_MUTED_GRAY = RGBColor(100, 116, 139)      # #64748B - Màu ghi phụ trợ
+# Bảng màu chuẩn ĐEN TUYỀN - NỀN TRẮNG
+COLOR_BLACK = RGBColor(0, 0, 0)             # #000000 - Đen tuyền tuyệt đối
+COLOR_DARK_TEXT = RGBColor(0, 0, 0)         # Đen tuyền
+COLOR_PRIMARY_NAVY = RGBColor(0, 0, 0)      # Đen tuyền
+COLOR_MUTED_GRAY = RGBColor(0, 0, 0)        # Đen tuyền
+COLOR_SOLUTION_TITLE = RGBColor(0, 0, 0)    # Đen tuyền
+COLOR_CAPTION = RGBColor(0, 0, 0)           # Đen tuyền
 COLOR_WHITE = RGBColor(255, 255, 255)
-COLOR_SOLUTION_TITLE = RGBColor(16, 124, 65)    # #107C41 - Xanh lá lời giải
-COLOR_CAPTION = RGBColor(71, 85, 105)           # #475569
 
-HEX_PRIMARY_NAVY = "0F4C81"
-HEX_LIGHT_BG = "F1F5F9"
-HEX_LIGHT_BORDER = "CBD5E1"
-HEX_SECTION_BG = "0F4C81"
-HEX_SOL_BG = "F8FAFC"
-HEX_SOL_BORDER = "0F4C81"
+def find_mathplus_logo(custom_path=None):
+    """Tìm file logo MathPlus để chèn vào Header, giữ nguyên màu gốc."""
+    candidates = [
+        custom_path,
+        r"C:\code\mathplus\public\images\logo.jpg",
+        r"C:\code\mathplus\public\images\logo.png",
+        os.path.join(os.path.dirname(__file__), "..", "resources", "logo.jpg"),
+        os.path.join(os.path.dirname(__file__), "..", "resources", "logo.png"),
+        os.path.join(os.getcwd(), "public", "images", "logo.jpg"),
+        os.path.join(os.getcwd(), "public", "images", "logo.png"),
+    ]
+    for c in candidates:
+        if c and os.path.exists(c) and os.path.isfile(c):
+            return c
+    return None
 
-def style_cell(cell, bg_color=None, border_color="CBD5E1", top="none", bottom="none", left="none", right="none", sz="4"):
+def style_cell(cell, bg_color=None, border_color="000000", top="none", bottom="none", left="none", right="none", sz="4"):
     """Định kiểu màu nền và đường viền cho ô theo đúng thứ tự schema OpenXML."""
     tcPr = cell._tc.get_or_add_tcPr()
     for child in list(tcPr):
@@ -75,30 +84,40 @@ def add_display_math(doc_or_cell, latex_code, space_before=Pt(2), space_after=Pt
     return p
 
 def add_rich_text(p, text, default_font="Times New Roman", default_size=Pt(11),
-                  default_color=COLOR_DARK_TEXT, default_bold=False, default_italic=False):
-    """Phân tích chuỗi chứa text và công thức toán $...$ rồi thêm run tương ứng."""
+                  default_color=COLOR_BLACK, default_bold=False, default_italic=False):
+    """Phân tích chuỗi chứa text và công thức toán $...$ rồi thêm run đen tuyền tương ứng (font >= 11pt)."""
+    effective_size = Pt(11) if default_size < Pt(11) else default_size
     tokens = re.split(r'(\$[^$]+\$)', text)
     for token in tokens:
         if not token:
             continue
-        if token.startswith('$') and token.endswith('$'):
-            math_code = token[1:-1]
-            add_inline_math(p, math_code)
+        if token.startswith('$') and token.endswith('$') and len(token) > 2:
+            math_code = token[1:-1].strip()
+            try:
+                add_inline_math(p, math_code)
+            except Exception:
+                run = p.add_run(token)
+                run.font.name = default_font
+                run.font.size = effective_size
+                run.font.color.rgb = COLOR_BLACK
+                run.font.bold = default_bold
+                run.font.italic = default_italic
         else:
             run = p.add_run(token)
             run.font.name = default_font
-            run.font.size = default_size
-            run.font.color.rgb = default_color
+            run.font.size = effective_size
+            run.font.color.rgb = COLOR_BLACK
             run.font.bold = default_bold
             run.font.italic = default_italic
 
 class MathPlusDocxBuilder:
-    def __init__(self, title, subtitle="Năm học 2026 – 2027", time_limit="90 phút", is_solved=False):
+    def __init__(self, title, subtitle="Năm học 2026 – 2027", time_limit="90 phút", is_solved=False, logo_path=None, **kwargs):
         self.doc = Document()
         self.title = title
         self.subtitle = subtitle
         self.time_limit = time_limit
         self.is_solved = is_solved
+        self.logo_path = find_mathplus_logo(logo_path)
         self._setup_page()
         self._setup_header_footer()
         self._build_top_banner()
@@ -116,21 +135,26 @@ class MathPlusDocxBuilder:
         normal_style = self.doc.styles['Normal']
         normal_style.font.name = 'Times New Roman'
         normal_style.font.size = Pt(11)
-        normal_style.font.color.rgb = COLOR_DARK_TEXT
+        normal_style.font.color.rgb = COLOR_BLACK
 
     def _setup_header_footer(self):
         section = self.doc.sections[0]
         header = section.header
         p_h = header.paragraphs[0]
         p_h.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        h_title = f"TRUNG TÂM MATHPLUS ACADEMY  |  {self.title.upper()}"
-        if self.is_solved:
-            h_title += " (KÈM LỜI GIẢI & HÌNH VẼ)"
-        r_h = p_h.add_run(h_title)
+        p_h.paragraph_format.space_before = Pt(0)
+        p_h.paragraph_format.space_after = Pt(0)
+        
+        # Header ở các trang sau: Chỉ gồm Logo và tên Trung tâm (không viết hoa toàn bộ)
+        if self.logo_path and os.path.exists(self.logo_path):
+            r_logo = p_h.add_run()
+            r_logo.add_picture(self.logo_path, width=Mm(7.5))
+            
+        r_h = p_h.add_run("  Trung tâm MathPlus Academy")
         r_h.font.name = "Times New Roman"
-        r_h.font.size = Pt(8.5)
+        r_h.font.size = Pt(11)
         r_h.font.italic = True
-        r_h.font.color.rgb = COLOR_MUTED_GRAY
+        r_h.font.color.rgb = COLOR_BLACK
 
         def setup_ftr(footer_obj):
             p_f = footer_obj.paragraphs[0]
@@ -139,20 +163,20 @@ class MathPlusDocxBuilder:
             
             r_f1 = p_f.add_run("Giáo viên: Nguyễn Văn Dũng – MathPlus Academy  |  Hotline: 0977 961 189")
             r_f1.font.name = "Times New Roman"
-            r_f1.font.size = Pt(8.5)
+            r_f1.font.size = Pt(11)
             r_f1.font.italic = True
-            r_f1.font.color.rgb = COLOR_MUTED_GRAY
+            r_f1.font.color.rgb = COLOR_BLACK
             
             r_f2 = p_f.add_run("\tTrang ")
             r_f2.font.name = "Times New Roman"
-            r_f2.font.size = Pt(8.5)
+            r_f2.font.size = Pt(11)
             r_f2.font.italic = True
-            r_f2.font.color.rgb = COLOR_MUTED_GRAY
+            r_f2.font.color.rgb = COLOR_BLACK
             
             r_pg = p_f.add_run()
             r_pg.font.name = "Times New Roman"
-            r_pg.font.size = Pt(8.5)
-            r_pg.font.color.rgb = COLOR_MUTED_GRAY
+            r_pg.font.size = Pt(11)
+            r_pg.font.color.rgb = COLOR_BLACK
             fld1 = OxmlElement('w:fldChar')
             fld1.set(qn('w:fldCharType'), 'begin')
             t1 = OxmlElement('w:instrText')
@@ -171,67 +195,90 @@ class MathPlusDocxBuilder:
         setup_ftr(section.footer)
 
     def _build_top_banner(self):
-        # 2-column header
         header_table = self.doc.add_table(rows=1, cols=2)
         header_table.alignment = WD_TABLE_ALIGNMENT.CENTER
         header_table.autofit = False
         
-        # Left
+        # Cột trái (78mm) và Cột phải (94mm) - Cân đối, không bị tràn dòng
         c_left = header_table.cell(0, 0)
-        c_left.width = Mm(65)
-        p_l = c_left.paragraphs[0]
+        c_left.width = Mm(78)
+        c_right = header_table.cell(0, 1)
+        c_right.width = Mm(94)
+        
+        # Căn giữa theo chiều dọc (Vertical Center) cho cả hai cột để không bị lệch
+        for c in [c_left, c_right]:
+            tcPr = c._tc.get_or_add_tcPr()
+            tcPr.append(parse_xml(f'<w:vAlign {nsdecls("w")} w:val="center"/>'))
+        
+        # Cột trái: Logo (18mm) + Tên trung tâm vừa vặn 1 dòng
+        first_p = c_left.paragraphs[0]
+        first_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        first_p.paragraph_format.space_before = Pt(0)
+        first_p.paragraph_format.space_after = Pt(2)
+        
+        if self.logo_path and os.path.exists(self.logo_path):
+            run_logo = first_p.add_run()
+            run_logo.add_picture(self.logo_path, width=Mm(18))
+            p_l = c_left.add_paragraph()
+        else:
+            p_l = first_p
+            
         p_l.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_l.paragraph_format.space_before = Pt(0)
-        p_l.paragraph_format.space_after = Pt(2)
+        p_l.paragraph_format.space_before = Pt(1)
+        p_l.paragraph_format.space_after = Pt(1)
         p_l.paragraph_format.line_spacing = 1.15
         
         r_l1 = p_l.add_run("TRUNG TÂM MATHPLUS ACADEMY\n")
         r_l1.font.name = "Times New Roman"
-        r_l1.font.size = Pt(11.5)
+        r_l1.font.size = Pt(11)
         r_l1.font.bold = True
-        r_l1.font.color.rgb = COLOR_PRIMARY_NAVY
+        r_l1.font.color.rgb = COLOR_BLACK
         
-        r_l2 = p_l.add_run("Bồi dưỡng Toán phổ thông & Luyện thi\n")
+        r_l2 = p_l.add_run("Bồi dưỡng Toán & Luyện thi\n")
         r_l2.font.name = "Times New Roman"
-        r_l2.font.size = Pt(9.5)
+        r_l2.font.size = Pt(11)
         r_l2.font.italic = True
-        r_l2.font.color.rgb = COLOR_DARK_TEXT
+        r_l2.font.color.rgb = COLOR_BLACK
         
-        r_l3 = p_l.add_run("Website: mathplus.vn  •  Hotline: 0977 961 189")
+        r_l3 = p_l.add_run("Hotline: 0977 961 189  •  mathplus.vn")
         r_l3.font.name = "Times New Roman"
-        r_l3.font.size = Pt(8.5)
+        r_l3.font.size = Pt(11)
         r_l3.font.italic = True
-        r_l3.font.color.rgb = COLOR_MUTED_GRAY
+        r_l3.font.color.rgb = COLOR_BLACK
         
-        # Right
-        c_right = header_table.cell(0, 1)
-        c_right.width = Mm(107)
+        # Cột phải: Tiêu đề đề thi cân xứng
         p_r = c_right.paragraphs[0]
         p_r.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p_r.paragraph_format.space_before = Pt(0)
-        p_r.paragraph_format.space_after = Pt(2)
+        p_r.paragraph_format.space_after = Pt(1)
         p_r.paragraph_format.line_spacing = 1.15
         
         r_r1 = p_r.add_run(f"{self.title.upper()}\n")
         r_r1.font.name = "Times New Roman"
-        r_r1.font.size = Pt(12.5)
+        r_r1.font.size = Pt(12)
         r_r1.font.bold = True
-        r_r1.font.color.rgb = COLOR_PRIMARY_NAVY
+        r_r1.font.color.rgb = COLOR_BLACK
         
         if self.is_solved:
             r_bdg = p_r.add_run("【 ĐỀ BÀI VÀ LỜI GIẢI CHI TIẾT – CÓ HÌNH VẼ 】\n")
             r_bdg.font.name = "Times New Roman"
-            r_bdg.font.size = Pt(10)
+            r_bdg.font.size = Pt(11)
             r_bdg.font.bold = True
-            r_bdg.font.color.rgb = COLOR_SOLUTION_TITLE
+            r_bdg.font.color.rgb = COLOR_BLACK
             
-        r_r2 = p_r.add_run(f"{self.subtitle}  •  Thời gian gợi ý: {self.time_limit}")
+        r_r2 = p_r.add_run(f"{self.subtitle}\n")
         r_r2.font.name = "Times New Roman"
-        r_r2.font.size = Pt(9.5)
-        r_r2.font.italic = True
-        r_r2.font.color.rgb = COLOR_MUTED_GRAY
+        r_r2.font.size = Pt(11)
+        r_r2.font.bold = True
+        r_r2.font.color.rgb = COLOR_BLACK
         
-        # Student info box
+        r_r3 = p_r.add_run(f"Thời gian gợi ý: {self.time_limit}")
+        r_r3.font.name = "Times New Roman"
+        r_r3.font.size = Pt(11)
+        r_r3.font.italic = True
+        r_r3.font.color.rgb = COLOR_BLACK
+        
+        # Khung thông tin học sinh (Nền trắng, viền mảnh đen)
         p_sp = self.doc.add_paragraph()
         p_sp.paragraph_format.space_before = Pt(0)
         p_sp.paragraph_format.space_after = Pt(4)
@@ -241,25 +288,58 @@ class MathPlusDocxBuilder:
         info_t.autofit = False
         c_info = info_t.cell(0, 0)
         c_info.width = Mm(172)
-        style_cell(c_info, bg_color=HEX_LIGHT_BG, border_color=HEX_LIGHT_BORDER, top="single", bottom="single", left="single", right="single", sz="6")
+        style_cell(c_info, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
         
         p_i = c_info.paragraphs[0]
         p_i.paragraph_format.space_before = Pt(3)
         p_i.paragraph_format.space_after = Pt(3)
         p_i.paragraph_format.line_spacing = 1.2
         
-        p_i.add_run("Họ và tên học sinh: ").bold = True
-        p_i.add_run("……………………………………………………………………    ")
-        p_i.add_run("Lớp: ").bold = True
-        p_i.add_run("……………………\n")
-        p_i.add_run("Ngày làm bài: ").bold = True
-        p_i.add_run("………………………………………………    ")
-        p_i.add_run("Điểm số / Đánh giá: ").bold = True
-        p_i.add_run("………………………………")
+        r1 = p_i.add_run("Họ và tên học sinh: ")
+        r1.bold = True
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = COLOR_BLACK
+        r1_dot = p_i.add_run("……………………………………………………………………    ")
+        r1_dot.font.size = Pt(11)
+        r1_dot.font.color.rgb = COLOR_BLACK
+        
+        r2 = p_i.add_run("Lớp: ")
+        r2.bold = True
+        r2.font.size = Pt(11)
+        r2.font.color.rgb = COLOR_BLACK
+        r2_dot = p_i.add_run("……………………\n")
+        r2_dot.font.size = Pt(11)
+        r2_dot.font.color.rgb = COLOR_BLACK
+        
+        r3 = p_i.add_run("Ngày làm bài: ")
+        r3.bold = True
+        r3.font.size = Pt(11)
+        r3.font.color.rgb = COLOR_BLACK
+        r3_dot = p_i.add_run("………………………………………………    ")
+        r3_dot.font.size = Pt(11)
+        r3_dot.font.color.rgb = COLOR_BLACK
+        
+        r4 = p_i.add_run("Điểm số / Đánh giá: ")
+        r4.bold = True
+        r4.font.size = Pt(11)
+        r4.font.color.rgb = COLOR_BLACK
+        r4_dot = p_i.add_run("………………………………")
+        r4_dot.font.size = Pt(11)
+        r4_dot.font.color.rgb = COLOR_BLACK
+
+    def add_header_banner(self):
+        pass
+
+    def add_title_block(self):
+        pass
+
+    def add_student_info_box(self):
+        pass
 
     def add_section(self, title, subtitle=None):
+        """Thêm tiêu đề phần lớn (Nền trắng, viền trên và dưới đen, KHÔNG có sọc đen hai bên)."""
         p_sp = self.doc.add_paragraph()
-        p_sp.paragraph_format.space_before = Pt(4)
+        p_sp.paragraph_format.space_before = Pt(6)
         p_sp.paragraph_format.space_after = Pt(2)
         
         t = self.doc.add_table(rows=1, cols=1)
@@ -267,7 +347,8 @@ class MathPlusDocxBuilder:
         t.autofit = False
         c = t.cell(0, 0)
         c.width = Mm(172)
-        style_cell(c, bg_color=HEX_SECTION_BG)
+        style_cell(c, bg_color=None, border_color="000000", top="single", bottom="single", left="none", right="none", sz="6")
+        
         p = c.paragraphs[0]
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.space_before = Pt(4)
@@ -277,7 +358,7 @@ class MathPlusDocxBuilder:
         r.font.name = "Times New Roman"
         r.font.size = Pt(12)
         r.font.bold = True
-        r.font.color.rgb = COLOR_WHITE
+        r.font.color.rgb = COLOR_BLACK
         
         if subtitle:
             ps = self.doc.add_paragraph()
@@ -286,17 +367,21 @@ class MathPlusDocxBuilder:
             ps.paragraph_format.space_after = Pt(6)
             rs = ps.add_run(subtitle)
             rs.font.name = "Times New Roman"
-            rs.font.size = Pt(10)
+            rs.font.size = Pt(11)
             rs.font.italic = True
-            rs.font.color.rgb = COLOR_MUTED_GRAY
+            rs.font.color.rgb = COLOR_BLACK
+
+    def add_section_banner(self, title, subtitle=None):
+        self.add_section(title, subtitle)
 
     def add_dang(self, dang_title):
+        """Thêm dạng toán (Nền trắng, KHÔNG có sọc đen bên trái)."""
         t = self.doc.add_table(rows=1, cols=1)
         t.alignment = WD_TABLE_ALIGNMENT.CENTER
         t.autofit = False
         c = t.cell(0, 0)
         c.width = Mm(172)
-        style_cell(c, bg_color="EBF3FA", border_color=HEX_PRIMARY_NAVY, left="single", sz="24")
+        style_cell(c, bg_color=None, top="none", bottom="none", left="none", right="none")
         p = c.paragraphs[0]
         p.paragraph_format.space_before = Pt(3)
         p.paragraph_format.space_after = Pt(3)
@@ -304,15 +389,16 @@ class MathPlusDocxBuilder:
         
         r = p.add_run(dang_title)
         r.font.name = "Times New Roman"
-        r.font.size = Pt(11)
+        r.font.size = Pt(11.5)
         r.font.bold = True
-        r.font.color.rgb = COLOR_PRIMARY_NAVY
+        r.font.color.rgb = COLOR_BLACK
         
         p_sp = self.doc.add_paragraph()
         p_sp.paragraph_format.space_before = Pt(0)
         p_sp.paragraph_format.space_after = Pt(2)
 
     def add_problem_header(self, num_str, content_str=""):
+        """Thêm câu hỏi/bài tập (font >= 11pt)."""
         p = self.doc.add_paragraph()
         p.paragraph_format.space_before = Pt(6)
         p.paragraph_format.space_after = Pt(2)
@@ -320,28 +406,40 @@ class MathPlusDocxBuilder:
         
         r_num = p.add_run(num_str + " ")
         r_num.font.name = "Times New Roman"
-        r_num.font.size = Pt(11)
+        r_num.font.size = Pt(11.5)
         r_num.font.bold = True
-        r_num.font.color.rgb = COLOR_PRIMARY_NAVY
+        r_num.font.color.rgb = COLOR_BLACK
         
         if content_str:
-            add_rich_text(p, content_str)
+            add_rich_text(p, content_str, default_size=Pt(11), default_color=COLOR_BLACK)
         return p
+
+    def add_exercise_header(self, label, text=""):
+        return self.add_problem_header(f"{label}:", text)
+
+    def add_problem_statement(self, lines):
+        """Thêm các dòng nội dung của đề bài (font >= 11pt)."""
+        for line in lines:
+            p = self.doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(2)
+            p.paragraph_format.left_indent = Pt(8)
+            add_rich_text(p, line, default_size=Pt(11), default_color=COLOR_BLACK)
 
     def add_display_equation(self, latex_code):
         return add_display_math(self.doc, latex_code)
 
     def add_solution(self, solution_steps):
         """
-        Thêm khung lời giải chi tiết (Solution Box).
-        solution_steps: List of tuples ('title', 'p', 'display_math', 'bullet', 'image', 'caption')
+        Thêm khung lời giải chi tiết (Solution Box) - Nền trắng, KHÔNG có sọc đen bên trái, font >= 11pt.
         """
         t = self.doc.add_table(rows=1, cols=1)
         t.alignment = WD_TABLE_ALIGNMENT.CENTER
         t.autofit = False
         c = t.cell(0, 0)
         c.width = Mm(172)
-        style_cell(c, bg_color=HEX_SOL_BG, border_color=HEX_SOL_BORDER, left="single", sz="16")
+        # BỎ HOÀN TOÀN SỌC ĐEN BÊN TRÁI (left="none")
+        style_cell(c, bg_color=None, top="none", bottom="none", left="none", right="none")
         
         first = True
         for step in solution_steps:
@@ -349,33 +447,34 @@ class MathPlusDocxBuilder:
             content = step[1]
             if kind == 'title':
                 p = c.paragraphs[0] if first else c.add_paragraph()
-                p.paragraph_format.space_before = Pt(2)
-                p.paragraph_format.space_after = Pt(2)
-                p.paragraph_format.left_indent = Pt(4)
-                r_icon = p.add_run("✎ LỜI GIẢI CHI TIẾT:")
-                r_icon.font.name = "Times New Roman"
-                r_icon.font.size = Pt(10.5)
-                r_icon.font.bold = True
-                r_icon.font.color.rgb = COLOR_SOLUTION_TITLE
-            elif kind == 'p':
-                p = c.paragraphs[0] if first else c.add_paragraph()
-                p.paragraph_format.space_before = Pt(1)
+                p.paragraph_format.space_before = Pt(3)
                 p.paragraph_format.space_after = Pt(2)
                 p.paragraph_format.left_indent = Pt(6)
+                r_icon = p.add_run(content if content else "✎ LỜI GIẢI CHI TIẾT:")
+                r_icon.font.name = "Times New Roman"
+                r_icon.font.size = Pt(11.5)
+                r_icon.font.bold = True
+                r_icon.font.color.rgb = COLOR_BLACK
+            elif kind == 'p':
+                p = c.paragraphs[0] if first else c.add_paragraph()
+                p.paragraph_format.space_before = Pt(2)
+                p.paragraph_format.space_after = Pt(2)
+                p.paragraph_format.left_indent = Pt(8)
                 p.paragraph_format.line_spacing = 1.15
-                add_rich_text(p, content, default_size=Pt(10.5))
+                add_rich_text(p, content, default_size=Pt(11), default_color=COLOR_BLACK)
             elif kind == 'display_math':
                 add_display_math(c, content, space_before=Pt(2), space_after=Pt(2))
             elif kind == 'bullet':
                 p = c.paragraphs[0] if first else c.add_paragraph()
-                p.paragraph_format.space_before = Pt(1)
+                p.paragraph_format.space_before = Pt(2)
                 p.paragraph_format.space_after = Pt(2)
                 p.paragraph_format.left_indent = Pt(16)
                 p.paragraph_format.line_spacing = 1.15
                 r_b = p.add_run("• ")
                 r_b.font.bold = True
-                r_b.font.color.rgb = COLOR_SOLUTION_TITLE
-                add_rich_text(p, content, default_size=Pt(10.5))
+                r_b.font.size = Pt(11)
+                r_b.font.color.rgb = COLOR_BLACK
+                add_rich_text(p, content, default_size=Pt(11), default_color=COLOR_BLACK)
             elif kind == 'image':
                 img_path = content
                 img_w = step[2] if len(step) > 2 else Mm(110)
@@ -392,14 +491,34 @@ class MathPlusDocxBuilder:
                 p.paragraph_format.space_after = Pt(4)
                 r_cap = p.add_run(content)
                 r_cap.font.name = "Times New Roman"
-                r_cap.font.size = Pt(9.5)
+                r_cap.font.size = Pt(11)
                 r_cap.font.italic = True
-                r_cap.font.color.rgb = COLOR_CAPTION
+                r_cap.font.color.rgb = COLOR_BLACK
             first = False
             
         p_sp = self.doc.add_paragraph()
         p_sp.paragraph_format.space_before = Pt(0)
         p_sp.paragraph_format.space_after = Pt(4)
+
+    def add_solution_box(self, steps, title=None, image_path=None, image_width=4.2, conclusion=None):
+        sol_steps = [('title', title or "✎ LỜI GIẢI CHI TIẾT:")]
+        for st in steps:
+            if isinstance(st, dict) and 'display_math' in st:
+                sol_steps.append(('display_math', st['display_math']))
+            elif isinstance(st, str):
+                s_trimmed = st.strip()
+                if s_trimmed.startswith('$$') and s_trimmed.endswith('$$') and len(s_trimmed) >= 4:
+                    sol_steps.append(('display_math', s_trimmed[2:-2].strip()))
+                else:
+                    clean_st = st.lstrip('• ').strip() if st.strip().startswith('•') else st
+                    kind = 'bullet' if st.strip().startswith('•') else 'p'
+                    sol_steps.append((kind, clean_st))
+        if image_path and os.path.exists(image_path):
+            sol_steps.append(('image', image_path, Inches(image_width)))
+            sol_steps.append(('caption', 'Hình vẽ minh họa trực quan'))
+        if conclusion:
+            sol_steps.append(('bullet', f"Kết luận: {conclusion}"))
+        self.add_solution(sol_steps)
 
     def add_self_evaluation(self, criteria_list):
         p_sp = self.doc.add_paragraph()
@@ -419,37 +538,48 @@ class MathPlusDocxBuilder:
         w_col0 = Mm(36)
         w_col1 = Mm(136)
         
-        # Header row
         h0 = eval_table.cell(0, 0)
         h1 = eval_table.cell(0, 1)
         h0.width = w_col0
         h1.width = w_col1
-        style_cell(h0, bg_color="E2E8F0", border_color=HEX_LIGHT_BORDER, top="single", bottom="single", left="single", right="single")
-        style_cell(h1, bg_color="E2E8F0", border_color=HEX_LIGHT_BORDER, top="single", bottom="single", left="single", right="single")
+        style_cell(h0, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
+        style_cell(h1, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
         
         p0 = h0.paragraphs[0]
         p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p0.add_run("Đánh giá").bold = True
+        r0 = p0.add_run("Đánh giá")
+        r0.bold = True
+        r0.font.size = Pt(11)
+        r0.font.color.rgb = COLOR_BLACK
         
         p1 = h1.paragraphs[0]
-        p1.add_run("Nội dung kiến thức – Kỹ năng cần đạt").bold = True
+        r1 = p1.add_run("Nội dung kiến thức – Kỹ năng cần đạt")
+        r1.bold = True
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = COLOR_BLACK
         
         for idx, crit in enumerate(criteria_list, start=1):
             c0 = eval_table.cell(idx, 0)
             c1 = eval_table.cell(idx, 1)
             c0.width = w_col0
             c1.width = w_col1
-            bg = "F8FAFC" if idx % 2 == 1 else None
-            style_cell(c0, bg_color=bg, border_color=HEX_LIGHT_BORDER, top="single", bottom="single", left="single", right="single")
-            style_cell(c1, bg_color=bg, border_color=HEX_LIGHT_BORDER, top="single", bottom="single", left="single", right="single")
+            style_cell(c0, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
+            style_cell(c1, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
             
             p0 = c0.paragraphs[0]
             p0.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            p0.add_run("☑ Đạt    ☐ Chưa" if self.is_solved else "☐ Đạt    ☐ Chưa").font.size = Pt(9.5)
+            r_box = p0.add_run("☑ Đạt    ☐ Chưa" if self.is_solved else "☐ Đạt    ☐ Chưa")
+            r_box.font.size = Pt(11)
+            r_box.font.color.rgb = COLOR_BLACK
             
             p1 = c1.paragraphs[0]
             p1.paragraph_format.left_indent = Pt(6)
-            p1.add_run(crit).font.size = Pt(10.5)
+            r_text = p1.add_run(crit)
+            r_text.font.size = Pt(11)
+            r_text.font.color.rgb = COLOR_BLACK
+
+    def add_self_evaluation_table(self, items):
+        self.add_self_evaluation([f"{name} ({pts})" for name, pts in items])
 
     def add_teacher_feedback_and_signature(self, teacher_name="Nguyễn Văn Dũng – MathPlus Academy"):
         p_sp = self.doc.add_paragraph()
@@ -461,7 +591,7 @@ class MathPlusDocxBuilder:
         rem_table.autofit = False
         rem_cell = rem_table.cell(0, 0)
         rem_cell.width = Mm(172)
-        style_cell(rem_cell, bg_color="FAFAFA", border_color=HEX_LIGHT_BORDER, top="single", bottom="single", left="single", right="single", sz="6")
+        style_cell(rem_cell, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
         
         p_rem = rem_cell.paragraphs[0]
         p_rem.paragraph_format.space_before = Pt(4)
@@ -470,10 +600,16 @@ class MathPlusDocxBuilder:
         
         r_rt = p_rem.add_run("Nhận xét của giáo viên bộ môn:\n")
         r_rt.font.bold = True
-        r_rt.font.color.rgb = COLOR_PRIMARY_NAVY
-        p_rem.add_run("…………………………………………………………………………………………………………………………………………\n")
-        p_rem.add_run("…………………………………………………………………………………………………………………………………………\n")
-        p_rem.add_run("…………………………………………………………………………………………………………………………………………")
+        r_rt.font.size = Pt(11.5)
+        r_rt.font.color.rgb = COLOR_BLACK
+        
+        r_dots = p_rem.add_run(
+            "…………………………………………………………………………………………………………………………………………\n"
+            "…………………………………………………………………………………………………………………………………………\n"
+            "…………………………………………………………………………………………………………………………………………"
+        )
+        r_dots.font.size = Pt(11)
+        r_dots.font.color.rgb = COLOR_BLACK
         
         p_sig = self.doc.add_paragraph()
         p_sig.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -481,17 +617,16 @@ class MathPlusDocxBuilder:
         p_sig.paragraph_format.space_after = Pt(2)
         
         r_sig1 = p_sig.add_run("Hà Nội, ngày …… tháng …… năm 2026\n")
-        r_sig1.font.size = Pt(10)
+        r_sig1.font.size = Pt(11)
         r_sig1.font.italic = True
-        r_sig1.font.color.rgb = COLOR_MUTED_GRAY
+        r_sig1.font.color.rgb = COLOR_BLACK
         
         r_sig2 = p_sig.add_run(f"Giáo viên: {teacher_name}")
-        r_sig2.font.size = Pt(11)
+        r_sig2.font.size = Pt(11.5)
         r_sig2.font.bold = True
-        r_sig2.font.color.rgb = COLOR_PRIMARY_NAVY
+        r_sig2.font.color.rgb = COLOR_BLACK
 
     def save(self, filepath):
-        # Sửa lỗi zoom percent trong settings.xml để pass 100% ECMA-376 schema
         for elem in self.doc.settings.element.iter():
             if elem.tag.endswith('zoom'):
                 elem.set(qn('w:percent'), '100')

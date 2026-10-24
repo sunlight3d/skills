@@ -17,6 +17,13 @@ import subprocess
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional
 
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 SUPPORTED_VIDEOS = {'.mp4', '.mov', '.avi', '.mkv', '.mpeg', '.mpg', '.wmv', '.flv', '.ts', '.m4v'}
 SUPPORTED_IMAGES = {'.jpg', '.jpeg', '.png', '.webp', '.bmp'}
 
@@ -144,7 +151,8 @@ def compress_video(
     remove_silence: bool = False,
     silence_thresh_ms: int = 500,
     silence_db: int = -30,
-    overwrite: bool = False
+    overwrite: bool = False,
+    nvenc: bool = False
 ) -> Dict[str, any]:
     """Nén video bằng H.265 CRF 28 - Giữ nguyên 100% độ phân giải"""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -180,10 +188,12 @@ def compress_video(
         result["message"] = f"Bỏ qua: File đầu ra đã tồn tại ({output_path.name})"
         return result
 
+    codec_desc = "hevc_nvenc (NVIDIA GPU)" if nvenc else "libx265 (HEVC)"
+    preset_desc = "p4" if nvenc else preset
     print(f"\n==================================================")
     print(f"🎬 ĐANG ÉP VIDEO: {input_path.name}")
     print(f"📦 DUNG LƯỢNG GỐC: {format_size(orig_size)} | 📺 ĐỘ PHÂN GIẢI: {info_before['resolution']} | ⏱ ĐỘ DÀI: {format_duration(info_before['duration'])}")
-    print(f"⚙️ CẤU HÌNH: Codec=libx265 (HEVC), CRF={crf}, Preset={preset}, Audio=AAC 128k")
+    print(f"⚙️ CẤU HÌNH: Codec={codec_desc}, CRF={crf}, Preset={preset_desc}, Audio=AAC 128k")
 
     v_filter_path, a_filter_path = None, None
     has_filters = False
@@ -205,15 +215,26 @@ def compress_video(
             else:
                 print("ℹ️ Không tìm thấy khoảng lặng đáng kể nào.")
 
-        cmd = [
-            ffmpeg_bin, "-y", "-hwaccel", "auto",
-            "-i", str(input_path),
-            "-c:v", "libx265",
-            "-crf", str(crf),
-            "-preset", preset,
-            "-pix_fmt", "yuv420p",
-            "-tag:v", "hvc1"
-        ]
+        if nvenc:
+            cmd = [
+                ffmpeg_bin, "-y", "-hwaccel", "auto",
+                "-i", str(input_path),
+                "-c:v", "hevc_nvenc",
+                "-cq", str(crf),
+                "-preset", "p4",
+                "-pix_fmt", "yuv420p",
+                "-tag:v", "hvc1"
+            ]
+        else:
+            cmd = [
+                ffmpeg_bin, "-y", "-hwaccel", "auto",
+                "-i", str(input_path),
+                "-c:v", "libx265",
+                "-crf", str(crf),
+                "-preset", preset,
+                "-pix_fmt", "yuv420p",
+                "-tag:v", "hvc1"
+            ]
         if has_filters:
             cmd.extend(["-filter_script:v", v_filter_path, "-filter_script:a", a_filter_path])
         cmd.extend(["-c:a", "aac", "-b:a", "128k", str(output_path)])
@@ -408,6 +429,7 @@ def main():
     parser.add_argument("--overwrite", action="store_true", help="Ghi đè file đầu ra nếu đã tồn tại")
     parser.add_argument("--dry-run", action="store_true", help="Chỉ liệt kê và quét thông tin file mà không thực hiện nén")
     parser.add_argument("--open", action="store_true", help="Tự động mở thư mục chứa file nén sau khi hoàn thành")
+    parser.add_argument("--nvenc", action="store_true", help="Sử dụng tăng tốc GPU NVIDIA NVENC (hevc_nvenc) siêu tốc")
     parser.add_argument("--gui", action="store_true", help="Khởi chạy giao diện Desktop PyQt6 ShrinkX Media Studio")
 
     args = parser.parse_args()
@@ -503,7 +525,8 @@ def main():
             remove_silence=args.remove_silence,
             silence_thresh_ms=args.silence_thresh_ms,
             silence_db=args.silence_db,
-            overwrite=args.overwrite
+            overwrite=args.overwrite,
+            nvenc=args.nvenc
         )
         results.append(res)
         if res.get("status") in ("success", "skipped"):

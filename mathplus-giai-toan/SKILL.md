@@ -1,6 +1,6 @@
 ---
 name: mathplus-giai-toan
-description: "Giải chi tiết bài tập và đề thi Toán (cấp 2, cấp 3, ôn thi giữa kỳ, cuối kỳ, luyện thi vào 10, luyện thi THPT) từ đầu vào dạng text, markdown hoặc file Word (.docx). Tự động lập luận sư phạm từng bước, sinh hình vẽ minh họa toán học độ nét cao (trục số khoảng/đoạn, đồ thị parabol, hàm số, miền nghiệm bất phương trình/hệ bất phương trình, bài toán thực tế) và xuất ra file Word (.docx) chuyên nghiệp chuẩn nhận diện thương hiệu MathPlus Academy với 100% công thức toán hiển thị chuẩn Office Open XML Math (OMML)."
+description: "Giải chi tiết bài tập và đề thi Toán (cấp 2, cấp 3, ôn thi giữa kỳ, cuối kỳ, luyện thi vào 10, luyện thi THPT) từ đầu vào dạng text, markdown hoặc file Word (.docx). Tự động lập luận sư phạm từng bước, sinh hình vẽ minh họa toán học độ nét cao (trục số khoảng/đoạn, đồ thị parabol, hàm số, miền nghiệm bất phương trình/hệ bất phương trình, bài toán thực tế) và xuất ra file Word (.docx) chuyên nghiệp chuẩn nhận diện thương hiệu MathPlus Academy với chữ đen tuyền, nền trắng, cỡ chữ tối thiểu 11pt, không có sọc đen bên trái khung lời giải, logo MathPlus nguyên màu ở Header, Header các trang sau chỉ gồm logo và tên 'Trung tâm MathPlus Academy', và 100% công thức toán hiển thị chuẩn Office Open XML Math (OMML)."
 ---
 
 # MathPlus Giải Toán: Bộ Công Cụ Giải Đề & Biên Soạn Lời Giải Toán Học Chuẩn Sư Phạm
@@ -14,9 +14,15 @@ Skill `mathplus-giai-toan` cung cấp năng lực giải toán toàn diện cho 
   - Biểu diễn miền nghiệm bất phương trình, hệ bất phương trình bậc nhất 2 ẩn (vẽ đường thẳng bờ, tô màu nửa mặt phẳng/đa giác nghiệm, xác định các đỉnh).
   - Vẽ đồ thị hàm số bậc nhất, bậc hai parabol, hàm phân thức, trị tuyệt đối.
   - Vẽ đồ thị bài toán ứng dụng thực tế (độ cao chuyển động ném, mô hình tối ưu lợi nhuận kinh doanh...).
-- **Định dạng Word chuyên nghiệp chuẩn OMML**:
+- **Định dạng Word chuyên nghiệp chuẩn OMML & Nhận diện MathPlus**:
   - Toàn bộ công thức toán học được chuyển đổi thành **Office Open XML Math (OMML)** - phương trình Word bản địa gõ được, co giãn chuẩn xác, không dùng ảnh chụp hay text thô.
-  - Thiết kế chuẩn thương hiệu MathPlus Academy (Header 2 cột trang nhã, khung học sinh, khung bài tập, khung lời giải viền xanh navy, bảng tự đánh giá học sinh, nhận xét giáo viên, footer đánh số trang tự động).
+  - **Quy chuẩn màu sắc, cỡ chữ & Bố cục**:
+    - **Cỡ chữ toàn văn bản tối thiểu 11pt** (`Pt(11)` / `sz=22`): Không sử dụng cỡ chữ nhỏ hơn 11pt cho bất kỳ phần nào (kể cả Header, Footer, lời giải, chú thích).
+    - **Chữ màu Đen tuyền tuyệt đối** (`RGBColor(0, 0, 0)` / `#000000`), **nền trắng hoàn toàn** (`#FFFFFF`), tuyệt đối không dùng các màu chữ khác.
+    - **Khung lời giải chi tiết (Solution Box)**: Nền trắng, **bỏ hoàn toàn sọc đen bên trái** (không dùng viền trái `w:left`), chữ căn lề tự nhiên rõ ràng, dễ nhìn.
+    - **Chèn Logo MathPlus ở Header**: Logo giữ nguyên màu thương hiệu gốc (lấy từ `C:\code\mathplus\public\images\logo.jpg` hoặc `resources/logo.jpg`), đặt tại góc trái Header đầu trang.
+    - **Header ở các trang sau**: Chỉ gồm **Logo MathPlus** và tên **Trung tâm MathPlus Academy** (chữ nghiêng 11pt, không viết hoa toàn bộ), bỏ hoàn toàn phần text tiêu đề đề thi phía sau.
+    - Header & Footer trang nhã, đánh số trang tự động kèm Hotline `0977 961 189` và chữ ký giáo viên `Nguyễn Văn Dũng`.
 
 ---
 
@@ -60,9 +66,9 @@ flowchart TD
 
 ### Bước 4: Đóng gói tài liệu Word qua Engine MathPlus
 - Gọi `MathPlusDocxBuilder` từ script `scripts/mathplus_docx_engine.py`:
-  - Thêm tiêu đề phiếu, năm học, thời gian làm bài.
+  - Thêm tiêu đề phiếu, năm học, thời gian làm bài (tự động nạp logo MathPlus ở Header).
   - Thêm các phần kiến thức (Phần I: Bài tập trên lớp, Phần II: Bài tập về nhà).
-  - Với mỗi câu, thêm đề bài và khung lời giải (`add_solution`) bao gồm: các bước lập luận, công thức khối, hình vẽ minh họa và chú thích ảnh.
+  - Với mỗi câu, thêm đề bài và khung lời giải (`add_solution` hoặc `add_solution_box`) bao gồm: các bước lập luận, công thức khối, hình vẽ minh họa và chú thích ảnh. Khung lời giải không có sọc đen viền trái, font chữ tối thiểu 11pt.
   - Thêm bảng tự đánh giá và khung nhận xét của giáo viên.
   - Lưu thành 2 file:
     1. Bản đề bài học sinh: `[Tên_Phiếu].docx`
@@ -72,10 +78,12 @@ flowchart TD
 
 ## 3. Cấu Trúc Mã Nguồn Module Skill
 
-Thư mục skill đặt tại `/Volumes/data/code/skills/mathplus-giai-toan/` bao gồm:
+Thư mục skill đặt tại `C:\Users\nguye\.gemini\config\skills\mathplus-giai-toan\` bao gồm:
 ```
 mathplus-giai-toan/
 ├── SKILL.md                          # Tài liệu hướng dẫn vận hành cho Agent
+├── resources/
+│   └── logo.jpg                      # Logo MathPlus Academy (giữ nguyên màu gốc khi chèn Header)
 ├── scripts/
 │   ├── omml_converter.py             # Bộ chuyển đổi LaTeX -> OMML XML (Office Math)
 │   ├── math_plotter.py               # Thư viện vẽ hình toán học (trục số, Oxy, Parabol)
@@ -87,17 +95,18 @@ mathplus-giai-toan/
 ### Sử dụng Engine trong Python Script:
 ```python
 import sys
-sys.path.append("/Volumes/data/code/skills/mathplus-giai-toan/scripts")
+sys.path.append(r"C:\Users\nguye\.gemini\config\skills\mathplus-giai-toan\scripts")
 
 from mathplus_docx_engine import MathPlusDocxBuilder
 from math_plotter import plot_number_line_intervals, plot_linear_inequality
 
-# 1. Khởi tạo tài liệu
+# 1. Khởi tạo tài liệu (chữ đen tuyền, nền trắng, font >= 11pt, logo giữ nguyên màu ở Header)
 builder = MathPlusDocxBuilder(
     title="PHIẾU TỔNG ÔN TOÁN 10 – GIỮA HỌC KỲ I",
     subtitle="Năm học 2026 – 2027",
     time_limit="90 phút",
-    is_solved=True
+    is_solved=True,
+    logo_path=r"C:\code\mathplus\public\images\logo.jpg"
 )
 
 # 2. Thêm Phần & Dạng
@@ -107,31 +116,36 @@ builder.add_dang("DẠNG 1. MỆNH ĐỀ – TẬP HỢP")
 # 3. Thêm câu hỏi
 builder.add_problem_header("Bài 1.", "Cho tập hợp $A = [-2; 3)$ và $B = (1; 5]$. Tìm $A \\cap B$.")
 
-# 4. Thêm lời giải chi tiết kèm hình
+# 4. Thêm lời giải chi tiết kèm hình (không có sọc đen bên trái, font >= 11pt)
 builder.add_solution([
-    ('title', ''),
+    ('title', '✎ LỜI GIẢI CHI TIẾT:'),
     ('p', r"Giao của hai tập hợp là phần tử đồng thời thuộc cả $A$ và $B$:"),
     ('display_math', r"A \cap B = [-2; 3) \cap (1; 5] = (1; 3)."),
     ('bullet', r"Kết luận: Tập hợp nghiệm là $(1; 3)$.")
 ])
 
 # 5. Lưu file
-builder.save("/Volumes/data/code/mathplus/Toán cấp 3/Ket_Qua.docx")
+builder.save(r"C:\code\mathplus\lop10\Ket_Qua.docx")
 ```
 
 ---
 
 ## 4. Các Tiêu Chuẩn Bắt Buộc (Rules & Checklist)
 
-1. **100% Công thức toán phải dùng OMML**: Tuyệt đối không để nguyên mã LaTeX thô trong văn bản (ví dụ không để `\frac{a}{b}` ở dạng text thường), không dùng ảnh chụp công thức. Toàn bộ công thức nội dòng `$ ... $` hoặc khối `\[ ... \]` đều phải qua `latex_to_omml`.
-2. **Hình vẽ minh họa rõ ràng**:
+1. **Màu sắc & Định dạng**:
+   - **Cỡ chữ tối thiểu 11pt**: Toàn bộ văn bản, công thức, bảng biểu, đầu trang và chân trang có cỡ chữ tối thiểu 11pt (`Pt(11)`).
+   - **Chữ màu Đen tuyền 100%** (`RGBColor(0, 0, 0)`): Không sử dụng màu xanh, đỏ, vàng, xám cho chữ văn bản hay công thức.
+   - **Nền Trắng 100%**: Không tô nền màu (Shading) cho bảng, ô hay khung lời giải.
+   - **Không có sọc đen bên trái khung lời giải**: Lời giải trình bày thoáng đẹp, không để viền trái màu đen trên khung lời giải.
+   - **Logo MathPlus nguyên màu**: Đặt tại góc trái Header đầu trang.
+   - **Header các trang sau**: Chỉ gồm Logo MathPlus và tên `Trung tâm MathPlus Academy` (không viết hoa toàn bộ, 11pt nghiêng), bỏ toàn bộ phần text sau đó.
+2. **100% Công thức toán phải dùng OMML**: Tuyệt đối không để nguyên mã LaTeX thô trong văn bản (ví dụ không để `\frac{a}{b}` ở dạng text thường), không dùng ảnh chụp công thức. Toàn bộ công thức nội dòng `$ ... $` hoặc khối `\[ ... \]` đều phải qua `latex_to_omml`.
+3. **Hình vẽ minh họa rõ ràng**:
    - Trục tọa độ $Oxy$ phải có mũi tên, gốc $O$, nhãn trục $x, y$.
-   - Các điểm đỉnh, điểm đặc trưng phải đánh dấu chấm tròn đỏ kèm tọa độ rõ ràng.
+   - Các điểm đỉnh, điểm đặc trưng phải đánh dấu chấm tròn kèm tọa độ rõ ràng.
    - Hình vẽ phải có chú thích (Caption) chữ nghiêng căn giữa ngay dưới ảnh.
-3. **Tuân thủ chuẩn ECMA-376 OpenXML**:
-   - Sau khi tạo file Word, kiểm tra bằng script kiểm tra schema:
-     `python3 /Users/hoangnd/.gemini/config/skills/docx/scripts/office/validate.py output.docx`
-   - Đảm bảo đạt trạng thái: `All validations PASSED!`.
-4. **Nhận diện thương hiệu MathPlus Academy**:
-   - Luôn có thông tin trung tâm ở đầu tài liệu.
+4. **Tuân thủ chuẩn ECMA-376 OpenXML**:
+   - Đảm bảo 100% file Word xuất ra mở mượt mà trên Microsoft Word, WPS Office, LibreOffice mà không có bất kỳ thông báo lỗi file nào.
+5. **Nhận diện thương hiệu MathPlus Academy**:
+   - Luôn có logo MathPlus, thông tin trung tâm ở đầu tài liệu.
    - Luôn có chân trang ghi chú số hotline `0977 961 189` và chữ ký giáo viên `Nguyễn Văn Dũng`.
