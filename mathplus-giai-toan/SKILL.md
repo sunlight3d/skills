@@ -16,6 +16,8 @@ Skill `mathplus-giai-toan` cung cấp năng lực giải toán toàn diện cho 
   - Vẽ đồ thị bài toán ứng dụng thực tế (độ cao chuyển động ném, mô hình tối ưu lợi nhuận kinh doanh...).
 - **Định dạng Word chuyên nghiệp chuẩn OMML & Nhận diện MathPlus**:
   - Toàn bộ công thức toán học được chuyển đổi thành **Office Open XML Math (OMML)** - phương trình Word bản địa gõ được, co giãn chuẩn xác, không dùng ảnh chụp hay text thô.
+  - Hỗ trợ định dạng Markdown tự nhiên (`**in đậm**`, `*in nghiêng*`) và tự động chuyển đổi sang Run thuộc tính Word (tuyệt đối không để sót các ký tự `**` thô).
+  - Hỗ trợ chèn hình vẽ trực tiếp vào đề bài thông qua `add_question_figure` (dành cho các câu hỏi có hình minh họa trong đề: "cho hình vẽ bên dưới...").
   - **Quy chuẩn màu sắc, cỡ chữ & Bố cục**:
     - **Cỡ chữ toàn văn bản tối thiểu 11pt** (`Pt(11)` / `sz=22`): Không sử dụng cỡ chữ nhỏ hơn 11pt cho bất kỳ phần nào (kể cả Header, Footer, lời giải, chú thích).
     - **Chữ màu Đen tuyền tuyệt đối** (`RGBColor(0, 0, 0)` / `#000000`), **nền trắng hoàn toàn** (`#FFFFFF`), tuyệt đối không dùng các màu chữ khác.

@@ -85,7 +85,7 @@ def add_display_math(doc_or_cell, latex_code, space_before=Pt(2), space_after=Pt
 
 def add_rich_text(p, text, default_font="Times New Roman", default_size=Pt(11),
                   default_color=COLOR_BLACK, default_bold=False, default_italic=False):
-    """Phân tích chuỗi chứa text và công thức toán $...$ rồi thêm run đen tuyền tương ứng (font >= 11pt)."""
+    """Phân tích chuỗi chứa text, công thức toán $...$ và markdown bold/italic (**...**) rồi thêm run đen tuyền tương ứng (font >= 11pt)."""
     effective_size = Pt(11) if default_size < Pt(11) else default_size
     tokens = re.split(r'(\$[^$]+\$)', text)
     for token in tokens:
@@ -103,12 +103,39 @@ def add_rich_text(p, text, default_font="Times New Roman", default_size=Pt(11),
                 run.font.bold = default_bold
                 run.font.italic = default_italic
         else:
-            run = p.add_run(token)
-            run.font.name = default_font
-            run.font.size = effective_size
-            run.font.color.rgb = COLOR_BLACK
-            run.font.bold = default_bold
-            run.font.italic = default_italic
+            md_tokens = re.split(r'(\*\*\*[^*]+\*\*\*|\*\*[^*]+\*\*|\*[^*]+\*)', token)
+            for md_tok in md_tokens:
+                if not md_tok:
+                    continue
+                if md_tok.startswith('***') and md_tok.endswith('***') and len(md_tok) > 6:
+                    run = p.add_run(md_tok[3:-3])
+                    run.font.name = default_font
+                    run.font.size = effective_size
+                    run.font.color.rgb = COLOR_BLACK
+                    run.font.bold = True
+                    run.font.italic = True
+                elif md_tok.startswith('**') and md_tok.endswith('**') and len(md_tok) > 4:
+                    run = p.add_run(md_tok[2:-2])
+                    run.font.name = default_font
+                    run.font.size = effective_size
+                    run.font.color.rgb = COLOR_BLACK
+                    run.font.bold = True
+                    run.font.italic = default_italic
+                elif md_tok.startswith('*') and md_tok.endswith('*') and len(md_tok) > 2:
+                    run = p.add_run(md_tok[1:-1])
+                    run.font.name = default_font
+                    run.font.size = effective_size
+                    run.font.color.rgb = COLOR_BLACK
+                    run.font.bold = default_bold
+                    run.font.italic = True
+                else:
+                    clean_tok = md_tok.replace('**', '')
+                    run = p.add_run(clean_tok)
+                    run.font.name = default_font
+                    run.font.size = effective_size
+                    run.font.color.rgb = COLOR_BLACK
+                    run.font.bold = default_bold
+                    run.font.italic = default_italic
 
 class MathPlusDocxBuilder:
     def __init__(self, title, subtitle="Năm học 2026 – 2027", time_limit="90 phút", is_solved=False, logo_path=None, **kwargs):
@@ -413,6 +440,26 @@ class MathPlusDocxBuilder:
         if content_str:
             add_rich_text(p, content_str, default_size=Pt(11), default_color=COLOR_BLACK)
         return p
+
+    def add_question_figure(self, fig_path, fig_width=Inches(3.2), caption_text=None):
+        """Chèn hình vẽ trực tiếp vào phần đề bài hoặc câu hỏi."""
+        if os.path.exists(fig_path):
+            p = self.doc.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_before = Pt(3)
+            p.paragraph_format.space_after = Pt(2)
+            r = p.add_run()
+            r.add_picture(fig_path, width=fig_width)
+            if caption_text:
+                p_cap = self.doc.add_paragraph()
+                p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p_cap.paragraph_format.space_before = Pt(0)
+                p_cap.paragraph_format.space_after = Pt(3)
+                r_cap = p_cap.add_run(caption_text)
+                r_cap.font.name = "Times New Roman"
+                r_cap.font.size = Pt(11)
+                r_cap.font.italic = True
+                r_cap.font.color.rgb = COLOR_BLACK
 
     def add_exercise_header(self, label, text=""):
         return self.add_problem_header(f"{label}:", text)
