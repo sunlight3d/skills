@@ -38,7 +38,7 @@ DEFAULT_CENTER_NAME = "Trung tâm MathPlus Academy"
 DEFAULT_SUBTITLE = "Bồi dưỡng Toán & Luyện thi Chuyên / Đại học"
 DEFAULT_TEACHER = "Thầy Nguyễn Văn Dũng"
 DEFAULT_HOTLINE = "0977 961 189"
-DEFAULT_WEBSITE = "mathplus.vn"
+DEFAULT_WEBSITE = "mathplus.com.vn"
 
 COLOR_BLACK = RGBColor(0, 0, 0)
 COLOR_BRAND_GREEN = RGBColor(15, 138, 60) # #0F8A3C

@@ -35,7 +35,7 @@ Skill `mathplus-add-logo` cung cấp năng lực tự động chuẩn hóa thư�
    - Tên giáo viên: `Thầy Nguyễn Văn Dũng` (hoặc `Nguyễn Văn Dũng`).
    - Tên trung tâm: `Trung tâm MathPlus Academy`.
    - Hotline: `0977 961 189`.
-   - Website: `mathplus.vn`.
+   - Website: `mathplus.com.vn`.
 3. **Typography & Màu sắc**:
    - Phông chữ chuẩn: `Times New Roman`.
    - Cỡ chữ: Tối thiểu `10.5pt - 11pt`, không dùng cỡ chữ quá nhỏ gây khó đọc.

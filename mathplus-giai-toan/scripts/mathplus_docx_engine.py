@@ -240,7 +240,7 @@ class MathPlusDocxBuilder:
         r_l2.font.italic = True
         r_l2.font.color.rgb = COLOR_BLACK
         
-        r_l3 = p_l.add_run("Hotline: 0977 961 189  •  mathplus.vn")
+        r_l3 = p_l.add_run("Hotline: 0977 961 189  •  mathplus.com.vn")
         r_l3.font.name = "Times New Roman"
         r_l3.font.size = Pt(11)
         r_l3.font.italic = True
