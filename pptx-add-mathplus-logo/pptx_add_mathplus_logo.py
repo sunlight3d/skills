@@ -146,6 +146,83 @@ def process_google_slides(slides_service, presentation_id, image_url, remove_onl
         print(f"  ℹ️ No action needed for '{title}'.")
         return True
 
+def process_drive_pptx(drive_service, file_id, file_name, logo_img_path, remove_only=False,
+                       img_width_emu=DEFAULT_IMG_WIDTH_EMU, margin_x=DEFAULT_MARGIN_X, margin_y=DEFAULT_MARGIN_Y):
+    """
+    Downloads an Office PPTX file from Google Drive, overlays the MathPlus logo on each slide,
+    and updates the file on Google Drive in place.
+    """
+    import io
+    from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
+    from pptx import Presentation
+    from pptx.util import Emu
+
+    print(f"  ⚡ Processing Office PPTX on Google Drive: '{file_name}' (ID: {file_id})...")
+    req = drive_service.files().get_media(fileId=file_id)
+    fh_in = io.BytesIO()
+    downloader = MediaIoBaseDownload(fh_in, req)
+    done = False
+    while not done:
+        _, done = downloader.next_chunk()
+    fh_in.seek(0)
+
+    prs = Presentation(fh_in)
+    slide_w = prs.slide_width
+    slide_h = prs.slide_height
+
+    w_emu = Emu(img_width_emu)
+    h_emu = Emu(int(img_width_emu * (LOGO_ORIG_HEIGHT / LOGO_ORIG_WIDTH)))
+    mx = Emu(margin_x)
+    my = Emu(margin_y)
+
+    pos_x = slide_w - w_emu - mx
+    pos_y = slide_h - h_emu - my
+
+    for slide in prs.slides:
+        to_remove = []
+        for s in slide.shapes:
+            if s.name.startswith('mathplus_logo_') or s.name.startswith('cover_img_') or s.name.startswith('cover_rect_'):
+                to_remove.append(s._element)
+        for el in to_remove:
+            el.getparent().remove(el)
+
+        if not remove_only:
+            pic = slide.shapes.add_picture(str(logo_img_path), pos_x, pos_y, width=w_emu, height=h_emu)
+            pic.name = f"mathplus_logo_{uuid.uuid4().hex[:8]}"
+
+    fh_out = io.BytesIO()
+    prs.save(fh_out)
+    fh_out.seek(0)
+
+    media = MediaIoBaseUpload(fh_out, mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation', resumable=True)
+    drive_service.files().update(fileId=file_id, media_body=media).execute()
+    print(f"  ✅ Done! Updated '{file_name}' ({len(prs.slides)} slides) on Google Drive.")
+    return True
+
+def process_target_presentation(drive_service, slides_service, file_id, image_url, local_logo_path,
+                                 remove_only=False, img_width_emu=DEFAULT_IMG_WIDTH_EMU,
+                                 margin_x=DEFAULT_MARGIN_X, margin_y=DEFAULT_MARGIN_Y):
+    """
+    Intelligently routes a presentation on Google Drive to either Google Slides API
+    or Google Drive PPTX stream update depending on its MIME type.
+    """
+    try:
+        meta = drive_service.files().get(fileId=file_id, fields='id, name, mimeType').execute()
+        mime_type = meta.get('mimeType', '')
+        name = meta.get('name', file_id)
+    except Exception as e:
+        print(f"  ⚠️ Could not fetch metadata via Drive API ({e}), attempting Google Slides API...")
+        mime_type = 'application/vnd.google-apps.presentation'
+        name = file_id
+
+    if mime_type == 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+        return process_drive_pptx(drive_service, file_id, name, local_logo_path, remove_only,
+                                  img_width_emu, margin_x, margin_y)
+    else:
+        # Standard Google Slides presentation
+        return process_google_slides(slides_service, file_id, image_url, remove_only,
+                                     img_width_emu, margin_x, margin_y)
+
 def process_local_pptx(pptx_path, logo_img_path, output_path=None,
                        img_width_emu=DEFAULT_IMG_WIDTH_EMU, margin_x=DEFAULT_MARGIN_X, margin_y=DEFAULT_MARGIN_Y):
     """
@@ -171,13 +248,21 @@ def process_local_pptx(pptx_path, logo_img_path, output_path=None,
     pos_y = slide_height - h_emu - my
 
     for idx, slide in enumerate(prs.slides):
-        slide.shapes.add_picture(
+        to_remove = []
+        for s in slide.shapes:
+            if s.name.startswith('mathplus_logo_') or s.name.startswith('cover_img_') or s.name.startswith('cover_rect_'):
+                to_remove.append(s._element)
+        for el in to_remove:
+            el.getparent().remove(el)
+
+        pic = slide.shapes.add_picture(
             str(logo_img_path),
             pos_x,
             pos_y,
             width=w_emu,
             height=h_emu
         )
+        pic.name = f"mathplus_logo_{uuid.uuid4().hex[:8]}"
 
     save_path = output_path if output_path else pptx_path
     prs.save(save_path)
@@ -185,15 +270,20 @@ def process_local_pptx(pptx_path, logo_img_path, output_path=None,
     return True
 
 def get_presentations_in_folder(drive_service, folder_id):
-    """Fetches all Google Slides presentations inside a Google Drive folder."""
-    query = f"'{folder_id}' in parents and mimeType='application/vnd.google-apps.presentation' and trashed=false"
+    """Fetches all Google Slides and Office PPTX presentations inside a Google Drive folder."""
+    query = (
+        f"'{folder_id}' in parents and "
+        f"(mimeType='application/vnd.google-apps.presentation' or "
+        f" mimeType='application/vnd.openxmlformats-officedocument.presentationml.presentation') and "
+        f"trashed=false"
+    )
     results = []
     page_token = None
     while True:
         response = drive_service.files().list(
             q=query,
             spaces='drive',
-            fields='nextPageToken, files(id, name)',
+            fields='nextPageToken, files(id, name, mimeType)',
             pageToken=page_token
         ).execute()
         results.extend(response.get('files', []))
@@ -264,13 +354,13 @@ def main():
 
     scopes = [
         'https://www.googleapis.com/auth/presentations',
-        'https://www.googleapis.com/auth/drive.readonly'
+        'https://www.googleapis.com/auth/drive'
     ]
     creds = service_account.Credentials.from_service_account_file(creds_path, scopes=scopes)
     slides_service = build('slides', 'v1', credentials=creds)
+    drive_service = build('drive', 'v3', credentials=creds)
 
     if target_type == 'drive_folder':
-        drive_service = build('drive', 'v3', credentials=creds)
         print(f"Searching for presentations in folder {target_val}...")
         try:
             presentations = get_presentations_in_folder(drive_service, target_val)
@@ -283,12 +373,14 @@ def main():
         print(f"Found {len(presentations)} presentations.")
         for i, p in enumerate(presentations):
             print(f"[{i+1}/{len(presentations)}] Processing '{p['name']}' (ID: {p['id']})")
-            process_google_slides(slides_service, p['id'], args.image_url, args.remove_only,
-                                  args.width, args.margin_x, args.margin_y)
+            process_target_presentation(drive_service, slides_service, p['id'], args.image_url,
+                                        local_logo_path, args.remove_only,
+                                        args.width, args.margin_x, args.margin_y)
     else:
-        print(f"Processing single Google Slides presentation (ID: {target_val})")
-        process_google_slides(slides_service, target_val, args.image_url, args.remove_only,
-                              args.width, args.margin_x, args.margin_y)
+        print(f"Processing presentation (ID: {target_val})")
+        process_target_presentation(drive_service, slides_service, target_val, args.image_url,
+                                    local_logo_path, args.remove_only,
+                                    args.width, args.margin_x, args.margin_y)
 
 if __name__ == '__main__':
     main()
