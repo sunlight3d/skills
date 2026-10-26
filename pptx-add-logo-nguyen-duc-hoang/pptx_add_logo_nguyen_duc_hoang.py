@@ -7,6 +7,12 @@
 # ]
 # ///
 
+import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8')
+
 import socket
 # Force IPv4 to bypass broken IPv6 resolution on macOS
 orig_getaddrinfo = socket.getaddrinfo
@@ -31,7 +37,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # URL to the uploaded logo image (cropped height, 70% opacity)
-DEFAULT_IMAGE_URL = 'https://files.catbox.moe/hdrasv.png'
+DEFAULT_IMAGE_URL = 'https://raw.githubusercontent.com/sunlight3d/skills/master/pptx-add-logo-nguyen-duc-hoang/logo_chu_nguyen_duc_hoang_cropped_70.png'
 LOCAL_LOGO_NAME = 'logo_chu_nguyen_duc_hoang_cropped_70.png'
 
 def get_script_dir():
@@ -238,7 +244,7 @@ def find_default_credentials():
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Chèn logo Nguyễn Đức Hoàng (16:9) vào góc dưới bên phải Google Slides để che NotebookLM."
+        description="Chèn logo Nguyễn Đức Hoàng (16:9) vào góc dưới bên phải Google Slides hoặc PowerPoint (.pptx) để che NotebookLM."
     )
     parser.add_argument("target", help="Link Google Slide, ID presentation, Link thư mục Google Drive, hoặc file/thư mục PPTX")
     parser.add_argument("--folder", action="store_true", help="Chỉ định mục tiêu là Thư mục Google Drive chứa nhiều slide")

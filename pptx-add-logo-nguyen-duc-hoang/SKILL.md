@@ -1,12 +1,12 @@
 ---
-name: fill-logo-nguyen-duc-hoang
+name: pptx-add-logo-nguyen-duc-hoang
 description: "Chèn logo chữ 'Nguyễn Đức Hoàng' (chuẩn 16:9) vào góc dưới bên phải các trang Google Slides hoặc file PowerPoint (.pptx) cục bộ để che hoàn toàn watermark của NotebookLM. Hỗ trợ cả link Google Slides đơn lẻ, link thư mục Google Drive chứa nhiều slide và file .pptx ngoại tuyến."
 ---
 
-# Skill: Chèn Logo Nguyễn Đức Hoàng (Che NotebookLM)
+# Skill: PPTX Add Logo Nguyễn Đức Hoàng (Che Watermark NotebookLM)
 
 ## 1. Giới thiệu (Overview)
-Skill này giúp tự động hóa việc chèn logo thương hiệu cá nhân chữ **NGUYỄN ĐỨC HOÀNG** chuẩn tỉ lệ 16:9 (`logo_chu_nguyen_duc_hoang_dark.jpg`) vào **góc dưới bên phải** của tất cả các trang thuyết trình Google Slides hoặc file PowerPoint `.pptx`.
+Skill này giúp tự động hóa việc chèn logo thương hiệu cá nhân chữ **NGUYỄN ĐỨC HOÀNG** chuẩn tỉ lệ 16:9 (`logo_chu_nguyen_duc_hoang_dark.jpg` / `logo_chu_nguyen_duc_hoang_cropped_70.png`) vào **góc dưới bên phải** của tất cả các trang thuyết trình Google Slides hoặc file PowerPoint `.pptx`.
 
 Mục tiêu chính:
 - **Che hoàn toàn watermark NotebookLM** ở góc dưới bên phải slide một cách tinh tế và thẩm mỹ.
@@ -28,7 +28,7 @@ Mục tiêu chính:
 ---
 
 ## 3. Cấu hình & Tọa độ (EMU Coordinates)
-- **Tỉ lệ khung hình logo**: Dạng dải ngang gọn gàng (đã crop bỏ viền đen thừa trên dưới).
+- **Tỉ lệ khung hình logo**: Dạng dải ngang gọn gàng (đã crop bỏ viền thừa trên dưới).
 - **Chiều rộng logo trên slide**: `2,000,000 EMU` (~157 pt).
 - **Chiều cao logo tương ứng**: `~453,488 EMU` (~35.7 pt).
 - **Lề an toàn (Margin)**: Cách mép phải `50,000 EMU`, cách mép đáy `40,000 EMU`.
@@ -38,32 +38,34 @@ Mục tiêu chính:
 
 ## 4. Hướng dẫn sử dụng nhanh (Quick Start)
 
-Script tiện ích `fill_logo_nguyen_duc_hoang.py` nằm tại thư mục skill:
-`/Volumes/data/code/skills/fill-logo-nguyen-duc-hoang/fill_logo_nguyen_duc_hoang.py`
+Script tiện ích `pptx_add_logo_nguyen_duc_hoang.py` nằm tại thư mục skill:
+- Windows: `C:\Users\nguye\.gemini\config\skills\pptx-add-logo-nguyen-duc-hoang\pptx_add_logo_nguyen_duc_hoang.py` (hoặc `c:\code\skills\pptx-add-logo-nguyen-duc-hoang\pptx_add_logo_nguyen_duc_hoang.py`)
+- macOS/Linux: `~/.gemini/config/skills/pptx-add-logo-nguyen-duc-hoang/pptx_add_logo_nguyen_duc_hoang.py`
 
 ### 4.1. Xử lý 1 link Google Slide
 ```bash
-uv run /Volumes/data/code/skills/fill-logo-nguyen-duc-hoang/fill_logo_nguyen_duc_hoang.py "https://docs.google.com/presentation/d/<PRESENTATION_ID>/edit"
+python pptx_add_logo_nguyen_duc_hoang.py "https://docs.google.com/presentation/d/<PRESENTATION_ID>/edit"
 ```
 
 ### 4.2. Xử lý toàn bộ thư mục Google Drive chứa nhiều Google Slides
 ```bash
-uv run /Volumes/data/code/skills/fill-logo-nguyen-duc-hoang/fill_logo_nguyen_duc_hoang.py "https://drive.google.com/drive/folders/<FOLDER_ID>"
+python pptx_add_logo_nguyen_duc_hoang.py "https://drive.google.com/drive/folders/<FOLDER_ID>"
 ```
 
 ### 4.3. Xử lý file PowerPoint (.pptx) trên máy
 ```bash
 # Xử lý 1 file PPTX
-uv run /Volumes/data/code/skills/fill-logo-nguyen-duc-hoang/fill_logo_nguyen_duc_hoang.py /path/to/slide.pptx
+python pptx_add_logo_nguyen_duc_hoang.py path/to/slide.pptx
 
 # Xử lý cả thư mục chứa nhiều file PPTX
-uv run /Volumes/data/code/skills/fill-logo-nguyen-duc-hoang/fill_logo_nguyen_duc_hoang.py /path/to/pptx_folder/
+python pptx_add_logo_nguyen_duc_hoang.py path/to/pptx_folder/
 ```
 
 ### 4.4. Các tùy chọn nâng cao
 - `--credentials /path/to/credentials.json`: Tùy chọn file xác thực Service Account khác.
 - `--image-url <URL>`: Cung cấp link ảnh online khác nếu muốn.
 - `--remove-only`: Tự động gỡ các logo đã chèn trước đó mà không thêm mới.
+- `--output /path/to/output.pptx`: Chỉ định file đầu ra cho local PPTX (mặc định lưu đè trực tiếp).
 
 ---
 
@@ -82,3 +84,4 @@ hoangnd@connect-gemini-api-471309.iam.gserviceaccount.com
 - **Smart Cleanup**: Tự động tìm và xóa các logo/hình che cũ mà script đã từng tạo trên slide, không bao giờ bị chèn đè trùng lặp nhiều lần khi chạy lại.
 - **Batch Processing**: Cập nhật toàn bộ các slide trong presentation chỉ bằng một lần gọi `batchUpdate` của Google API, hoàn thành cực nhanh.
 - **Cross-Platform & Offline Ready**: Hỗ trợ cả Google Slides online lẫn file PowerPoint `.pptx` ngoại tuyến.
+- **UTF-8 Console Ready**: Tự động tương thích mã hóa UTF-8 trên cả Windows Terminal, PowerShell và macOS/Linux.
