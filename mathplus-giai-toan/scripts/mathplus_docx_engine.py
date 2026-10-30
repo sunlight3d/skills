@@ -85,13 +85,24 @@ def add_display_math(doc_or_cell, latex_code, space_before=Pt(2), space_after=Pt
 
 def add_rich_text(p, text, default_font="Times New Roman", default_size=Pt(11),
                   default_color=COLOR_BLACK, default_bold=False, default_italic=False):
-    """Phân tích chuỗi chứa text, công thức toán $...$ và markdown bold/italic (**...**) rồi thêm run đen tuyền tương ứng (font >= 11pt)."""
+    """Phân tích chuỗi chứa text, công thức toán $...$ hoặc $$...$$ và markdown bold/italic (**...**) rồi thêm run đen tuyền tương ứng (font >= 11pt)."""
     effective_size = Pt(11) if default_size < Pt(11) else default_size
-    tokens = re.split(r'(\$[^$]+\$)', text)
+    tokens = re.split(r'(\${1,2}[^$]+\${1,2})', text)
     for token in tokens:
         if not token:
             continue
-        if token.startswith('$') and token.endswith('$') and len(token) > 2:
+        if token.startswith('$$') and token.endswith('$$') and len(token) > 4:
+            math_code = token[2:-2].strip()
+            try:
+                add_inline_math(p, math_code)
+            except Exception:
+                run = p.add_run(token)
+                run.font.name = default_font
+                run.font.size = effective_size
+                run.font.color.rgb = COLOR_BLACK
+                run.font.bold = default_bold
+                run.font.italic = default_italic
+        elif token.startswith('$') and token.endswith('$') and len(token) > 2:
             math_code = token[1:-1].strip()
             try:
                 add_inline_math(p, math_code)
@@ -455,11 +466,7 @@ class MathPlusDocxBuilder:
                 p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 p_cap.paragraph_format.space_before = Pt(0)
                 p_cap.paragraph_format.space_after = Pt(3)
-                r_cap = p_cap.add_run(caption_text)
-                r_cap.font.name = "Times New Roman"
-                r_cap.font.size = Pt(11)
-                r_cap.font.italic = True
-                r_cap.font.color.rgb = COLOR_BLACK
+                add_rich_text(p_cap, caption_text, default_size=Pt(11), default_italic=True, default_color=COLOR_BLACK)
 
     def add_exercise_header(self, label, text=""):
         return self.add_problem_header(f"{label}:", text)
@@ -536,11 +543,7 @@ class MathPlusDocxBuilder:
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 p.paragraph_format.space_before = Pt(1)
                 p.paragraph_format.space_after = Pt(4)
-                r_cap = p.add_run(content)
-                r_cap.font.name = "Times New Roman"
-                r_cap.font.size = Pt(11)
-                r_cap.font.italic = True
-                r_cap.font.color.rgb = COLOR_BLACK
+                add_rich_text(p, content, default_size=Pt(11), default_italic=True, default_color=COLOR_BLACK)
             first = False
             
         p_sp = self.doc.add_paragraph()

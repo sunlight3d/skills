@@ -142,10 +142,11 @@ builder.save(r"C:\code\mathplus\lop10\Ket_Qua.docx")
    - **Logo MathPlus nguyên màu**: Đặt tại góc trái Header đầu trang.
    - **Header các trang sau**: Chỉ gồm Logo MathPlus và tên `Trung tâm MathPlus Academy` (không viết hoa toàn bộ, 11pt nghiêng), bỏ toàn bộ phần text sau đó.
 2. **100% Công thức toán phải dùng OMML**: Tuyệt đối không để nguyên mã LaTeX thô trong văn bản (ví dụ không để `\frac{a}{b}` ở dạng text thường), không dùng ảnh chụp công thức. Toàn bộ công thức nội dòng `$ ... $` hoặc khối `\[ ... \]` đều phải qua `latex_to_omml`.
-3. **Hình vẽ minh họa rõ ràng**:
+3. **Hình vẽ minh họa rõ ràng & Chú thích chuẩn OMML**:
    - Trục tọa độ $Oxy$ phải có mũi tên, gốc $O$, nhãn trục $x, y$.
    - Các điểm đỉnh, điểm đặc trưng phải đánh dấu chấm tròn kèm tọa độ rõ ràng.
-   - Hình vẽ phải có chú thích (Caption) chữ nghiêng căn giữa ngay dưới ảnh.
+   - Hình vẽ phải có chú thích (Caption) chữ nghiêng căn giữa ngay dưới ảnh, cỡ chữ tối thiểu 11pt.
+   - **Bắt buộc chuyển đổi 100% công thức toán học trong Caption sang Native OMML** (ví dụ: *Minh họa tiệm cận ngang khi $x \to +\infty$*), tuyệt đối không để sót bất kỳ ký tự `$` hay mã LaTeX thô nào trong chú thích ảnh.
 4. **Tuân thủ chuẩn ECMA-376 OpenXML**:
    - Đảm bảo 100% file Word xuất ra mở mượt mà trên Microsoft Word, WPS Office, LibreOffice mà không có bất kỳ thông báo lỗi file nào.
 5. **Nhận diện thương hiệu MathPlus Academy**:
