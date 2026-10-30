@@ -1,0 +1,141 @@
+[
+  {
+    "category": "TẦNG GIAO VẬN (TRANSPORT) — CƠ CHẾ TIN CẬY CỦA TCP",
+    "title": "GIẢI MÃ BẢN CHẤT: Ý NGHĨA CỜ SYN & ACK",
+    "layout": "2_column",
+    "left_card": {
+      "badge": "⚡ CỜ KHỞI TẠO",
+      "title": "SYN = Synchronize",
+      "border_color": "#0077B6",
+      "bg_color": "#F8FAFC",
+      "items": [
+        {
+          "label": "Ý nghĩa: ",
+          "text": "Viết tắt của Synchronize Sequence Numbers (Đồng bộ số thứ tự byte gói tin)."
+        },
+        {
+          "label": "Nhiệm vụ: ",
+          "text": "Mở kết nối mới, thỏa thuận mốc đếm ban đầu ISN (ví dụ Client chọn SEQ = X).",
+          "highlight": "SEQ = X"
+        },
+        {
+          "label": "Mục đích bảo mật: ",
+          "text": "Định vị từng byte dữ liệu, loại bỏ gói tin lạc từ phiên cũ và ngăn chặn tin tặc chèn dữ liệu giả."
+        }
+      ]
+    },
+    "right_card": {
+      "badge": "✓ CỜ BÁO NHẬN",
+      "title": "ACK = Acknowledgment",
+      "border_color": "#15803D",
+      "bg_color": "#F8FAFC",
+      "items": [
+        {
+          "label": "Ý nghĩa: ",
+          "text": "Viết tắt của Acknowledgment (Biên nhận / Báo nhận an toàn dữ liệu)."
+        },
+        {
+          "label": "Nhiệm vụ: ",
+          "text": "Báo đã nhận gói trước, kèm số byte mong muốn nhận tiếp: ACK = SEQ + 1.",
+          "highlight": "ACK = SEQ + 1"
+        },
+        {
+          "label": "Độ tin cậy tuyệt đối: ",
+          "text": "Nếu quá hạn (Timeout) mà không có ACK gửi về ➔ TCP sẽ tự động gửi lại dữ liệu (Retransmission)!",
+          "highlight": "tự động gửi lại dữ liệu (Retransmission)"
+        }
+      ]
+    },
+    "bottom_card": {
+      "title": "TẠI SAO CẦN BẮT TAY ĐỦ 3 BƯỚC? (SYN ➔ SYN-ACK ➔ ACK)",
+      "border_color": "#93C5FD",
+      "bg_color": "#F0F7FF",
+      "items": [
+        "✦ Song công (Full-Duplex): Cả 2 bên đều cần gửi SYN (mở chiều gửi) và gửi ACK (xác nhận chiều nhận của đối phương).",
+        "✦ Tối thiểu về toán học: 3 bước là số gói tin ít nhất để 100% hai bên xác nhận cả hai chiều gửi/nhận đều thông suốt!"
+      ]
+    }
+  },
+  {
+    "category": "PHÂN TÍCH GÓI TIN & KỸ THUẬT AN NINH MẠNG THỰC CHIẾN",
+    "title": "BỘ CỜ ĐIỀU KHIỂN TCP FLAGS & GÓC NHÌN BẢO MẬT",
+    "layout": "grid_2x2",
+    "cards": [
+      {
+        "badge": "⚠️ CỜ SYN & ACK",
+        "title": "Tấn công SYN Flood (DoS)",
+        "border_color": "#DC2626",
+        "bg_color": "#FEF2F2",
+        "items": [
+          {
+            "label": "• Cách thức: ",
+            "text": "Gửi triệu gói SYN giả mạo nhưng cố tình không gửi ACK cuối.",
+            "highlight": "không gửi ACK cuối"
+          },
+          {
+            "label": "• Hậu quả: ",
+            "text": "Làm cạn kiệt hàng đợi Backlog Queue, sập máy chủ!",
+            "highlight": "Backlog Queue"
+          },
+          {
+            "label": "• Phòng thủ: ",
+            "text": "Bật tính năng SYN Cookies.",
+            "highlight": "Bật tính năng SYN Cookies."
+          }
+        ]
+      },
+      {
+        "badge": "🛑 CỜ FIN & RST",
+        "title": "Đóng kết nối vs. Ngắt khẩn cấp",
+        "border_color": "#EA580C",
+        "bg_color": "#FFF7ED",
+        "items": [
+          {
+            "label": "• FIN (Finish): ",
+            "text": "Đóng phiên kết nối lịch sự, hòa bình sau khi truyền xong toàn bộ dữ liệu (bắt tay 4 bước)."
+          },
+          {
+            "label": "• RST (Reset): ",
+            "text": "Cưỡng chế ngắt lập tức khi gửi vào Port ĐÓNG, hoặc do Firewall / IPS chèn cờ RST để cắt đứt mã độc.",
+            "highlight": "Firewall / IPS chèn cờ RST"
+          }
+        ]
+      },
+      {
+        "badge": "🚀 CỜ PSH & URG",
+        "title": "Bỏ qua bộ đệm (Buffer Bypass)",
+        "border_color": "#0284C7",
+        "bg_color": "#F0F9FF",
+        "items": [
+          {
+            "label": "• PSH (Push): ",
+            "text": "Ép card mạng đẩy dữ liệu lên app ngay lập tức mà không chờ gom bộ đệm (dùng cho SSH Terminal, Chat realtime)."
+          },
+          {
+            "label": "• URG (Urgent): ",
+            "text": "Báo hiệu dữ liệu khẩn cấp cần CPU ưu tiên xử lý trước hàng đợi (ví dụ: lệnh ngắt Ctrl + C từ xa).",
+            "highlight": "Ctrl + C"
+          }
+        ]
+      },
+      {
+        "badge": "🕵️ TRINH SÁT NMAP",
+        "title": "Quét cổng tàng hình (nmap -sS)",
+        "border_color": "#334155",
+        "bg_color": "#F8FAFC",
+        "items": [
+          {
+            "label": "• Half-Open Scan: ",
+            "text": "Nmap gửi SYN ➔ Nhận SYN-ACK (Port Mở) ➔ Lập tức gửi RST để hủy mà không gửi ACK.",
+            "highlight": "RST"
+          },
+          {
+            "label": "• Tác dụng tàng hình: ",
+            "text": "Do kết nối chưa từng hoàn tất 3 bước, các ứng dụng Web/Server cổ điển không ghi nhận log đăng nhập!",
+            "highlight": "không ghi nhận log đăng nhập"
+          }
+        ]
+      }
+    ]
+  }
+]
