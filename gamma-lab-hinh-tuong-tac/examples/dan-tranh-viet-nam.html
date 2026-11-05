@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Đàn Tranh Việt Nam (Đàn Thập Lục) · Gamma Lab</title>
+<meta name="description" content="Trang web mô phỏng đàn tranh 16 dây truyền thống Việt Nam. Âm thanh mộc trung thực bằng thuật toán Karplus-Strong, hệ thống ký âm ngũ cung Hò Xự Xang Xê Cống và chế độ hướng dẫn tập gảy bài hát.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6EAD0; --paper:#FFFDF7; --ink:#2b1b17; --mute:#7a6e63; --line:#d9c9a8;
+  --brand:#7F0220; --green:#1F6B3B; --gold:#F2B33D;
+  --wood:#6d3b1b; --wood-dark:#3e1c08; --wood-light:#b87333;
+  --string:#e6d3a3; --string-active:#ffea78; --bridge:#8c2d19;
+  --display:'Dela Gothic One',system-ui,sans-serif; --body:'Be Vietnam Pro',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1412; --paper:#261d19; --ink:#F6EAD0; --mute:#a89985; --line:#4a3b31; color-scheme:dark
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--body);
+  padding:16px 20px 40px; min-height:100vh;
+}
+.wrap{max-width:1200px; margin:0 auto; display:grid; gap:16px;}
+header{display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:12px;}
+.eyebrow{font:600 11px/1 var(--body); letter-spacing:.14em; text-transform:uppercase; color:var(--brand);}
+h1{font:400 clamp(24px,3.8vw,38px)/1.15 var(--display); margin:4px 0 0;}
+h1 em{font-style:normal; color:var(--brand);}
+.lead{max-width:60ch; color:var(--mute); margin:0; font-size:14px; line-height:1.5;}
+
+.card{
+  background:var(--paper); border:1.5px solid var(--line); border-radius:18px;
+  box-shadow:0 10px 30px rgba(43,27,23,.08); padding:16px 20px;
+}
+
+/* Khung đàn tranh SVG */
+.zither-stage{
+  position:relative; width:100%; border-radius:16px; overflow:hidden;
+  background:linear-gradient(180deg, #1f1109 0%, #3a1e0f 45%, #2a150b 100%);
+  border:2px solid #5a3118; box-shadow:inset 0 4px 20px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.2);
+  user-select:none; touch-action:none;
+}
+#zither-svg{width:100%; height:auto; display:block; cursor:pointer;}
+
+/* Hiệu ứng rung dây */
+.z-string{transition:stroke .1s, stroke-width .1s; cursor:pointer;}
+.z-string:hover{stroke:var(--string-active); stroke-width:3.2;}
+.z-string.plucked{stroke:#fff; stroke-width:4.5; filter:drop-shadow(0 0 6px #ffdf78);}
+.z-bridge{pointer-events:none; transition:transform .1s;}
+
+/* Bảng điều khiển & Chế độ */
+.toolbar{
+  display:grid; grid-template-columns:minmax(0, 1.4fr) minmax(280px, 1fr);
+  gap:16px; align-items:start;
+}
+@media (max-width:880px){.toolbar{grid-template-columns:1fr;}}
+
+.ctl-group{display:grid; gap:12px;}
+.mode-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+button{
+  font:600 13px var(--body); padding:8px 14px; border-radius:999px;
+  border:1.5px solid var(--ink); background:var(--paper); color:var(--ink);
+  cursor:pointer; transition:all .15s;
+}
+button:hover{background:var(--bg);}
+button.primary{background:var(--brand); border-color:var(--brand); color:#F6EAD0;}
+button.active{background:var(--ink); border-color:var(--ink); color:var(--bg);}
+
+.pill-badge{
+  font-family:var(--display); font-size:11px; padding:3px 8px; border-radius:6px;
+  background:var(--bg); border:1px solid var(--line); color:var(--brand);
+}
+
+/* Bài tập hướng dẫn */
+.song-card{
+  background:var(--bg); border-radius:12px; padding:12px 14px; display:grid; gap:8px;
+}
+.song-header{display:flex; justify-content:space-between; align-items:center; gap:8px;}
+.song-title{font-family:var(--display); font-size:15px; color:var(--ink);}
+.notes-flow{
+  display:flex; flex-wrap:wrap; gap:6px; font-size:13px; font-family:var(--display);
+}
+.note-chip{
+  padding:3px 8px; border-radius:6px; background:var(--paper); border:1px solid var(--line);
+  color:var(--mute); transition:all .2s;
+}
+.note-chip.current{
+  background:var(--brand); color:#fff; border-color:var(--brand);
+  transform:scale(1.15); box-shadow:0 2px 8px rgba(127,2,32,.4);
+}
+.note-chip.done{color:#a89985; text-decoration:line-through; opacity:.6;}
+
+/* Bàn phím gợi ý */
+.key-hints{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(62px, 1fr)); gap:6px;
+  margin-top:10px; font-size:11px;
+}
+.key-tile{
+  background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:6px 4px;
+  text-align:center;
+}
+.key-tile b{display:block; font-family:var(--display); font-size:14px; color:var(--brand);}
+.key-tile span{color:var(--mute); font-size:10px;}
+
+.vibrato-tip{
+  display:flex; align-items:center; gap:8px; padding:8px 12px; background:rgba(31,107,59,.1);
+  border:1px solid var(--green); border-radius:8px; font-size:12px; color:var(--green);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Gamma Lab · Âm Nhạc Truyền Thống &amp; Vật Lý Sóng Âm</div>
+      <h1>Đàn Tranh <em>(Đàn Thập Lục 16 Dây)</em></h1>
+    </div>
+    <p class="lead">Nhạc cụ cổ truyền Việt Nam với âm sắc ngũ cung thanh nhã. Bấm phím máy tính hoặc chạm trực tiếp vào dây đàn để gảy.</p>
+  </header>
+
+  <!-- Khung đàn tranh SVG -->
+  <div class="card" style="padding:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding:0 6px; font-size:12.5px; color:var(--mute);">
+      <span><b style="color:var(--brand); font-family:var(--display);">Mặt đàn gỗ ngô đồng</b> · 16 Dây tơ / kim loại</span>
+      <span id="playing-status">Sẵn sàng gảy đàn</span>
+      <span>Kỹ thuật: <b>Nhấn / Rung ngón (Phím Space)</b></span>
+    </div>
+
+    <div class="zither-stage">
+      <svg id="zither-svg" viewBox="0 0 1000 360" role="img" aria-label="Đàn Tranh 16 dây"></svg>
+    </div>
+  </div>
+
+  <!-- Bảng điều khiển & Học tập -->
+  <div class="toolbar">
+    <div class="card ctl-group">
+      <div class="mode-row">
+        <span style="font-size:13px; font-weight:600;">Hệ Thang Âm (Điệu):</span>
+        <button id="btn-mode-bac" class="active">Điệu Bắc (Vui tươi)</button>
+        <button id="btn-mode-xuan">Điệu Xuân (Thanh tao)</button>
+        <button id="btn-mode-oan">Điệu Oán (Da diết / Nam Bộ)</button>
+      </div>
+
+      <div class="vibrato-tip">
+        <span>💡 <b>Mẹo gảy truyền thống:</b> Giữ phím <b>Space</b> khi gảy để kích hoạt kỹ thuật <b>Nhấn Rung (Vibrato)</b> đặc trưng của Đàn Tranh Việt Nam!</span>
+      </div>
+
+      <div>
+        <div style="font-size:13px; font-weight:600; margin-bottom:6px;">Bản đồ phím gảy trên bàn phím máy tính:</div>
+        <div class="key-hints" id="key-map-container">
+          <!-- Render dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Hướng dẫn bài tập -->
+    <div class="card ctl-group">
+      <div class="song-header">
+        <div class="song-title">Khúc Nhạc Tập Gảy</div>
+        <div class="mode-row">
+          <select id="song-select" style="font:600 12px var(--body); padding:6px 10px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink);">
+            <option value="beo-dat">Bèo Dạt Mây Trôi (Dân ca Quan họ)</option>
+            <option value="ly-cay-bong">Lý Cây Bông (Dân ca Nam Bộ)</option>
+            <option value="co-la">Cò Lả (Dân ca Bắc Bộ)</option>
+            <option value="scale">Thang Ngũ Cung Cơ Bản (16 Dây)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12px; color:var(--mute);" id="song-guide-text">Bấm nút "Tập gảy" để bắt đầu theo nốt:</span>
+          <div style="display:flex; gap:6px;">
+            <button id="btn-song-demo">▶ Nghe mẫu</button>
+            <button id="btn-song-practice" class="primary">Tập theo nốt</button>
+          </div>
+        </div>
+        <div class="notes-flow" id="notes-stream"></div>
+      </div>
+
+      <div style="font-size:12px; color:var(--mute); line-height:1.5;">
+        <b>Ký âm ngũ cung Việt Nam:</b><br>
+        • <b>Hò</b> (Do / C) · <b>Xự</b> (Re / D) · <b>Xang</b> (Fa / F) · <b>Xê</b> (Sol / G) · <b>Cống</b> (La / A) · <b>Liếu</b> (Do cao).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // 1. Audio Engine using Karplus-Strong Algorithm (Plucked String Synthesis)
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playZitherString(freq, isVibrato = false) {
+    const actx = getAudio();
+    if (!actx) return;
+
+    const sampleRate = actx.sampleRate;
+    const basePeriod = sampleRate / freq;
+    // Length of audio decay (2 to 3.5s depending on pitch)
+    const duration = Math.min(3.2, Math.max(1.6, 500 / freq));
+    const totalSamples = Math.floor(sampleRate * duration);
+
+    const buffer = actx.createBuffer(1, totalSamples, sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // Initial pluck excitation: shaped burst of noise (resembling wooden/bone plectrum on metal/silk)
+    const pInt = Math.round(basePeriod);
+    const burst = new Float32Array(pInt);
+    for (let i = 0; i < pInt; i++) {
+      burst[i] = (Math.random() * 2 - 1) * 0.9;
+    }
+    // Lowpass filter burst to remove harsh screech
+    for (let i = 1; i < pInt; i++) {
+      burst[i] = 0.55 * burst[i] + 0.45 * burst[i - 1];
+    }
+
+    // Fill start
+    for (let i = 0; i < pInt; i++) data[i] = burst[i];
+
+    // Karplus-Strong Loop with resonance decay
+    const decay = 0.9935;
+    for (let i = pInt; i < totalSamples; i++) {
+      data[i] = (data[i - pInt] + data[i - pInt + 1]) * 0.5 * decay;
+    }
+
+    const source = actx.createBufferSource();
+    source.buffer = buffer;
+
+    // Body resonance EQ
+    const bodyEQ = actx.createBiquadFilter();
+    bodyEQ.type = 'peaking';
+    bodyEQ.frequency.value = 350; // Soundboard Paulownia wood resonance
+    bodyEQ.Q.value = 1.4;
+    bodyEQ.gain.value = 4.0;
+
+    const lowpass = actx.createBiquadFilter();
+    lowpass.type = 'lowpass';
+    lowpass.frequency.value = Math.min(14000, freq * 14);
+
+    source.connect(lowpass);
+    lowpass.connect(bodyEQ);
+
+    // Vibrato effect if requested
+    if (isVibrato) {
+      // Frequency pitch bend simulation
+      source.playbackRate.setValueAtTime(1.0, actx.currentTime);
+      source.playbackRate.linearRampToValueAtTime(1.04, actx.currentTime + 0.12);
+      source.playbackRate.linearRampToValueAtTime(0.98, actx.currentTime + 0.28);
+      source.playbackRate.linearRampToValueAtTime(1.02, actx.currentTime + 0.45);
+      source.playbackRate.linearRampToValueAtTime(1.0, actx.currentTime + 0.65);
+    }
+
+    bodyEQ.connect(actx.destination);
+    source.start();
+  }
+
+  // 2. Data Definition for 16 Strings
+  // Pentatonic Modes:
+  // Điệu Bắc: C, D, F, G, A
+  // Điệu Xuân: C, D, E, G, A
+  // Điệu Oán: C, Eb, F, G, Bb
+  const MODES = {
+    bac: {
+      name: 'Điệu Bắc',
+      notes: ['C','D','F','G','A'],
+      hoNames: ['Hò','Xự','Xang','Xê','Cống']
+    },
+    xuan: {
+      name: 'Điệu Xuân',
+      notes: ['C','D','E','G','A'],
+      hoNames: ['Hò','Xự','Xang','Xê','Cống']
+    },
+    oan: {
+      name: 'Điệu Oán',
+      notes: ['C','D#','F','G','A#'],
+      hoNames: ['Hò','Xự (non)','Xang','Xê','Oán']
+    }
+  };
+
+  let currentMode = 'bac';
+
+  // Base frequencies across 3.2 octaves for 16 strings
+  const KEY_BINDINGS = [
+    { key: '1', altKey: 'Z' }, { key: '2', altKey: 'X' }, { key: '3', altKey: 'C' }, { key: '4', altKey: 'V' },
+    { key: '5', altKey: 'B' }, { key: '6', altKey: 'N' }, { key: '7', altKey: 'M' }, { key: '8', altKey: 'A' },
+    { key: '9', altKey: 'S' }, { key: '0', altKey: 'D' }, { key: 'Q', altKey: 'F' }, { key: 'W', altKey: 'G' },
+    { key: 'E', altKey: 'H' }, { key: 'R', altKey: 'J' }, { key: 'T', altKey: 'K' }, { key: 'Y', altKey: 'L' }
+  ];
+
+  function getBaseFrequencies(modeKey) {
+    const scale = MODES[modeKey].notes;
+    // Map note names to semitones from C3 (130.81 Hz)
+    const semitones = { 'C':0, 'D':2, 'D#':3, 'Eb':3, 'E':4, 'F':5, 'G':7, 'A':9, 'A#':10, 'Bb':10 };
+    const baseFreq = 130.81; // C3
+
+    const freqs = [];
+    let octave = 0;
+    for (let i = 0; i < 16; i++) {
+      const noteIdx = i % 5;
+      if (i > 0 && noteIdx === 0) octave++;
+      const semi = semitones[scale[noteIdx]] + octave * 12;
+      const f = baseFreq * Math.pow(2, semi / 12);
+      freqs.push({
+        index: i + 1,
+        note: scale[noteIdx] + (3 + octave),
+        solfege: MODES[modeKey].hoNames[noteIdx],
+        freq: f,
+        key: KEY_BINDINGS[i].key,
+        altKey: KEY_BINDINGS[i].altKey
+      });
+    }
+    return freqs;
+  }
+
+  let STRINGS = getBaseFrequencies(currentMode);
+
+  // 3. Render SVG Đàn Tranh
+  const svg = document.getElementById('zither-svg');
+  const NS = 'http://www.w3.org/2000/svg';
+  function createEl(tag, attrs = {}) {
+    const el = document.createElementNS(NS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+
+  function renderZither() {
+    svg.innerHTML = '';
+
+    // Defs: Gradients & Shadows
+    const defs = createEl('defs');
+    defs.innerHTML = `
+      <linearGradient id="woodGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4a2410"/>
+        <stop offset="15%" stop-color="#804320"/>
+        <stop offset="50%" stop-color="#9a5327"/>
+        <stop offset="85%" stop-color="#6e371a"/>
+        <stop offset="100%" stop-color="#301507"/>
+      </linearGradient>
+      <linearGradient id="stringGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#eed8a1"/>
+        <stop offset="100%" stop-color="#cbb173"/>
+      </linearGradient>
+      <filter id="stringGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    `;
+    svg.appendChild(defs);
+
+    // 1. Soundboard curved body (Thân đàn vòm cong)
+    // Width 1000, height 360
+    const bodyPath = `M 40 40 Q 500 20 960 55 L 940 315 Q 500 335 40 295 Z`;
+    const body = createEl('path', {
+      d: bodyPath,
+      fill: 'url(#woodGrad)',
+      stroke: '#281308',
+      'stroke-width': '4'
+    });
+    svg.appendChild(body);
+
+    // Wood Grain streaks
+    for (let i = 1; i <= 6; i++) {
+      const yOff = 40 + i * 40;
+      const streak = createEl('path', {
+        d: `M 50 ${yOff} Q 500 ${yOff - 10} 950 ${yOff + 5}`,
+        fill: 'none',
+        stroke: 'rgba(0,0,0,0.12)',
+        'stroke-width': '2'
+      });
+      svg.appendChild(streak);
+    }
+
+    // Sound hole (Lỗ thoát âm bán nguyệt khảm viền)
+    const soundHole = createEl('path', {
+      d: 'M 240 180 A 35 35 0 0 1 240 250 Z',
+      fill: '#150904',
+      stroke: '#b87333',
+      'stroke-width': '2'
+    });
+    svg.appendChild(soundHole);
+
+    // Tuning peg bar (Cầu mắc dây bên phải)
+    const rightBridge = createEl('rect', {
+      x: '910', y: '65', width: '18', height: '240', rx: '4',
+      fill: '#240f05', stroke: '#cba16c', 'stroke-width': '1.5'
+    });
+    svg.appendChild(rightBridge);
+
+    // Left nut (Cầu đàn bên trái)
+    const leftNut = createEl('rect', {
+      x: '70', y: '50', width: '16', height: '235', rx: '3',
+      fill: '#240f05', stroke: '#cba16c', 'stroke-width': '1.5'
+    });
+    svg.appendChild(leftNut);
+
+    // 2. Render 16 Strings and 16 Bridges (Con Nhạn xếp hình chữ S)
+    const stringGroup = createEl('g', { id: 'strings-group' });
+    const bridgeGroup = createEl('g', { id: 'bridges-group' });
+
+    STRINGS.forEach((s, i) => {
+      // Y positions: spread across height
+      const yLeft = 60 + i * 14.5;
+      const yRight = 75 + i * 14.5;
+
+      // Con nhạn (Bridge) X position follows classic S-curve
+      // Dây trầm (i nhỏ): Nhạn ở xa về bên trái (dây dài, âm trầm)
+      // Dây cao (i lớn): Nhạn tiến dần về bên phải (dây ngắn, âm cao)
+      const t = i / 15;
+      const bridgeX = 260 + t * 440 + Math.sin(t * Math.PI) * 60;
+      const bridgeY = yLeft + (yRight - yLeft) * ((bridgeX - 70) / (910 - 70));
+
+      // Draw Bridge (Con Nhạn hình chữ V úp ngược)
+      const nhan = createEl('path', {
+        id: `bridge-${i}`,
+        class: 'z-bridge',
+        d: `M ${bridgeX - 10} ${bridgeY + 18} L ${bridgeX} ${bridgeY - 4} L ${bridgeX + 10} ${bridgeY + 18} Z`,
+        fill: '#8c2d19',
+        stroke: '#ffd899',
+        'stroke-width': '1.2'
+      });
+      bridgeGroup.appendChild(nhan);
+
+      // Draw String (Dây đàn)
+      const strLine = createEl('line', {
+        id: `str-${i}`,
+        class: 'z-string',
+        x1: '78',
+        y1: yLeft,
+        x2: '918',
+        y2: yRight,
+        stroke: 'url(#stringGrad)',
+        'stroke-width': (2.4 - i * 0.08).toFixed(2) // Low strings thicker
+      });
+
+      // Click to pluck
+      strLine.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        triggerPluck(i);
+      });
+
+      // Hover note label
+      strLine.setAttribute('title', `Dây ${s.index}: ${s.solfege} (${s.note}) - Phím ${s.key}`);
+
+      stringGroup.appendChild(strLine);
+
+      // String note text labels on the right
+      const label = createEl('text', {
+        x: '935',
+        y: yRight + 4,
+        fill: '#F6EAD0',
+        'font-family': 'Dela Gothic One, system-ui',
+        'font-size': '10',
+        'text-anchor': 'start'
+      });
+      label.textContent = s.solfege;
+      svg.appendChild(label);
+    });
+
+    svg.appendChild(bridgeGroup);
+    svg.appendChild(stringGroup);
+  }
+
+  // 4. Trigger Pluck Interaction
+  let isSpacePressed = false;
+
+  function triggerPluck(index, fromPractice = false) {
+    const s = STRINGS[index];
+    if (!s) return;
+
+    // Sound
+    playZitherString(s.freq, isSpacePressed);
+
+    // Visual animation
+    const str = document.getElementById(`str-${index}`);
+    if (str) {
+      str.classList.remove('plucked');
+      void str.offsetWidth; // force reflow
+      str.classList.add('plucked');
+      setTimeout(() => str.classList.remove('plucked'), 300);
+    }
+
+    // Status text
+    const status = document.getElementById('playing-status');
+    status.innerHTML = `Đang gảy: <b style="color:var(--brand)">Dây ${s.index} · ${s.solfege} (${s.note})</b> ${isSpacePressed ? '<span style="color:var(--green)">[Rung ngón]</span>' : ''}`;
+
+    // Practice progress check
+    if (!fromPractice && isPracticing) {
+      checkPracticeNote(index);
+    }
+  }
+
+  // 5. Render Keyboard Mapping Legend
+  function renderKeyLegend() {
+    const c = document.getElementById('key-map-container');
+    c.innerHTML = '';
+    STRINGS.forEach((s) => {
+      const tile = document.createElement('div');
+      tile.className = 'key-tile';
+      tile.innerHTML = `
+        <b>${s.key}</b>
+        <span>${s.solfege}</span>
+      `;
+      tile.addEventListener('click', () => triggerPluck(s.index - 1));
+      c.appendChild(tile);
+    });
+  }
+
+  // 6. Keyboard Listeners
+  window.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+    if (e.code === 'Space') {
+      isSpacePressed = true;
+      return;
+    }
+    const pressedKey = e.key.toUpperCase();
+    const strIdx = STRINGS.findIndex(s => s.key === pressedKey || s.altKey === pressedKey);
+    if (strIdx !== -1) {
+      triggerPluck(strIdx);
+    }
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.code === 'Space') isSpacePressed = false;
+  });
+
+  // 7. Song Repertoire & Interactive Practice
+  // String indices are 0-based
+  const SONGS = {
+    'beo-dat': {
+      title: 'Bèo Dạt Mây Trôi',
+      // Melodic notes mapped to strings
+      sequence: [6, 8, 9, 10, 9, 8, 6, 5, 6, 8, 9, 8, 6, 5, 4, 5, 6]
+    },
+    'ly-cay-bong': {
+      title: 'Lý Cây Bông',
+      sequence: [8, 9, 10, 11, 10, 9, 8, 9, 10, 11, 13, 11, 10, 9, 8]
+    },
+    'co-la': {
+      title: 'Cò Lả',
+      sequence: [7, 8, 9, 11, 10, 9, 8, 7, 8, 9, 7, 5, 6, 7]
+    },
+    'scale': {
+      title: 'Thang Ngũ Cung (Lên & Xuống)',
+      sequence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    }
+  };
+
+  let currentSongKey = 'beo-dat';
+  let isPracticing = false;
+  let practiceIndex = 0;
+  let isDemoPlaying = false;
+
+  function renderSongFlow() {
+    const stream = document.getElementById('notes-stream');
+    stream.innerHTML = '';
+    const song = SONGS[currentSongKey];
+
+    song.sequence.forEach((strIdx, idx) => {
+      const s = STRINGS[strIdx] || STRINGS[0];
+      const chip = document.createElement('span');
+      chip.className = 'note-chip';
+      chip.id = `chip-${idx}`;
+      chip.innerHTML = `${s.solfege} <small>(${s.key})</small>`;
+      chip.addEventListener('click', () => {
+        triggerPluck(strIdx);
+      });
+      stream.appendChild(chip);
+    });
+    highlightPracticeNote();
+  }
+
+  function highlightPracticeNote() {
+    const song = SONGS[currentSongKey];
+    song.sequence.forEach((_, idx) => {
+      const chip = document.getElementById(`chip-${idx}`);
+      if (!chip) return;
+      chip.className = 'note-chip';
+      if (idx < practiceIndex) chip.classList.add('done');
+      if (idx === practiceIndex && isPracticing) chip.classList.add('current');
+    });
+
+    if (isPracticing && practiceIndex < song.sequence.length) {
+      const targetStrIdx = song.sequence[practiceIndex];
+      const targetString = STRINGS[targetStrIdx];
+      document.getElementById('song-guide-text').innerHTML =
+        `Hãy gảy nốt tiếp theo: <b style="color:var(--brand)">${targetString.solfege}</b> (Phím <b>${targetString.key}</b>)!`;
+    }
+  }
+
+  function checkPracticeNote(pluckedIdx) {
+    const song = SONGS[currentSongKey];
+    if (practiceIndex < song.sequence.length) {
+      if (pluckedIdx === song.sequence[practiceIndex]) {
+        practiceIndex++;
+        if (practiceIndex >= song.sequence.length) {
+          isPracticing = false;
+          document.getElementById('song-guide-text').innerHTML =
+            `<b style="color:var(--green)">🎉 Tuyệt vời! Anh đã hoàn thành bài ${song.title}!</b>`;
+          document.getElementById('btn-song-practice').textContent = 'Tập lại';
+        }
+        highlightPracticeNote();
+      }
+    }
+  }
+
+  function playDemo() {
+    if (isDemoPlaying) return;
+    isDemoPlaying = true;
+    isPracticing = false;
+    document.getElementById('btn-song-demo').textContent = 'Đang phát...';
+    document.getElementById('btn-song-practice').textContent = 'Tập theo nốt';
+
+    const song = SONGS[currentSongKey];
+    song.sequence.forEach((strIdx, i) => {
+      setTimeout(() => {
+        practiceIndex = i;
+        highlightPracticeNote();
+        triggerPluck(strIdx, true);
+
+        if (i === song.sequence.length - 1) {
+          setTimeout(() => {
+            isDemoPlaying = false;
+            document.getElementById('btn-song-demo').textContent = '▶ Nghe mẫu';
+            practiceIndex = 0;
+            highlightPracticeNote();
+          }, 600);
+        }
+      }, i * 360);
+    });
+  }
+
+  // 8. Event Bindings
+  document.getElementById('btn-mode-bac').addEventListener('click', (e) => switchMode('bac', e.target));
+  document.getElementById('btn-mode-xuan').addEventListener('click', (e) => switchMode('xuan', e.target));
+  document.getElementById('btn-mode-oan').addEventListener('click', (e) => switchMode('oan', e.target));
+
+  function switchMode(modeKey, btn) {
+    currentMode = modeKey;
+    document.querySelectorAll('.mode-row button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    STRINGS = getBaseFrequencies(currentMode);
+    renderZither();
+    renderKeyLegend();
+    renderSongFlow();
+  }
+
+  document.getElementById('song-select').addEventListener('change', (e) => {
+    currentSongKey = e.target.value;
+    practiceIndex = 0;
+    isPracticing = false;
+    document.getElementById('btn-song-practice').textContent = 'Tập theo nốt';
+    renderSongFlow();
+  });
+
+  document.getElementById('btn-song-practice').addEventListener('click', () => {
+    isPracticing = true;
+    practiceIndex = 0;
+    document.getElementById('btn-song-practice').textContent = 'Đang tập...';
+    highlightPracticeNote();
+  });
+
+  document.getElementById('btn-song-demo').addEventListener('click', playDemo);
+
+  // Initial Boot
+  renderZither();
+  renderKeyLegend();
+  renderSongFlow();
+})();
+</script>
+</body>
+</html>
