@@ -1,0 +1,101 @@
+/* the.css — khung thẻ và bộ nhận diện Gamma Lab cho hình tương tác (skill hinh-tuong-tac)
+   Thẻ theo kiểu Anatomy: góc trên-trái "Hình n", trên-phải tên hình, dưới-trái gợi ý thao tác, dưới-phải số đọc sống. */
+:root{
+  --bg:#F6EAD0; --paper:#FFFDF7; --ink:#2b1b17; --mute:#7a6e63; --line:#d9c9a8;
+  --brand:#7F0220; --green:#1F6B3B; --gold:#F2B33D;
+  --water:#5aa9d6; --coffee:#4a2412; --steam:#ffffff;
+  --display:'Dela Gothic One',system-ui,sans-serif; --body:'Be Vietnam Pro',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#1d1613; --paper:#2a211c; --ink:#F6EAD0; --mute:#b8a994; --line:#4a3b31; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#1d1613; --paper:#2a211c; --ink:#F6EAD0; --mute:#b8a994; --line:#4a3b31; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 20px}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+h1{font:400 clamp(26px,4.5vw,40px)/1.1 var(--display);margin:6px 0 0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--brand)}
+.lead{max-width:62ch;color:var(--mute);margin:0;font-size:15px;line-height:1.5}
+.stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.9fr);gap:18px;align-items:start}
+@media (max-width:760px){.stage{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1.5px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(43,27,23,.08)}
+/* thẻ hình: 4 góc chữ nhỏ */
+.fig{padding:8px 10px 6px;min-width:0;display:grid;gap:2px}
+.fig svg{width:100%;height:auto;display:block}
+.figbar{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between;padding:4px 6px;font-size:12.5px;color:var(--mute)}
+.figbar b{font-family:var(--display);font-weight:400;color:var(--ink);font-size:12.5px;font-variant-numeric:tabular-nums}
+.figbar .fign{font-family:var(--display);color:var(--brand);font-size:12.5px}
+/* bảng điều khiển */
+.panel{padding:16px;display:grid;gap:14px}
+.ctl{display:grid;gap:5px}
+.ctl .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ctl label{font-weight:600;font-size:14px}
+.ctl output{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:15px;color:var(--brand)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+.hint{font-size:12px;color:var(--mute);line-height:1.4}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 14px var(--body);padding:10px 14px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+button.primary{background:var(--brand);border-color:var(--brand);color:#F6EAD0}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.read{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:var(--bg);border-radius:12px;padding:10px 12px;min-width:0}
+.tile .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.tile .v{font-family:var(--display);font-size:22px;line-height:1.1;margin-top:2px;font-variant-numeric:tabular-nums}
+.verdict{border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45;background:var(--bg);border-left:5px solid var(--green)}
+.verdict.sour{border-left-color:var(--gold)} .verdict.bitter{border-left-color:var(--brand)}
+/* thẻ chú thích bộ phận đang chọn + legend */
+.note{padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.note .n{font-family:var(--display);color:var(--brand);font-size:22px;line-height:1}
+.note h2{margin:0 0 4px;font:400 17px var(--display)}
+.note p{margin:0;font-size:14px;line-height:1.5;max-width:70ch}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.parts button{padding:6px 10px;font-size:12px;border-color:var(--line)}
+.parts button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.foot{font-size:12px;color:var(--mute);line-height:1.5;max-width:80ch}
+/* bộ phận trong SVG */
+svg .p{cursor:pointer;transition:transform .6s cubic-bezier(.2,.8,.2,1);outline:none}
+svg .p.sel .edge{stroke:var(--brand);stroke-width:2}
+svg .p:focus-visible .edge{stroke:var(--gold);stroke-width:2}
+svg .pipe{transition:opacity .4s}
+svg.apart .pipe{opacity:.2}
+svg .pin.apart-only{opacity:0;transition:opacity .3s}
+svg.apart .pin.apart-only{opacity:1}
+svg .flow{animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-36}}
+svg .puff{animation:puff 2.8s ease-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+svg .puff:nth-child(2){animation-delay:.9s} svg .puff:nth-child(3){animation-delay:1.8s}
+@keyframes puff{0%{transform:translateY(0) scale(.6);opacity:0}25%{opacity:1}100%{transform:translateY(-26px) scale(1.4);opacity:0}}
+svg .vib{animation:vib .18s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes vib{0%{transform:translate(0,0)}25%{transform:translate(.6px,-.3px)}50%{transform:translate(-.5px,.4px)}75%{transform:translate(.4px,.5px)}100%{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){svg .p,svg .pipe{transition:none}svg .flow,svg .puff,svg .vib{animation:none}}
+
+.wrap{max-width:1320px;gap:20px}.wrap>*{min-width:0}.stage{min-width:0;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:20px}.fig{position:sticky;top:18px}.figbar{font-size:11px;line-height:1.6}.figbar:last-child{border-top:1px solid var(--line);padding-top:10px}.figbar #live{font-family:var(--display);font-size:11px;color:var(--brand)}
+header{padding:8px 0 6px;gap:16px}.eyebrow{font-size:10px;line-height:1.6}h1{max-width:700px;font-size:clamp(29px,3.8vw,47px);line-height:1.2}.lead{max-width:45ch;font-size:13px}header .lead{margin-left:auto}.panel{gap:16px}.tea-choices{display:flex;flex-wrap:wrap;gap:6px}.tea-choices button{font-size:12px;padding:8px 12px;border-color:var(--line)}.tea-choices [aria-pressed=true],.subtype [aria-pressed=true]{background:var(--brand);color:var(--bg);border-color:var(--brand)}.subtype{display:flex;gap:6px}.subtype[hidden]{display:none}.subtype button{font-size:12px;padding:6px 14px}.ctl output{font-size:14px;white-space:nowrap}.hint{line-height:1.6}.route{border-block:1px solid var(--line);padding-block:10px}.route .hint{margin-bottom:7px}.route-track{font-weight:700;line-height:1.8;font-size:13px;color:var(--green)}.route small{display:block;margin-top:5px;font-size:11px;line-height:1.6;color:var(--mute)}
+.read{grid-template-columns:1fr 1fr}.tile .v{font-size:19px}.verdict{font-size:12px;line-height:1.65}.btns button{font-size:12px;padding:11px 14px}button:disabled{opacity:.55;cursor:default}input:disabled{opacity:.35}.note{padding:20px}.note p{max-width:95ch}.foot{max-width:none;font-size:12px;line-height:1.8;margin:0}.foot h2{font:400 16px var(--display);margin:0 0 8px}.foot p{margin:8px 0}.table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px}.ref-table{border-collapse:collapse;width:100%;font-size:11px;line-height:1.6;min-width:650px}.ref-table th,.ref-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}.ref-table th{color:var(--ink);background:var(--bg);font-size:10px}.ref-table tr:last-child td{border-bottom:0}.foot a{color:var(--brand)}.distinction{display:grid;grid-template-columns:1fr 1fr;gap:18px;border-block:1px solid var(--line);padding:14px 0}.distinction strong{color:var(--brand)}.status{min-height:34px;font-size:11px;color:var(--mute);line-height:1.6}.fig svg{min-width:0;background:radial-gradient(ellipse at 53% 50%,#f6ead044,transparent 66%);overflow:visible}.art{transition:opacity .25s}.skipped .art{opacity:.6}.skipped .art [fill]:not([fill="none"]){fill:#bdb8ad!important}.skipped .art .halo{display:none}.skipped .art [stroke]:not([stroke="none"]){stroke:#8c887f!important}.skipped .pin circle{fill:#8d887e}.skipped .pin rect{fill:#f0ede6}.pin{pointer-events:auto}.leader{fill:none;stroke:#8c8272;stroke-width:.65;pointer-events:none}.order{font-family:var(--display);font-size:8px;fill:#fffdf7;pointer-events:none}.running .order-bg{fill:var(--gold)}.running .art .edge{stroke:var(--brand);stroke-width:1.7}.machine-caption{font:600 8px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.legend-title{font:600 8px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.cup-label{font:600 7px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.pin text{font-size:8.5px}.pin text:last-child{font-size:10px}.pin rect{height:19px;rx:5px}.pin circle{r:9px}.note .n{font-size:28px}.motion-belt{transition:opacity .3s}.is-apart .motion-belt{opacity:.18}.ref-table td:first-child{font-weight:700;white-space:nowrap}.compare-link{font-size:11px;margin-left:auto}.zoom-link{font-size:10px;color:var(--mute);text-decoration:none;border-bottom:1px dotted var(--line)}
+@media(max-width:900px){.stage{grid-template-columns:1fr}.fig{position:static}.panel{grid-template-columns:1fr 1fr}.panel>.selector,.panel>.route,.panel>.btns,.panel>.verdict,.panel>.status{grid-column:1/-1}.lead{max-width:65ch}header .lead{margin-left:0}}
+@media(max-width:480px){body{padding:16px 12px 30px}.wrap{gap:14px}.fig{padding:7px 6px}.figbar{display:grid;gap:4px;font-size:10px;padding:4px 6px}.figbar span{overflow-wrap:anywhere}.figbar #live{font-size:10px}.panel{display:grid;grid-template-columns:1fr;padding:15px}.panel>*{grid-column:1!important}.note{padding:15px;gap:8px}.note h2{font-size:15px}.note p{font-size:12px}.parts button{font-size:11px}.distinction{grid-template-columns:1fr;gap:8px}h1{font-size:29px}.lead{font-size:12px}.eyebrow{font-size:9px;letter-spacing:.09em}.read .v{font-size:17px}.zoom-link{display:inline-block}.table-wrap{max-width:100%}}
+@media(prefers-reduced-motion:reduce){.art,.motion-belt{transition:none}}
+
+/* liên kết thẻ ↔ trạm */
+svg .leaders .leader{fill:none;stroke:#2b1b17;stroke-width:1;opacity:.5;transition:all .25s}
+svg .leaders .leader-dot{fill:#2b1b17;opacity:.5;transition:all .25s}
+svg .leaders .leader.sel{stroke:#7F0220;stroke-width:2.6;opacity:1}
+svg .leaders .leader-dot.sel{fill:#7F0220;opacity:1;r:4}
+svg .label-layer .pin{cursor:pointer}
+svg .label-layer .pin:hover rect{stroke-width:1.6}
+svg .label-layer .pin.sel rect{fill:#7F0220;stroke:#7F0220}
+svg .label-layer .pin.sel text:last-of-type{fill:#F6EAD0}
+svg .label-layer .pin.sel text:nth-of-type(1){fill:#F6EAD0}
+svg .p.sel .art{animation:pulse .7s ease-out 1;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes pulse{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
+/* ghi chú cạnh hình */
+.callout{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:4px 6px 2px;padding:12px 14px;border:2px solid #7F0220;border-radius:14px;background:var(--paper);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+.callout.show{opacity:1;transform:none}
+.callout.pop{animation:calloutPop .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes calloutPop{0%{transform:translateY(10px) scale(.98)}100%{transform:none}}
+.callout .n{font:400 26px/1 var(--display);color:#F6EAD0;background:#7F0220;border-radius:999px;width:38px;height:38px;display:grid;place-items:center}
+.callout h3{margin:0 0 4px;font:400 16px var(--display)}
+.callout p{margin:0;font-size:13px;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.callout.pop,svg .p.sel .art{animation:none}}
+.figtools{display:flex;gap:10px;align-items:center}.soundbtn{font:600 12px var(--body);padding:5px 10px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}.soundbtn[aria-pressed="true"]{background:#1F6B3B;border-color:#1F6B3B;color:#F6EAD0}
+.strip-title{font:600 8px var(--body);fill:#7a6e63;letter-spacing:.04em;text-transform:uppercase}.strip-label{font:600 7.5px var(--body);fill:#2b1b17}.strip-cell{cursor:pointer}.strip-cell:hover ellipse,.strip-cell:hover path{filter:brightness(1.08)}
