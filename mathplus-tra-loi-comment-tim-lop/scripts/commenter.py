@@ -7,6 +7,7 @@ Tìm bài viết phụ huynh tìm lớp Toán (lớp 6-12), sinh lời bình lu�
 
 import os
 import sys
+import tempfile
 if sys.platform == "win32":
     try:
         sys.stdout.reconfigure(encoding='utf-8')
@@ -252,7 +253,7 @@ def post_comment(page: Page, post_url: str, comment_text: str) -> bool:
 
     # Chụp ảnh xác nhận
     try:
-        ss_path = os.path.join(os.path.expanduser(r"~\AppData\Local\Temp"), f"fb_comment_{int(time.time())}.png")
+        ss_path = os.path.join(tempfile.gettempdir(), f"fb_comment_{int(time.time())}.png")
         page.screenshot(path=ss_path)
     except Exception:
         pass
@@ -305,15 +306,15 @@ def main():
     parser.add_argument("--scan", action="store_true", help="Chỉ quét tìm bài viết & sinh dự thảo bình luận (Chờ Human duyệt)")
     parser.add_argument("--confirm", action="store_true", help="Xác nhận thực hiện đăng các bình luận trong file drafts")
     parser.add_argument("--join-count", type=int, default=3, help="Số nhóm tối đa cần tham gia (mặc định 3, không cần confirm)")
-    parser.add_argument("--comment-count", type=int, default=3, help="Số bài viết cần trả lời (3 đến 5 bài, mặc định 3)")
+    parser.add_argument("--comment-count", type=int, default=3, help="Số bài viết cần trả lời (mặc định 3)")
+    parser.add_argument("--post-url", type=str, default=None, help="URL bài viết cụ thể bắt buộc cần bình luận")
     parser.add_argument("--skip-join", action="store_true", help="Bỏ qua bước tham gia nhóm mới")
     parser.add_argument("--delay-min", type=int, default=30, help="Thời gian chờ tối thiểu giữa các comment (giây)")
     parser.add_argument("--delay-max", type=int, default=50, help="Thời gian chờ tối đa giữa các comment (giây)")
 
     args = parser.parse_args()
 
-    # Đảm bảo số bài từ 3 đến 5
-    comment_count = max(3, min(5, args.comment_count))
+    comment_count = max(1, args.comment_count)
 
     log("=" * 60)
     log("🚀 KHỞI ĐỘNG MATHPLUS TRẢ LỜI COMMENT TÌM LỚP")
