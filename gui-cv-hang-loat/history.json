@@ -3,9 +3,169 @@
     "name": "Lily Le",
     "email": "nhatle57@gmail.com",
     "website": "Direct contact",
-    "specialties": ["AI", "Phân tích dữ liệu", "Báo cáo động"],
+    "specialties": [
+      "AI",
+      "Phân tích dữ liệu",
+      "Báo cáo động"
+    ],
     "subject": "[Hợp tác đào tạo] Giới thiệu năng lực giảng dạy các khóa AI, Phân tích dữ liệu & Báo cáo động - Nguyễn Đức Hoàng",
     "sent_at": "2026-11-05T07:07:00+07:00",
+    "status": "SENT"
+  },
+  {
+    "name": "Cole Academy",
+    "email": "contact@cole.vn",
+    "website": "https://cole.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Phân tích dữ liệu",
+      "Data Science",
+      "Python",
+      "AI ứng dụng"
+    ],
+    "category": "AI_DATA_SCIENCE",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa AI ứng dụng, Machine Learning & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:35:34.929910",
+    "status": "SENT"
+  },
+  {
+    "name": "MCI Vietnam (MCI Consulting & Training)",
+    "email": "contact@mci.edu.vn",
+    "website": "https://mci.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Data Analytics",
+      "Python",
+      "Machine Learning",
+      "AI"
+    ],
+    "category": "AI_DATA_SCIENCE",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa AI ứng dụng, Machine Learning & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:35:45.430664",
+    "status": "SENT"
+  },
+  {
+    "name": "Datarock Academy",
+    "email": "lienhe@datarock.vn",
+    "website": "https://datarock.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Data Analytics",
+      "Power BI",
+      "Data Visualization",
+      "Dashboard"
+    ],
+    "category": "DATA_BI",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:35:55.923060",
+    "status": "SENT"
+  },
+  {
+    "name": "MindX Technology School",
+    "email": "tuyendung@mindx.edu.vn",
+    "website": "https://mindx.edu.vn",
+    "city": "Toàn quốc",
+    "specialties": [
+      "Lập trình Full-stack",
+      "AI",
+      "Data Analytics"
+    ],
+    "category": "BOOTCAMP_DEV",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:36:06.276207",
+    "status": "SENT"
+  },
+  {
+    "name": "Rikkei Academy",
+    "email": "academy@rikkeisoft.com",
+    "website": "https://rikkeiacademy.com",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": [
+      "Lập trình Java",
+      "Python",
+      "AI",
+      "Phần mềm doanh nghiệp"
+    ],
+    "category": "BOOTCAMP_DEV",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:36:16.681352",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Công nghệ BKACAD",
+    "email": "contact@bkacad.edu.vn",
+    "website": "https://bkacad.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Mạng máy tính",
+      "AI",
+      "Dữ liệu"
+    ],
+    "category": "BOOTCAMP_DEV",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:36:27.086867",
+    "status": "SENT"
+  },
+  {
+    "name": "CodeGym Vietnam",
+    "email": "info@codegym.vn",
+    "website": "https://codegym.vn",
+    "city": "Toàn quốc",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Java",
+      "Python",
+      "Web Development"
+    ],
+    "category": "BOOTCAMP_DEV",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:36:37.473353",
+    "status": "SENT"
+  },
+  {
+    "name": "CoderSchool",
+    "email": "admissions@coderschool.vn",
+    "website": "https://coderschool.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Data Science",
+      "Machine Learning",
+      "Full-stack Web"
+    ],
+    "category": "AI_DATA_SCIENCE",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa AI ứng dụng, Machine Learning & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:36:47.968667",
+    "status": "SENT"
+  },
+  {
+    "name": "CyberSoft Academy",
+    "email": "contact@cybersoft.edu.vn",
+    "website": "https://cybersoft.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Lập trình Front-end/Back-end",
+      "AI",
+      "Python"
+    ],
+    "category": "BOOTCAMP_DEV",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:36:58.380733",
+    "status": "SENT"
+  },
+  {
+    "name": "Green Academy Vietnam",
+    "email": "contact@greenacademy.edu.vn",
+    "website": "https://greenacademy.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình Web/Mobile",
+      "AI ứng dụng",
+      "IT & Thiết kế"
+    ],
+    "category": "DATA_BI",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-05T07:37:08.711448",
     "status": "SENT"
   }
 ]
