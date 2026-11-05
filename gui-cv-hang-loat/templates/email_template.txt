@@ -1,0 +1,36 @@
+Kính gửi: Ban Đào tạo & Tuyển dụng {target_name},
+
+Tôi tên là Nguyễn Đức Hoàng. Tôi gửi email này với mong muốn tìm hiểu và đề xuất cơ hội hợp tác giảng dạy / đào tạo các chương trình công nghệ thực chiến cùng {target_name}.
+
+Qua tìm hiểu, tôi được biết {target_name} là đơn vị đào tạo uy tín hàng đầu trong lĩnh vực {specialties_str}. Với hơn 12 năm kinh nghiệm thực chiến trong ngành phát triển phần mềm và hơn 8 năm trực tiếp tham gia đào tạo công nghệ cho các học viện và doanh nghiệp đối tác, tôi có thể đảm nhận giảng dạy và chuyển giao công nghệ ở các mảng trọng tâm sau:
+
+1. Trí tuệ nhân tạo (AI) ứng dụng & Modern Development (Vibe Coding):
+- Ứng dụng Generative AI và Prompt Engineering thực chiến vào công việc và phân tích dữ liệu.
+- Hướng dẫn phương pháp tối ưu hóa hiệu suất lập trình và xử lý dữ liệu với các công cụ AI thế hệ mới (Cursor, GitHub Copilot, Gemini/ChatGPT).
+
+2. Phân tích Dữ liệu (Data Analytics):
+- Thu thập, làm sạch và xử lý dữ liệu thực tế bằng Python (Pandas, NumPy) và SQL từ cơ bản đến chuyên sâu.
+- Xây dựng Data Pipeline và giải quyết các bài toán dữ liệu thực tế của doanh nghiệp.
+
+3. Tạo Báo cáo Động & Trực quan hóa Dữ liệu (Dashboard & Dynamic Reporting):
+- Thiết kế Dashboard điều hành và báo cáo tự động hóa trực quan (Power BI, Tableau, Python Visualization).
+- Tự động hóa quy trình tổng hợp số liệu phục vụ ra quyết định kinh doanh (Data-driven Decision Making).
+
+4. Phát triển Phần mềm & Hệ thống (Software Engineering):
+- Backend & Kiến trúc hệ thống: Python, Java (Spring Boot), Node.js, DevOps & Docker.
+
+Phương pháp sư phạm của tôi luôn lấy "Thực hành - Dự án thực chiến (Hands-on)" làm trọng tâm, bám sát nhu cầu thực tế giúp học viên làm được việc ngay.
+
+Quý đơn vị có thể tham khảo thêm hồ sơ năng lực chi tiết và phong cách truyền đạt của tôi qua các liên kết dưới đây:
+- Hồ sơ năng lực (CV trực tuyến): {cv_link}
+- Kênh YouTube bài giảng công nghệ: {youtube_link}
+
+Tôi rất mong có cơ hội được trao đổi trực tiếp hoặc gửi Đề cương chi tiết (Syllabus) để cùng {target_name} triển khai các khóa đào tạo chất lượng cao.
+
+Kính chúc {target_name} ngày càng phát triển và gặt hái nhiều thành công!
+
+Trân trọng,
+Nguyễn Đức Hoàng
+Chuyên gia Phần mềm | Data Analyst & Giảng viên Công nghệ
+Email: {sender_email}
+YouTube: {youtube_link}

@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "name": "Datapot Analytics",
+    "email": "contact@datapot.vn",
+    "website": "https://datapot.vn",
+    "city": "Hà Nội",
+    "specialties": ["Phân tích dữ liệu", "Power BI", "SQL", "Báo cáo động"],
+    "description": "Đơn vị đào tạo hàng đầu về Phân tích dữ liệu và Business Intelligence tại Việt Nam"
+  },
+  {
+    "id": 2,
+    "name": "Cole Academy",
+    "email": "contact@cole.vn",
+    "website": "https://cole.vn",
+    "city": "Hà Nội",
+    "specialties": ["Phân tích dữ liệu", "Data Science", "Python", "AI ứng dụng"],
+    "description": "Học viện đào tạo công nghệ dữ liệu thực chiến và chuyển đổi số"
+  },
+  {
+    "id": 3,
+    "name": "MCI Vietnam (MCI Consulting & Training)",
+    "email": "contact@mci.edu.vn",
+    "website": "https://mci.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Data Analytics", "Python", "Machine Learning", "AI"],
+    "description": "Viện đào tạo chuyên sâu về Khoa học dữ liệu và Chuyển đổi số doanh nghiệp"
+  },
+  {
+    "id": 4,
+    "name": "Datarock Academy",
+    "email": "lienhe@datarock.vn",
+    "website": "https://datarock.vn",
+    "city": "Hà Nội",
+    "specialties": ["Data Analytics", "Power BI", "Data Visualization", "Dashboard"],
+    "description": "Đơn vị chuyên đào tạo trực quan hóa dữ liệu và dashboard quản trị"
+  },
+  {
+    "id": 5,
+    "name": "MindX Technology School",
+    "email": "tuyendung@mindx.edu.vn",
+    "website": "https://mindx.edu.vn",
+    "city": "Toàn quốc",
+    "specialties": ["Lập trình Full-stack", "AI", "Data Analytics"],
+    "description": "Hệ sinh thái đào tạo công nghệ quy mô lớn nhất Việt Nam"
+  },
+  {
+    "id": 6,
+    "name": "Rikkei Academy",
+    "email": "academy@rikkeisoft.com",
+    "website": "https://rikkeiacademy.com",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": ["Lập trình Java", "Python", "AI", "Phần mềm doanh nghiệp"],
+    "description": "Học viện đào tạo lập trình viên quốc tế thuộc tập đoàn Rikkeisoft"
+  },
+  {
+    "id": 7,
+    "name": "VTI Academy",
+    "email": "info@vtiacademy.edu.vn",
+    "website": "https://vtiacademy.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Lập trình phần mềm", "AI", "DevOps", "Cloud AWS"],
+    "description": "Viện đào tạo CNTT trực thuộc tập đoàn công nghệ VTI"
+  },
+  {
+    "id": 8,
+    "name": "Học viện Công nghệ BKACAD",
+    "email": "contact@bkacad.edu.vn",
+    "website": "https://bkacad.edu.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình phần mềm", "Mạng máy tính", "AI", "Dữ liệu"],
+    "description": "Chương trình đào tạo chuyên gia CNTT - Đại học Bách Khoa Hà Nội"
+  },
+  {
+    "id": 9,
+    "name": "CodeGym Vietnam",
+    "email": "info@codegym.vn",
+    "website": "https://codegym.vn",
+    "city": "Toàn quốc",
+    "specialties": ["Lập trình phần mềm", "Java", "Python", "Web Development"],
+    "description": "Hệ thống đào tạo lập trình hiện đại theo mô hình Coding Bootcamp"
+  },
+  {
+    "id": 10,
+    "name": "CoderSchool",
+    "email": "admissions@coderschool.vn",
+    "website": "https://coderschool.vn",
+    "city": "TP.HCM / Online",
+    "specialties": ["Data Science", "Machine Learning", "Full-stack Web"],
+    "description": "Trường đào tạo lập trình và khoa học dữ liệu theo tiêu chuẩn quốc tế"
+  },
+  {
+    "id": 11,
+    "name": "CyberSoft Academy",
+    "email": "contact@cybersoft.edu.vn",
+    "website": "https://cybersoft.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": ["Lập trình Front-end/Back-end", "AI", "Python"],
+    "description": "Trung tâm đào tạo lập trình chuyên sâu theo dự án thực tế"
+  },
+  {
+    "id": 12,
+    "name": "Green Academy Vietnam",
+    "email": "contact@greenacademy.edu.vn",
+    "website": "https://greenacademy.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Lập trình Web/Mobile", "AI ứng dụng", "IT & Thiết kế"],
+    "description": "Học viện đào tạo 100% vốn Hàn Quốc chuyên về CNTT và Thiết kế"
+  },
+  {
+    "id": 13,
+    "name": "Viện CNTT ITPlus (ITPlus Academy)",
+    "email": "tuyensinh@itplus-academy.edu.vn",
+    "website": "https://itplus-academy.edu.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình phần mềm", "Thiết kế đồ họa", "AI", "Data"],
+    "description": "Viện đào tạo CNTT liên kết với Viện Công nghệ Thông tin - ĐHQGHN"
+  },
+  {
+    "id": 14,
+    "name": "Robusta Technology & Training",
+    "email": "learn@robusta.vn",
+    "website": "https://robusta.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Cloud", "DevOps", "AI", "Big Data", "Bảo mật"],
+    "description": "Trung tâm đào tạo công nghệ thông tin chuyên nghiệp cho doanh nghiệp"
+  },
+  {
+    "id": 15,
+    "name": "VTC Academy",
+    "email": "info@vtc.edu.vn",
+    "website": "https://vtc.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": ["Lập trình phần mềm", "Trí tuệ nhân tạo (AI)", "Thiết kế 3D"],
+    "description": "Học viện đào tạo Công nghệ và Nội dung số trực thuộc Tổng công ty VTC"
+  },
+  {
+    "id": 16,
+    "name": "Kmin Academy",
+    "email": "contact@kmin.edu.vn",
+    "website": "https://kmin.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": ["Lập trình ứng dụng", "Thuật toán", "Python", "Data"],
+    "description": "Học viện đào tạo lập trình viên và tư duy thuật toán"
+  },
+  {
+    "id": 17,
+    "name": "MasterDev Academy",
+    "email": "contact@masterdev.edu.vn",
+    "website": "https://masterdev.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Backend Architecture", "Java Spring Boot", "AI Tools"],
+    "description": "Học viện đào tạo nâng cao năng lực cho kỹ sư phần mềm"
+  },
+  {
+    "id": 18,
+    "name": "Học viện Quốc tế NIIT ICT Hà Nội",
+    "email": "tuyensinh@niithanoi.edu.vn",
+    "website": "https://niithanoi.edu.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình phần mềm", "Data Analytics", "AI"],
+    "description": "Đơn vị đào tạo công nghệ thông tin chuẩn quốc tế thuộc tập đoàn NIIT Ấn Độ"
+  },
+  {
+    "id": 19,
+    "name": "FPT Software Academy",
+    "email": "academy@fpt.com",
+    "website": "https://fptsoftwareacademy.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": ["Lập trình phần mềm", "AI", "Data Engineering", "Cloud"],
+    "description": "Học viện đào tạo kỹ sư công nghệ của FPT Software"
+  },
+  {
+    "id": 20,
+    "name": "Sun* CI (Sun Asterisk Academy)",
+    "email": "hr-ci@sun-asterisk.com",
+    "website": "https://sun-asterisk.com",
+    "city": "Hà Nội / Đà Nẵng",
+    "specialties": ["Lập trình phần mềm", "AI", "Mobile", "DevOps"],
+    "description": "Trung tâm phát triển năng lực công nghệ thuộc Sun Asterisk"
+  },
+  {
+    "id": 21,
+    "name": "UniGap",
+    "email": "contact@unigap.edu.vn",
+    "website": "https://unigap.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Phân tích dữ liệu", "Product Management", "SQL", "Dashboard"],
+    "description": "Nền tảng đào tạo kỹ năng nghề số cho sinh viên và người đi làm"
+  },
+  {
+    "id": 22,
+    "name": "Tomorrow Marketers Academy",
+    "email": "info@tomorrowmarketers.org",
+    "website": "https://tomorrowmarketers.org",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": ["Data Analytics for Business", "Power BI", "Data-driven Decision"],
+    "description": "Học viện đào tạo tư duy dữ liệu và phân tích cho doanh nghiệp và marketer"
+  },
+  {
+    "id": 23,
+    "name": "Gitiho for Business",
+    "email": "doanhnghiep@gitiho.com",
+    "website": "https://gitiho.com",
+    "city": "Hà Nội",
+    "specialties": ["Data Analysis", "Power BI", "Báo cáo tự động hóa", "Excel nâng cao"],
+    "description": "Nền tảng đào tạo kỹ năng số và dữ liệu cho hơn 500+ doanh nghiệp tại Việt Nam"
+  },
+  {
+    "id": 24,
+    "name": "Nordic Coder",
+    "email": "info@nordiccoder.com",
+    "website": "https://nordiccoder.com",
+    "city": "TP.HCM",
+    "specialties": ["Lập trình phần mềm", "Data Analytics", "AI", "Full-stack"],
+    "description": "Trường đào tạo lập trình công nghệ theo tiêu chuẩn Bắc Âu"
+  },
+  {
+    "id": 25,
+    "name": "DevPro Vietnam",
+    "email": "devpro.vn@gmail.com",
+    "website": "https://devpro.edu.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình phần mềm thực chiến", "Python", "Java", "Mobile"],
+    "description": "Trung tâm đào tạo lập trình viên và nhân lực CNTT chất lượng cao"
+  },
+  {
+    "id": 26,
+    "name": "Stanford - Dạy kinh nghiệm lập trình",
+    "email": "stanford@stanford.com.vn",
+    "website": "https://stanford.com.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình ứng dụng", "Python", "Java", "C#", "Cơ sở dữ liệu"],
+    "description": "Công ty đào tạo và phát triển công nghệ thực hành dự án"
+  },
+  {
+    "id": 27,
+    "name": "Ant Academy",
+    "email": "contact@antacademy.vn",
+    "website": "https://antacademy.vn",
+    "city": "Hà Nội / Online",
+    "specialties": ["Lập trình ứng dụng", "AI ứng dụng", "Python"],
+    "description": "Học viện công nghệ đào tạo lập trình viên và ứng dụng AI thực tế"
+  },
+  {
+    "id": 28,
+    "name": "UAC Academy (Học viện Phân tích Dữ liệu UAC)",
+    "email": "contact@uac.edu.vn",
+    "website": "https://uac.edu.vn",
+    "city": "Hà Nội",
+    "specialties": ["Phân tích dữ liệu", "Báo cáo động", "Business Intelligence"],
+    "description": "Đơn vị tư vấn và đào tạo năng lực phân tích dữ liệu cho tổ chức"
+  },
+  {
+    "id": 29,
+    "name": "TopDev Training",
+    "email": "contact@topdev.vn",
+    "website": "https://topdev.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": ["Khóa học công nghệ chuyên sâu", "AI", "Tech Lead", "Architecture"],
+    "description": "Nền tảng tuyển dụng và đào tạo công nghệ thông tin hàng đầu Việt Nam"
+  },
+  {
+    "id": 30,
+    "name": "Học viện Viettel (Viettel Academy)",
+    "email": "viettelacademy@viettel.com.vn",
+    "website": "https://viettel.com.vn",
+    "city": "Hà Nội",
+    "specialties": ["AI", "Khoa học dữ liệu", "Chuyển đổi số", "Công nghệ cao"],
+    "description": "Học viện đào tạo cán bộ, kỹ sư công nghệ của Tập đoàn Công nghiệp - Viễn thông Quân đội"
+  },
+  {
+    "id": 31,
+    "name": "Trung tâm Đào tạo Công nghệ VNPT (VNPT-IT Training)",
+    "email": "vnptit.training@vnpt.vn",
+    "website": "https://vnpt.vn",
+    "city": "Hà Nội",
+    "specialties": ["Chuyển đổi số", "Dữ liệu lớn", "AI", "Phần mềm doanh nghiệp"],
+    "description": "Trung tâm đào tạo công nghệ và chuyển giao giải pháp số trực thuộc VNPT"
+  },
+  {
+    "id": 32,
+    "name": "TechX Academy",
+    "email": "info@techx.vn",
+    "website": "https://techx.vn",
+    "city": "TP.HCM",
+    "specialties": ["Cloud Computing", "DevOps", "AI & Big Data"],
+    "description": "Đơn vị đào tạo công nghệ điện toán đám mây và dữ liệu lớn"
+  },
+  {
+    "id": 33,
+    "name": "BigData Academy Vietnam",
+    "email": "contact@bigdataacademy.vn",
+    "website": "https://bigdataacademy.vn",
+    "city": "Hà Nội",
+    "specialties": ["Big Data", "Data Engineering", "Machine Learning", "AI"],
+    "description": "Học viện chuyên ngành Dữ liệu lớn và Trí tuệ nhân tạo"
+  },
+  {
+    "id": 34,
+    "name": "AI Education Vietnam",
+    "email": "info@aieducation.vn",
+    "website": "https://aieducation.vn",
+    "city": "Hà Nội / Online",
+    "specialties": ["Trí tuệ nhân tạo", "Prompt Engineering", "GenAI", "Vibe Coding"],
+    "description": "Tổ chức đào tạo kỹ năng AI ứng dụng cho cá nhân và tổ chức"
+  },
+  {
+    "id": 35,
+    "name": "DataScience Center Vietnam",
+    "email": "info@datascience.vn",
+    "website": "https://datascience.vn",
+    "city": "Hà Nội",
+    "specialties": ["Data Science", "Python Analytics", "Machine Learning"],
+    "description": "Trung tâm nghiên cứu và đào tạo ứng dụng Khoa học dữ liệu"
+  },
+  {
+    "id": 36,
+    "name": "TechMaster Vietnam",
+    "email": "lienhe@techmaster.vn",
+    "website": "https://techmaster.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình Web/Mobile", "Data Analytics", "DevOps", "AI"],
+    "description": "Trung tâm đào tạo công nghệ lập trình thực chiến uy tín tại Hà Nội"
+  },
+  {
+    "id": 37,
+    "name": "FUNiX (Tập đoàn FPT)",
+    "email": "tuyendung@funix.edu.vn",
+    "website": "https://funix.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": ["CNTT trực tuyến", "Data Science", "Machine Learning", "Software Dev"],
+    "description": "Trường đào tạo lập trình trực tuyến thuộc Tổ chức Giáo dục FPT"
+  },
+  {
+    "id": 38,
+    "name": "AHT Academy",
+    "email": "hr@ahtacademy.vn",
+    "website": "https://ahtacademy.vn",
+    "city": "Hà Nội",
+    "specialties": ["Lập trình ứng dụng", "Data Analytics", "Cloud"],
+    "description": "Học viện đào tạo lập trình viên và phân tích dữ liệu cho dự án quốc tế"
+  },
+  {
+    "id": 39,
+    "name": "NextTech Digital Academy",
+    "email": "academy@nexttech.asia",
+    "website": "https://nexttech.asia",
+    "city": "Hà Nội",
+    "specialties": ["Fintech", "Data-driven Management", "AI ứng dụng"],
+    "description": "Học viện đào tạo kỹ năng kinh tế số và công nghệ thuộc tập đoàn NextTech"
+  },
+  {
+    "id": 40,
+    "name": "Học viện Đổi mới Sáng tạo & Chuyển đổi số",
+    "email": "daotao@inno-transform.vn",
+    "website": "https://inno-transform.vn",
+    "city": "Hà Nội",
+    "specialties": ["AI ứng dụng doanh nghiệp", "Phân tích dữ liệu điều hành", "Báo cáo thông minh"],
+    "description": "Đơn vị đào tạo chuyển đổi số và khai phóng dữ liệu cho doanh nghiệp"
+  }
+]

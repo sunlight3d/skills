@@ -1,0 +1,32 @@
+{
+  "description": "Danh sách các đơn vị, domain và email bị loại trừ (không gửi mail)",
+  "keywords": [
+    "cecomtech",
+    "netpro",
+    "net pro",
+    "qnet",
+    "vietis",
+    "aptech",
+    "aprotrain",
+    "smartpro"
+  ],
+  "domains": [
+    "cecomtech.com.vn",
+    "cecomtech.vn",
+    "netpro.com.vn",
+    "netpro.vn",
+    "qnet.vn",
+    "vietis.com.vn",
+    "aptech.vn",
+    "aprotrain.com",
+    "smartpro.vn"
+  ],
+  "emails": [
+    "anhlm@cecomtech.com.vn",
+    "daotao@cecomtech.com.vn",
+    "contact@netpro.com.vn",
+    "daotao@netpro.com.vn",
+    "info@qnet.vn",
+    "hr@vietis.com.vn"
+  ]
+}
