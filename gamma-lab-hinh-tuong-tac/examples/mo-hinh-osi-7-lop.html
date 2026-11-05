@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tháp Giao Thức OSI 7 Tầng · Gamma Lab</title>
+<meta name="description" content="Khám phá kiến trúc mạng máy tính chuẩn OSI 7 lớp, trực quan hoá quá trình đóng gói dữ liệu (Encapsulation) từ Application xuống Physical bằng mô hình Isometric 3D tương tác.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<style>
+/* the.css — khung thẻ và bộ nhận diện Gamma Lab cho hình tương tác (skill hinh-tuong-tac)
+   Thẻ theo kiểu Anatomy: góc trên-trái "Hình n", trên-phải tên hình, dưới-trái gợi ý thao tác, dưới-phải số đọc sống. */
+:root{
+  --bg:#F6EAD0; --paper:#FFFDF7; --ink:#2b1b17; --mute:#7a6e63; --line:#d9c9a8;
+  --brand:#7F0220; --green:#1F6B3B; --gold:#F2B33D;
+  --water:#5aa9d6; --coffee:#4a2412; --steam:#ffffff;
+  --display:'Dela Gothic One',system-ui,sans-serif; --body:'Be Vietnam Pro',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#1d1613; --paper:#2a211c; --ink:#F6EAD0; --mute:#b8a994; --line:#4a3b31; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#1d1613; --paper:#2a211c; --ink:#F6EAD0; --mute:#b8a994; --line:#4a3b31; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 20px}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+h1{font:400 clamp(26px,4.5vw,40px)/1.1 var(--display);margin:6px 0 0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--brand)}
+.lead{max-width:62ch;color:var(--mute);margin:0;font-size:15px;line-height:1.5}
+.stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.9fr);gap:18px;align-items:start}
+@media (max-width:760px){.stage{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1.5px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(43,27,23,.08)}
+/* thẻ hình: 4 góc chữ nhỏ */
+.fig{padding:8px 10px 6px;min-width:0;display:grid;gap:2px}
+.fig svg{width:100%;height:auto;display:block}
+.figbar{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between;padding:4px 6px;font-size:12.5px;color:var(--mute)}
+.figbar b{font-family:var(--display);font-weight:400;color:var(--ink);font-size:12.5px;font-variant-numeric:tabular-nums}
+.figbar .fign{font-family:var(--display);color:var(--brand);font-size:12.5px}
+/* bảng điều khiển */
+.panel{padding:16px;display:grid;gap:14px}
+.ctl{display:grid;gap:5px}
+.ctl .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ctl label{font-weight:600;font-size:14px}
+.ctl output{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:15px;color:var(--brand)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+.hint{font-size:12px;color:var(--mute);line-height:1.4}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 14px var(--body);padding:10px 14px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+button.primary{background:var(--brand);border-color:var(--brand);color:#F6EAD0}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.read{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:var(--bg);border-radius:12px;padding:10px 12px;min-width:0}
+.tile .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.tile .v{font-family:var(--display);font-size:22px;line-height:1.1;margin-top:2px;font-variant-numeric:tabular-nums}
+.verdict{border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45;background:var(--bg);border-left:5px solid var(--green)}
+.verdict.sour{border-left-color:var(--gold)} .verdict.bitter{border-left-color:var(--brand)}
+/* thẻ chú thích bộ phận đang chọn + legend */
+.note{padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.note .n{font-family:var(--display);color:var(--brand);font-size:22px;line-height:1}
+.note h2{margin:0 0 4px;font:400 17px var(--display)}
+.note p{margin:0;font-size:14px;line-height:1.5;max-width:70ch}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.parts button{padding:6px 10px;font-size:12px;border-color:var(--line)}
+.parts button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.foot{font-size:12px;color:var(--mute);line-height:1.5;max-width:80ch}
+/* bộ phận trong SVG */
+svg .p{cursor:pointer;transition:transform .6s cubic-bezier(.2,.8,.2,1);outline:none}
+svg .p.sel .edge{stroke:var(--brand);stroke-width:2}
+svg .p:focus-visible .edge{stroke:var(--gold);stroke-width:2}
+svg .pipe{transition:opacity .4s}
+svg.apart .pipe{opacity:.2}
+svg .pin.apart-only{opacity:0;transition:opacity .3s}
+svg.apart .pin.apart-only{opacity:1}
+svg .flow{animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-36}}
+svg .puff{animation:puff 2.8s ease-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+svg .puff:nth-child(2){animation-delay:.9s} svg .puff:nth-child(3){animation-delay:1.8s}
+@keyframes puff{0%{transform:translateY(0) scale(.6);opacity:0}25%{opacity:1}100%{transform:translateY(-26px) scale(1.4);opacity:0}}
+svg .vib{animation:vib .18s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes vib{0%{transform:translate(0,0)}25%{transform:translate(.6px,-.3px)}50%{transform:translate(-.5px,.4px)}75%{transform:translate(.4px,.5px)}100%{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){svg .p,svg .pipe{transition:none}svg .flow,svg .puff,svg .vib{animation:none}}
+
+.wrap{max-width:1320px;gap:20px}.wrap>*{min-width:0}.stage{min-width:0;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:20px}.fig{position:sticky;top:18px}.figbar{font-size:11px;line-height:1.6}.figbar:last-child{border-top:1px solid var(--line);padding-top:10px}.figbar #live{font-family:var(--display);font-size:11px;color:var(--brand)}
+header{padding:8px 0 6px;gap:16px}.eyebrow{font-size:10px;line-height:1.6}h1{max-width:700px;font-size:clamp(29px,3.8vw,47px);line-height:1.2}.lead{max-width:45ch;font-size:13px}header .lead{margin-left:auto}.panel{gap:16px}.tea-choices{display:flex;flex-wrap:wrap;gap:6px}.tea-choices button{font-size:12px;padding:8px 12px;border-color:var(--line)}.tea-choices [aria-pressed=true],.subtype [aria-pressed=true]{background:var(--brand);color:var(--bg);border-color:var(--brand)}.subtype{display:flex;gap:6px}.subtype[hidden]{display:none}.subtype button{font-size:12px;padding:6px 14px}.ctl output{font-size:14px;white-space:nowrap}.hint{line-height:1.6}.route{border-block:1px solid var(--line);padding-block:10px}.route .hint{margin-bottom:7px}.route-track{font-weight:700;line-height:1.8;font-size:13px;color:var(--green)}.route small{display:block;margin-top:5px;font-size:11px;line-height:1.6;color:var(--mute)}
+.read{grid-template-columns:1fr 1fr}.tile .v{font-size:19px}.verdict{font-size:12px;line-height:1.65}.btns button{font-size:12px;padding:11px 14px}button:disabled{opacity:.55;cursor:default}input:disabled{opacity:.35}.note{padding:20px}.note p{max-width:95ch}.foot{max-width:none;font-size:12px;line-height:1.8;margin:0}.foot h2{font:400 16px var(--display);margin:0 0 8px}.foot p{margin:8px 0}.table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px}.ref-table{border-collapse:collapse;width:100%;font-size:11px;line-height:1.6;min-width:650px}.ref-table th,.ref-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}.ref-table th{color:var(--ink);background:var(--bg);font-size:10px}.ref-table tr:last-child td{border-bottom:0}.foot a{color:var(--brand)}.distinction{display:grid;grid-template-columns:1fr 1fr;gap:18px;border-block:1px solid var(--line);padding:14px 0}.distinction strong{color:var(--brand)}.status{min-height:34px;font-size:11px;color:var(--mute);line-height:1.6}.fig svg{min-width:0;background:radial-gradient(ellipse at 53% 50%,#f6ead044,transparent 66%);overflow:visible}.art{transition:opacity .25s}.skipped .art{opacity:.6}.skipped .art [fill]:not([fill="none"]){fill:#bdb8ad!important}.skipped .art .halo{display:none}.skipped .art [stroke]:not([stroke="none"]){stroke:#8c887f!important}.skipped .pin circle{fill:#8d887e}.skipped .pin rect{fill:#f0ede6}.pin{pointer-events:auto}.leader{fill:none;stroke:#8c8272;stroke-width:.65;pointer-events:none}.order{font-family:var(--display);font-size:8px;fill:#fffdf7;pointer-events:none}.running .order-bg{fill:var(--gold)}.running .art .edge{stroke:var(--brand);stroke-width:1.7}.machine-caption{font:600 8px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.legend-title{font:600 8px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.cup-label{font:600 7px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.pin text{font-size:8.5px}.pin text:last-child{font-size:10px}.pin rect{height:19px;rx:5px}.pin circle{r:9px}.note .n{font-size:28px}.motion-belt{transition:opacity .3s}.is-apart .motion-belt{opacity:.18}.ref-table td:first-child{font-weight:700;white-space:nowrap}.compare-link{font-size:11px;margin-left:auto}.zoom-link{font-size:10px;color:var(--mute);text-decoration:none;border-bottom:1px dotted var(--line)}
+@media(max-width:900px){.stage{grid-template-columns:1fr}.fig{position:static}.panel{grid-template-columns:1fr 1fr}.panel>.selector,.panel>.route,.panel>.btns,.panel>.verdict,.panel>.status{grid-column:1/-1}.lead{max-width:65ch}header .lead{margin-left:0}}
+@media(max-width:480px){body{padding:16px 12px 30px}.wrap{gap:14px}.fig{padding:7px 6px}.figbar{display:grid;gap:4px;font-size:10px;padding:4px 6px}.figbar span{overflow-wrap:anywhere}.figbar #live{font-size:10px}.panel{display:grid;grid-template-columns:1fr;padding:15px}.panel>*{grid-column:1!important}.note{padding:15px;gap:8px}.note h2{font-size:15px}.note p{font-size:12px}.parts button{font-size:11px}.distinction{grid-template-columns:1fr;gap:8px}h1{font-size:29px}.lead{font-size:12px}.eyebrow{font-size:9px;letter-spacing:.09em}.read .v{font-size:17px}.zoom-link{display:inline-block}.table-wrap{max-width:100%}}
+@media(prefers-reduced-motion:reduce){.art,.motion-belt{transition:none}}
+
+/* liên kết thẻ ↔ trạm */
+svg .leaders .leader{fill:none;stroke:#2b1b17;stroke-width:1;opacity:.5;transition:all .25s}
+svg .leaders .leader-dot{fill:#2b1b17;opacity:.5;transition:all .25s}
+svg .leaders .leader.sel{stroke:#7F0220;stroke-width:2.6;opacity:1}
+svg .leaders .leader-dot.sel{fill:#7F0220;opacity:1;r:4}
+svg .label-layer .pin{cursor:pointer}
+svg .label-layer .pin:hover rect{stroke-width:1.6}
+svg .label-layer .pin.sel rect{fill:#7F0220;stroke:#7F0220}
+svg .label-layer .pin.sel text:last-of-type{fill:#F6EAD0}
+svg .label-layer .pin.sel text:nth-of-type(1){fill:#F6EAD0}
+svg .p.sel .art{animation:pulse .7s ease-out 1;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes pulse{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
+/* ghi chú cạnh hình */
+.callout{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:4px 6px 2px;padding:12px 14px;border:2px solid #7F0220;border-radius:14px;background:var(--paper);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+.callout.show{opacity:1;transform:none}
+.callout.pop{animation:calloutPop .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes calloutPop{0%{transform:translateY(10px) scale(.98)}100%{transform:none}}
+.callout .n{font:400 26px/1 var(--display);color:#F6EAD0;background:#7F0220;border-radius:999px;width:38px;height:38px;display:grid;place-items:center}
+.callout h3{margin:0 0 4px;font:400 16px var(--display)}
+.callout p{margin:0;font-size:13px;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.callout.pop,svg .p.sel .art{animation:none}}
+.figtools{display:flex;gap:10px;align-items:center}.soundbtn{font:600 12px var(--body);padding:5px 10px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}.soundbtn[aria-pressed="true"]{background:#1F6B3B;border-color:#1F6B3B;color:#F6EAD0}
+.strip-title{font:600 8px var(--body);fill:#7a6e63;letter-spacing:.04em;text-transform:uppercase}.strip-label{font:600 7.5px var(--body);fill:#2b1b17}.strip-cell{cursor:pointer}.strip-cell:hover ellipse,.strip-cell:hover path{filter:brightness(1.08)}
+
+
+/* Tinh chỉnh đặc thù cho Mô hình OSI Gamma Lab */
+.osi-layer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--display);
+  font-size: 11px;
+  color: #fff;
+}
+.pdu-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: 12px;
+  color: var(--brand);
+}
+
+.encap-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px dashed var(--line);
+  font-size: 13px;
+}
+.encap-flow span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.encap-flow .arrow {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.device-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mute);
+  border: 1px solid var(--line);
+}
+
+.hardware-spec {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+.spec-box {
+  background: var(--bg);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.spec-box .k {
+  color: var(--mute);
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .06em;
+}
+.spec-box .v {
+  font-family: var(--display);
+  font-size: 14px;
+  color: var(--ink);
+  margin-top: 2px;
+}
+
+.step-indicator {
+  display: flex;
+  gap: 4px;
+  margin: 6px 0;
+}
+.step-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  transition: background .3s;
+}
+.step-bar.active {
+  background: var(--brand);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Gamma Lab · Mạng Máy Tính &amp; Hệ Thống Viễn Thông</div>
+      <h1>Mô Hình OSI 7 Lớp <em>&amp; Tháp Đóng Gói Dữ Liệu</em></h1>
+    </div>
+    <p class="lead">Mô hình phân tầng tham chiếu tiêu chuẩn ISO/IEC 7498-1. Khám phá nguyên lý đóng gói (Encapsulation) từ ứng dụng người dùng xuống xung nhịp vật lý trong không gian 3D.</p>
+  </header>
+
+  <div class="stage">
+    <!-- Thẻ hình Anatomy Card -->
+    <div class="card fig">
+      <div class="figbar">
+        <span><span class="fign">Hình 1</span> · Tháp module 7 tầng ISO/OSI</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span>Góc nhìn 45°</span>
+          <button id="btn-sound" style="padding:4px 10px;font-size:12px;">🔊 Âm thanh</button>
+        </div>
+      </div>
+
+      <svg id="iso" viewBox="0 0 900 540" role="img" aria-label="Mô hình 3D tháp 7 tầng OSI"></svg>
+
+      <div class="figbar">
+        <span>Gợi ý: Nhấn chọn tầng · Bấm Tháo rời để xem mổ xẻ · Chạy Đóng gói dữ liệu</span>
+        <span id="fig-status"><b>Trạng thái: Sẵn sàng truyền tin</b></span>
+      </div>
+    </div>
+
+    <!-- Bảng điều khiển & Số đọc sống -->
+    <div class="panel card">
+      <div class="ctl">
+        <div class="row">
+          <label>Dòng dữ liệu mô phỏng (Data Stream)</label>
+          <output id="val-flow">Tầng 7 ➔ Tầng 1</output>
+        </div>
+        <div class="step-indicator" id="step-indicators">
+          <div class="step-bar active"></div>
+          <div class="step-bar active"></div>
+          <div class="step-bar active"></div>
+          <div class="step-bar active"></div>
+          <div class="step-bar active"></div>
+          <div class="step-bar active"></div>
+          <div class="step-bar active"></div>
+        </div>
+        <div class="hint">Mô phỏng chu trình đóng gói (Gửi) hoặc gỡ bỏ header (Nhận).</div>
+      </div>
+
+      <div class="btns">
+        <button id="btn-encap" class="primary">▶ Gửi tin (Đóng gói L7 ➔ L1)</button>
+        <button id="btn-decap">◀ Nhận tin (Mở gói L1 ➔ L7)</button>
+        <button id="btn-apart">⚡ Tháo rời (Exploded View)</button>
+      </div>
+
+      <!-- Số đọc sống (Live Readouts) -->
+      <div class="read">
+        <div class="tile">
+          <div class="k">Tầng đang chọn</div>
+          <div class="v" id="stat-layer" style="color:var(--brand)">L7</div>
+        </div>
+        <div class="tile">
+          <div class="k">Đơn vị dữ liệu (PDU)</div>
+          <div class="v" id="stat-pdu" style="font-size:17px;">Data</div>
+        </div>
+        <div class="tile">
+          <div class="k">Thiết bị / Vai trò</div>
+          <div class="v" id="stat-device" style="font-size:15px;">Host / App</div>
+        </div>
+      </div>
+
+      <!-- Chuỗi đóng gói sống -->
+      <div class="encap-flow" id="encap-display">
+        <span><b>Gói tin:</b></span>
+        <span class="pdu-badge">Data</span>
+        <span class="arrow">➔</span>
+        <span class="pdu-badge">[TCP] Segment</span>
+        <span class="arrow">➔</span>
+        <span class="pdu-badge">[IP] Packet</span>
+        <span class="arrow">➔</span>
+        <span class="pdu-badge">[MAC] Frame</span>
+        <span class="arrow">➔</span>
+        <span class="pdu-badge">Bits 0101</span>
+      </div>
+
+      <!-- Thẻ kết luận / Phân tích tầng -->
+      <div class="verdict" id="verdict-box">
+        Đang tải thông tin...
+      </div>
+    </div>
+  </div>
+
+  <!-- Thẻ chú thích chi tiết bộ phận (Note Card) -->
+  <div class="card note">
+    <div class="n" id="note-n">7</div>
+    <div>
+      <h2 id="note-title">Tầng 7: Application (Tầng Ứng Dụng)</h2>
+      <p id="note-desc">Cung cấp giao diện tương tác trực tiếp giữa người dùng và các tiến trình ứng dụng mạng (HTTP, HTTPS, DNS, SMTP, FTP).</p>
+      
+      <div class="hardware-spec">
+        <div class="spec-box">
+          <div class="k">Giao thức tiêu biểu</div>
+          <div class="v" id="spec-protocols">HTTP, HTTPS, DNS, SSH, SMTP</div>
+        </div>
+        <div class="spec-box">
+          <div class="k">Header đóng gói thêm</div>
+          <div class="v" id="spec-header">Application Payload / HTTP Request</div>
+        </div>
+      </div>
+
+      <div class="parts" id="parts-legend"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    Gamma Lab · Tiêu chuẩn Kiến trúc Mạng Quốc Tế ISO 7498-1. Bản vẽ phối cảnh trục đo 3D (Isometric Projection) tích hợp bộ tổng hợp âm thanh Web Audio API mô phỏng tín hiệu nhị phân.
+  </footer>
+</div>
+
+<script>
+/* iso-kit.js — bộ dựng hình isometric tương tác cho Gamma Lab (skill hinh-tuong-tac)
+   Không phụ thuộc thư viện. Dán nguyên file này vào <script> của trang (hoặc dùng assets/ghep.mjs).
+   Toạ độ mô hình: x đi sang phải-xuống, y đi sang trái-xuống, z đi lên. Đơn vị = px khi scale = 1.
+   Quy tắc màu: mỗi bộ phận MỘT màu gốc, kit tự ra 4 tông (đỉnh sáng, mặt phải, mặt trái tối, bóng dưới).
+*/
+(function (global) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const hex = h => { const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h); return m ? m.slice(1).map(s => parseInt(s, 16)) : [128, 128, 128]; };
+  const toHex = c => '#' + c.map(v => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0')).join('');
+  const shade = (col, k) => toHex(hex(col).map(v => v * k));          // k<1 tối, k>1 sáng
+  const mix = (a, b, t) => { const A = hex(a), B = hex(b); return toHex(A.map((v, i) => v + (B[i] - v) * t)); };
+  const tones = col => ({ top: shade(col, 1.10), right: shade(col, 0.90), left: shade(col, 0.72), lo: shade(col, 0.55) });
+  const fmt = (n, d = 1) => Number(n).toFixed(d).replace('.', ',');  // kiểu số Việt: 9,0
+
+  /** Tạo ngữ cảnh vẽ trên một <svg>. opt: {ox, oy, scale, edge, edgeWidth} */
+  function create(svg, opt = {}) {
+    const ox = opt.ox ?? 320, oy = opt.oy ?? 250, S = opt.scale ?? 1;
+    const EDGE = opt.edge || '#2b1b17', EW = opt.edgeWidth ?? 1;
+    const iso = (x, y, z) => [ox + (x - y) * 0.866 * S, oy + (x + y) * 0.5 * S - z * S];
+    const el = (n, a = {}, par) => { const e = document.createElementNS(NS, n); for (const k in a) if (a[k] != null) e.setAttribute(k, a[k]); (par || svg).appendChild(e); return e; };
+    const pts = arr => arr.map(p => p.map(v => +v.toFixed(2)).join(',')).join(' ');
+    const E = { stroke: EDGE, 'stroke-width': EW, 'stroke-linejoin': 'round', class: 'edge' };
+    const poly = (p, fill, par, extra) => el('polygon', Object.assign({ points: pts(p), fill }, E, extra || {}), par);
+    let defs = svg.querySelector('defs') || el('defs');
+    const grads = {};
+    /** gradient ngang cho trụ: tối ở mép trái, sáng gần giữa-phải (ánh sáng từ trên-phải) */
+    function cylGrad(col) {
+      if (grads[col]) return grads[col];
+      const id = 'cg' + Object.keys(grads).length + '_' + col.slice(1);
+      const g = el('linearGradient', { id, x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
+      [[0, 0.62], [0.35, 0.92], [0.62, 1.02], [1, 0.70]].forEach(([o, k]) => el('stop', { offset: o, 'stop-color': shade(col, k) }, g));
+      grads[col] = `url(#${id})`; return grads[col];
+    }
+
+    /** bóng mờ dưới chân một bộ phận (đổ lên mặt đang đỡ nó) */
+    function halo(g, x, y, z, rx, ry, k = 0.14) {
+      const [cx, cy] = iso(x, y, z); return el('ellipse', { cx, cy: cy + 1, rx, ry, fill: 'rgba(0,0,0,' + k + ')', class: 'halo' }, g);
+    }
+
+    /** hộp: gốc (x,y,z), kích thước w (theo x), d (theo y), h (lên). o: {halo:true (bóng dưới chân, chỉ cho bộ phận đứng trên sàn), seam, screws} */
+    function box(g, x, y, z, w, d, h, col, o = {}) {
+      const T = tones(col);
+      if (o.halo) halo(g, x + w / 2, y + d / 2, z, (w + d) * 0.5, (w + d) * 0.26);   // chỉ bật halo cho bộ phận đứng trên sàn
+      const top = [iso(x, y, z + h), iso(x + w, y, z + h), iso(x + w, y + d, z + h), iso(x, y + d, z + h)];
+      const right = [iso(x + w, y, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x + w, y, z + h)];
+      const left = [iso(x, y + d, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x, y + d, z + h)];
+      const fL = poly(left, T.left, g), fR = poly(right, T.right, g), fT = poly(top, T.top, g);
+      if (o.screws) [[x + 4, y + 4], [x + w - 4, y + 4], [x + w - 4, y + d - 4], [x + 4, y + d - 4]].forEach(([sx, sy]) => { const [cx, cy] = iso(sx, sy, z + h); el('circle', { cx, cy, r: 1.4, fill: T.lo }, g); });
+      if (o.seam) { // một đường gân chạy quanh thân, cao o.seam từ đáy, chạy hết mép (không hụt góc)
+        const s = z + o.seam; el('polyline', { points: pts([iso(x, y + d, s), iso(x + w, y + d, s), iso(x + w, y, s)]), fill: 'none', stroke: T.lo, 'stroke-width': EW, opacity: .7 }, g);
+      }
+      return { top: fT, right: fR, left: fL, tones: T };
+    }
+
+    /** tấm phẳng mỏng (sàn, khay): như box nhưng không halo */
+    const slab = (g, x, y, z, w, d, h, col, o = {}) => box(g, x, y, z, w, d, h, col, Object.assign({ halo: false }, o));
+
+    /** trụ đứng tâm (x,y) đáy z, bán kính r, cao h. o: {bands:[z1,z2], halo:true, flat:true (không gradient)} */
+    function cyl(g, x, y, z, r, h, col, o = {}) {
+      const rx = r * 0.866 * 1.15, ry = r * 0.5 * 1.15;
+      const [cx, cy] = iso(x, y, z), [tx, ty] = iso(x, y, z + h);
+      if (o.halo) halo(g, x, y, z, rx * 1.15, ry * 1.15);
+      const body = el('path', { d: `M${cx - rx},${cy} L${tx - rx},${ty} A${rx},${ry} 0 0 0 ${tx + rx},${ty} L${cx + rx},${cy} A${rx},${ry} 0 0 1 ${cx - rx},${cy} Z`, fill: o.flat ? shade(col, .85) : cylGrad(col), stroke: EDGE, 'stroke-width': EW, class: 'edge' }, g);
+      (o.bands || []).forEach(bz => { const [bx, by] = iso(x, y, z + bz); el('path', { d: `M${bx - rx},${by} A${rx},${ry} 0 0 0 ${bx + rx},${by}`, fill: 'none', stroke: shade(col, .6), 'stroke-width': EW, opacity: .8 }, g); });
+      const top = el('ellipse', { cx: tx, cy: ty, rx, ry, fill: shade(col, 1.1), stroke: EDGE, 'stroke-width': EW, class: 'edge' }, g);
+      return { body, top, rx, ry, cx: tx, cy: ty, tones: tones(col) };
+    }
+
+    /** ống: đi qua các điểm mô hình, bán kính r. Đầu ống có chấm nối (ống không lơ lửng). o: {dots: true | false | 'start' | 'end'} */
+    function tube(g, points, r, col, o = {}) {
+      const P = points.map(p => iso(...p)); const d = 'M' + P.map(p => p.map(v => v.toFixed(1)).join(',')).join(' L');
+      const base = { d, fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round' };
+      el('path', Object.assign({}, base, { stroke: EDGE, 'stroke-width': r * 2 + EW * 2 }), g);
+      const body = el('path', Object.assign({}, base, { stroke: shade(col, .85), 'stroke-width': r * 2 }), g);
+      const hi = el('path', Object.assign({}, base, { stroke: shade(col, 1.25), 'stroke-width': Math.max(1, r * .5), opacity: .7 }), g);
+      const ends = o.dots === false ? [] : o.dots === 'start' ? [P[0]] : o.dots === 'end' ? [P[P.length - 1]] : [P[0], P[P.length - 1]];
+      ends.forEach(([cx, cy]) => el('circle', { cx, cy, r: r * 1.5, fill: shade(col, .7), stroke: EDGE, 'stroke-width': EW }, g));
+      return { d, body, hi, P };
+    }
+
+    /** nhãn số (balloon) tại điểm mô hình, kèm thẻ chữ bên phải nếu có tag (tên + số sống, cập nhật bằng figure.setTag).
+     *  Người dùng Gamma Lab muốn đọc được "ô này là gì, đang bao nhiêu" ngay trong hình. */
+    function pin(g, x, y, z, n, col = '#7F0220', tag, opt = {}) {
+      const [cx, cy] = iso(x, y, z); const t = el('g', { class: 'pin' + (opt.apartOnly ? ' apart-only' : '') }, g); let bg = null, txt = null;
+      if (tag) {
+        bg = el('rect', { x: cx + 12, y: cy - 8.5, width: 40, height: 17, rx: 8.5, fill: '#FFFDF7', stroke: '#2b1b17', 'stroke-width': .8, opacity: .96 }, t);
+        txt = el('text', { x: cx + 19, y: cy + 3.6, fill: '#2b1b17', 'font-size': 10, 'font-weight': 600, 'font-family': 'Be Vietnam Pro, sans-serif' }, t); txt.textContent = tag;
+      }
+      el('circle', { cx, cy, r: 11, fill: col, stroke: '#F6EAD0', 'stroke-width': 1.5 }, t);
+      el('text', { x: cx, y: cy + 4.2, 'text-anchor': 'middle', fill: '#F6EAD0', 'font-size': 12, 'font-family': 'Dela Gothic One, sans-serif' }, t).textContent = n;
+      const fit = () => { if (txt) bg.setAttribute('width', (txt.getComputedTextLength() + 14).toFixed(1)); };
+      fit();
+      return { g: t, txt, bg, set(s) { if (txt) { txt.textContent = s; fit(); } }, fit };
+    }
+
+    /** lưới ô vuông trên một mặt phẳng (khay thoát nước, sàn) */
+    function grid(g, x, y, z, w, d, step, col) {
+      for (let i = step; i < w; i += step) el('line', { x1: iso(x + i, y, z)[0], y1: iso(x + i, y, z)[1], x2: iso(x + i, y + d, z)[0], y2: iso(x + i, y + d, z)[1], stroke: col, 'stroke-width': .6, opacity: .7 }, g);
+      for (let j = step; j < d; j += step) el('line', { x1: iso(x, y + j, z)[0], y1: iso(x, y + j, z)[1], x2: iso(x + w, y + j, z)[0], y2: iso(x + w, y + j, z)[1], stroke: col, 'stroke-width': .6, opacity: .7 }, g);
+    }
+
+    /** chữ nhỏ khắc trên mặt (tối đa một nhãn/hình, theo nguyên tắc Anatomy) */
+    function engrave(g, x, y, z, text, col = '#2b1b17', size = 9) {
+      const [cx, cy] = iso(x, y, z); return el('text', { x: cx, y: cy, 'text-anchor': 'middle', fill: col, 'font-size': size, 'font-family': 'Be Vietnam Pro, sans-serif', 'font-weight': 600, opacity: .8 }, g);
+    }
+
+    return { svg, iso, el, poly, box, slab, cyl, tube, pin, halo, grid, engrave, shade, mix, tones, EDGE, EW, S, defs };
+  }
+
+  /** Hình = tập bộ phận. parts: [{id, n, h, p, tag, draw(g, ctx), pin:[x,y,z], apart:[dx,dy,dz], depth}]
+   *  - tag: chữ ngắn hiện cạnh nhãn số ("Nồi hơi 93 °C"); đổi lúc chạy bằng fig.setTag(id, text).
+   *  - pinApartOnly: true cho bộ phận bị bao bên trong (nhãn chỉ hiện khi tháo rời).
+   *  - depth: số càng nhỏ vẽ càng trước (xa). Mặc định theo thứ tự khai báo.
+   *  - draw() vẽ vào <g> riêng; pin đặt nhãn số; apart là độ dời khi tháo rời.
+   *  Trả về {groups, select, setApart, on, parts}
+   */
+  function figure(ctx, parts, opt = {}) {
+    const groups = {}, pins = {}; const listeners = { select: [] }; let sel = opt.selected || parts[0].id; let apart = false;
+    const ordered = parts.map((p, i) => Object.assign({ _i: i }, p)).sort((a, b) => (a.depth ?? a._i) - (b.depth ?? b._i));
+    ordered.forEach((pt, k) => {
+      const g = ctx.el('g', { class: 'p', id: 'g-' + pt.id, tabindex: 0, role: 'button', 'aria-label': pt.h });
+      g.style.transitionDelay = (k * 35) + 'ms';
+      pt.draw(g, ctx); groups[pt.id] = g;
+      if (pt.pin) pins[pt.id] = ctx.pin(g, ...pt.pin, pt.n, undefined, pt.tag, { apartOnly: !!pt.pinApartOnly });   // pinApartOnly: bộ phận nằm trong, nhãn chỉ hiện khi tháo rời
+      g.addEventListener('click', () => select(pt.id));
+      g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(pt.id); } });
+    });
+    function select(id) { sel = id; parts.forEach(p => groups[p.id].classList.toggle('sel', p.id === id)); listeners.select.forEach(f => f(parts.find(p => p.id === id))); }
+    function setApart(v) {
+      apart = v; parts.forEach(p => { const g = groups[p.id]; const a = apart && p.apart ? p.apart : [0, 0, 0]; const k = opt.apartScale ?? 0.9;
+        const x = (a[0] - a[1]) * 0.866 * k, y = (a[0] + a[1]) * 0.5 * k - a[2] * k; g.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`; });
+      ctx.svg.classList.toggle('apart', apart);
+    }
+    const on = (ev, f) => listeners[ev].push(f);
+    const setTag = (id, text) => { if (pins[id]) pins[id].set(text); };
+    const refreshTags = () => Object.values(pins).forEach(p => p.fit());
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTags);   // font tải xong thì đo lại bề rộng thẻ
+    /** tạo nút chọn bộ phận (legend) vào một phần tử HTML */
+    function legend(container) {
+      parts.forEach(pt => { const b = document.createElement('button'); b.type = 'button'; b.textContent = pt.n + '. ' + pt.h.split(' (')[0]; b.id = 'pb-' + pt.id; b.addEventListener('click', () => select(pt.id)); container.appendChild(b); });
+      on('select', pt => parts.forEach(p => document.getElementById('pb-' + p.id).setAttribute('aria-pressed', p.id === pt.id)));
+    }
+    return { groups, pins, select, setApart, on, legend, setTag, refreshTags, parts, get selected() { return sel; }, get apart() { return apart; } };
+  }
+
+  /** gắn nhiều thanh trượt vào một hàm update; trả về hàm đọc giá trị */
+  function bindRange(ids, update) {
+    const read = () => Object.fromEntries(ids.map(id => [id, +document.getElementById(id).value]));
+    ids.forEach(id => document.getElementById(id).addEventListener('input', () => update(read())));
+    return read;
+  }
+
+  global.IsoKit = { create, figure, bindRange, shade, mix, tones, fmt, clamp };
+})(window);
+
+</script>
+
+<script>
+(function() {
+  'use strict';
+  const { create, figure, clamp } = IsoKit;
+  const $ = id => document.getElementById(id);
+
+  // OSI Layer Data Definition
+  const LAYERS = [
+    {
+      k: 1,
+      id: 'l1',
+      name: 'Physical (Vật Lý)',
+      pdu: 'Bits (Xung nhịp 0/1)',
+      device: 'Cáp cáp mạng, Hub, Repeater',
+      col: '#6b665c', // Thép than
+      lightCol: '#9e998e',
+      protocols: '1000BASE-T, Wi-Fi PHY, RJ45, Quang học',
+      header: 'Không có header (Chuyển thành điện/quang/sóng)',
+      desc: 'Chịu trách nhiệm truyền chuỗi bit nhị phân thô (raw bits) qua môi trường vật lý. Quy định điện áp, chân cắm cáp, tần số sóng vô tuyến.'
+    },
+    {
+      k: 2,
+      id: 'l2',
+      name: 'Data Link (Liên Kết Dữ Liệu)',
+      pdu: 'Frame (Khung dữ liệu)',
+      device: 'Switch (L2), Bridge, NIC',
+      col: '#1F6B3B', // Xanh lục bảo Gamma
+      lightCol: '#2f9353',
+      protocols: 'Ethernet (802.3), Wi-Fi (802.11), PPP, ARP',
+      header: 'MAC Nguồn + MAC Đích + FCS/CRC Trailer',
+      desc: 'Đảm bảo truyền dữ liệu không lỗi giữa hai thiết bị cùng mạng LAN bằng địa chỉ phần cứng (MAC). Bọc Frame Header và thêm đuôi CRC kiểm tra lỗi.'
+    },
+    {
+      k: 3,
+      id: 'l3',
+      name: 'Network (Mạng)',
+      pdu: 'Packet (Gói tin)',
+      device: 'Router, Layer 3 Switch',
+      col: '#1e757d', // Xanh mòng két
+      lightCol: '#2aa6b0',
+      protocols: 'IPv4, IPv6, ICMP, IPsec, OSPF, BGP',
+      header: 'IP Nguồn (Source IP) + IP Đích (Dest IP)',
+      desc: 'Định tuyến (Routing) đường đi tối ưu cho gói tin qua nhiều mạng khác nhau. Quản lý địa chỉ logic toàn cầu (IP Address).'
+    },
+    {
+      k: 4,
+      id: 'l4',
+      name: 'Transport (Giao Vận)',
+      pdu: 'Segment / Datagram',
+      device: 'Host, Firewall, Load Balancer',
+      col: '#2b5ea8', // Xanh đại dương
+      lightCol: '#3e80db',
+      protocols: 'TCP (Tin cậy), UDP (Nhanh/Streaming)',
+      header: 'Port Nguồn + Port Đích + Sequence/ACK Number',
+      desc: 'Quản lý kết nối đầu cuối (End-to-End). TCP thực hiện bắt tay 3 bước, kiểm soát tắc nghẽn, truyền lại gói mất; UDP truyền tin siêu tốc.'
+    },
+    {
+      k: 5,
+      id: 'l5',
+      name: 'Session (Phiên)',
+      pdu: 'Data (Dữ liệu)',
+      device: 'Hệ điều hành / OS Network Stack',
+      col: '#7a4069', // Tím hoa cà sẫm
+      lightCol: '#a6588f',
+      protocols: 'NetBIOS, RPC, Sockets, PPTP',
+      header: 'Session Token / Đồng bộ hoá Checkpoint',
+      desc: 'Thiết lập, duy trì, đồng bộ và giải phóng các phiên đối thoại liên tục giữa ứng dụng của hai máy trạm.'
+    },
+    {
+      k: 6,
+      id: 'l6',
+      name: 'Presentation (Trình Diễn)',
+      pdu: 'Data (Định dạng)',
+      device: 'Thư viện mã hoá / Định dạng OS',
+      col: '#b85d18', // Hổ phách nung
+      lightCol: '#e0792b',
+      protocols: 'TLS / SSL, ASCII, JPEG, PNG, GZIP',
+      header: 'Mã hoá dữ liệu (Encryption) & Nén (Compression)',
+      desc: 'Chuyển đổi cú pháp, nén dữ liệu và mã hoá bảo mật (SSL/TLS). Đảm bảo dữ liệu từ máy này có thể đọc được trên máy tính khác.'
+    },
+    {
+      k: 7,
+      id: 'l7',
+      name: 'Application (Ứng Dụng)',
+      pdu: 'Data / Payload',
+      device: 'Ứng dụng người dùng (Browser, Mail Client)',
+      col: '#7F0220', // Đỏ rượu Gamma Lab
+      lightCol: '#b01135',
+      protocols: 'HTTP, HTTPS, DNS, SSH, SMTP, FTP',
+      header: 'Application Header (HTTP GET / POST / Status)',
+      desc: 'Tầng cao nhất tương tác trực tiếp với người dùng và phần mềm ứng dụng. Cung cấp các dịch vụ mạng như duyệt web, gửi email, tra cứu DNS.'
+    }
+  ];
+
+  // State
+  let currentLayerIndex = 6; // Layer 7 (0-indexed: 6)
+  let isApart = false;
+  let isSimulating = false;
+  let soundOn = true;
+
+  // Web Audio Synthesizer
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  function playTone(freq, duration = 0.2, type = 'sine') {
+    if (!soundOn) return;
+    const ctx = getAudio();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  function playLayerSound(layerK) {
+    if (!soundOn) return;
+    const ctx = getAudio();
+    if (!ctx) return;
+
+    if (layerK === 1) {
+      // Physical: Digital bit pulse burst
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => playTone(800 + (i % 2) * 400, 0.04, 'square'), i * 35);
+      }
+    } else if (layerK === 2) {
+      // Data Link: Double frame click
+      playTone(600, 0.06, 'sine');
+      setTimeout(() => playTone(750, 0.06, 'sine'), 60);
+    } else if (layerK === 3) {
+      // Network: Router packet routing chime
+      playTone(440, 0.12, 'triangle');
+    } else if (layerK === 4) {
+      // Transport: TCP SYN-ACK tri-tone
+      [523.25, 659.25, 783.99].forEach((f, idx) => {
+        setTimeout(() => playTone(f, 0.1, 'sine'), idx * 50);
+      });
+    } else {
+      // Session, Presentation, Application: Melodic chimes
+      const f = 400 + layerK * 80;
+      playTone(f, 0.25, 'sine');
+    }
+  }
+
+  // Visual Setup
+  const svg = $('iso');
+  const slabW = 160;
+  const slabD = 160;
+  const slabH = 22;
+  const gapZ = 4;
+
+  let currentFig = null;
+
+  function renderTower() {
+    svg.innerHTML = '';
+    const ctx = create(svg, { ox: 450, oy: 410, scale: 0.95 });
+
+    // Ground platform & Data conduit
+    ctx.slab(svg, -120, -120, -14, 240, 240, 14, '#ebdcc1', { halo: true });
+    ctx.grid(svg, -105, -105, 0, 210, 210, 30, '#d6c4a5');
+
+    // Central Glass Optical Data Bus (Cột cáp quang thẳng đứng)
+    ctx.cyl(svg, 0, 0, 0, 14, 215, '#5aa9d6', { halo: false });
+
+    const parts = [];
+
+    LAYERS.forEach((lyr, idx) => {
+      const zBase = idx * (slabH + gapZ);
+      const isSel = idx === currentLayerIndex;
+
+      parts.push({
+        id: lyr.id,
+        n: lyr.k,
+        layerIndex: idx,
+        h: `Tầng ${lyr.k}: ${lyr.name}`,
+        p: lyr.desc,
+        tag: `L${lyr.k} · ${lyr.pdu}`,
+        draw(g, c) {
+          // Halo shadow beneath each layer
+          c.halo(g, 0, 0, zBase, 75, 42, 0.14);
+
+          // Main layer module
+          c.box(g, -slabW / 2, -slabD / 2, zBase, slabW, slabD, slabH, lyr.col, {
+            seam: true,
+            screws: [14, slabD - 14]
+          });
+
+          // Front panel decorative indicator
+          c.box(g, slabW / 2 - 4, -slabD / 2 + 15, zBase + 4, 3, 24, slabH - 8, lyr.lightCol);
+          c.box(g, slabW / 2 - 4, slabD / 2 - 35, zBase + 4, 3, 20, slabH - 8, '#ffffff');
+
+          // Engrave layer code on front face
+          c.engrave(g, slabW / 2 + 1, -slabD / 2 + 45, zBase + 6, `LAYER ${lyr.k} · ${lyr.pdu.split(' ')[0].toUpperCase()}`, '#ffffff', 8);
+        },
+        pin: [slabW / 2 - 10, -slabD / 2 + 20, zBase + slabH],
+        apart: [0, 0, idx * 36], // Exploded view vector: lift upwards proportional to layer index
+        depth: idx
+      });
+    });
+
+    currentFig = figure(ctx, parts, {
+      selected: LAYERS[currentLayerIndex].id,
+      apartScale: 1
+    });
+
+    if (isApart) {
+      currentFig.setApart(true);
+    }
+
+    // Legend
+    const leg = $('parts-legend');
+    leg.innerHTML = '';
+    currentFig.legend(leg);
+
+    currentFig.on('select', pt => {
+      currentLayerIndex = pt.layerIndex;
+      updateUI();
+      playLayerSound(LAYERS[currentLayerIndex].k);
+    });
+
+    updateUI();
+  }
+
+  function updateUI() {
+    const lyr = LAYERS[currentLayerIndex];
+
+    $('note-n').textContent = lyr.k;
+    $('note-title').textContent = `Tầng ${lyr.k}: ${lyr.name}`;
+    $('note-desc').textContent = lyr.desc;
+    $('spec-protocols').textContent = lyr.protocols;
+    $('spec-header').textContent = lyr.header;
+
+    $('stat-layer').textContent = `L${lyr.k}`;
+    $('stat-pdu').textContent = lyr.pdu.split(' (')[0];
+    $('stat-device').textContent = lyr.device.split(',')[0];
+
+    // Verdict explanation
+    const verdict = $('verdict-box');
+    verdict.innerHTML = `
+      <b>Chi tiết Tầng ${lyr.k} (${lyr.name.split(' (')[0]}):</b><br>
+      • <b>Đơn vị PDU:</b> <span class="pdu-badge">${lyr.pdu}</span><br>
+      • <b>Phần Header gắn thêm:</b> <code>${lyr.header}</code><br>
+      • <b>Thiết bị xử lý:</b> <span class="device-chip">${lyr.device}</span><br>
+      • <b>Nhiệm vụ cốt lõi:</b> ${lyr.desc}
+    `;
+
+    // Step indicators
+    const bars = document.querySelectorAll('.step-bar');
+    bars.forEach((b, idx) => {
+      b.classList.toggle('active', idx <= currentLayerIndex);
+    });
+  }
+
+  function runSimulation(direction = 'down') {
+    if (isSimulating) return;
+    isSimulating = true;
+
+    $('val-flow').textContent = direction === 'down' ? 'Đang Đóng gói (L7 ➔ L1)...' : 'Đang Mở gói (L1 ➔ L7)...';
+    $('fig-status').innerHTML = direction === 'down'
+      ? '<b>Quá trình Encapsulation: Gắn thêm Headers</b>'
+      : '<b>Quá trình Decapsulation: Bóc tách Headers</b>';
+
+    const order = direction === 'down' ? [6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6];
+
+    order.forEach((idx, step) => {
+      setTimeout(() => {
+        currentLayerIndex = idx;
+        currentFig.select(LAYERS[idx].id);
+        playLayerSound(LAYERS[idx].k);
+
+        if (step === order.length - 1) {
+          isSimulating = false;
+          $('val-flow').textContent = direction === 'down' ? 'Đã thành chuỗi Bit vật lý!' : 'Đã chuyển thành Dữ liệu ứng dụng!';
+          $('fig-status').innerHTML = '<b>Truyền tải hoàn tất thành công!</b>';
+        }
+      }, step * 450);
+    });
+  }
+
+  // Buttons
+  $('btn-apart').addEventListener('click', () => {
+    isApart = !isApart;
+    $('btn-apart').textContent = isApart ? 'Ráp lại tháp OSI' : '⚡ Tháo rời (Exploded View)';
+    $('btn-apart').classList.toggle('primary', isApart);
+    playTone(480, 0.15, 'sine');
+    currentFig.setApart(isApart);
+  });
+
+  $('btn-encap').addEventListener('click', () => {
+    runSimulation('down');
+  });
+
+  $('btn-decap').addEventListener('click', () => {
+    runSimulation('up');
+  });
+
+  $('btn-sound').addEventListener('click', () => {
+    soundOn = !soundOn;
+    $('btn-sound').textContent = soundOn ? '🔊 Âm thanh' : '🔇 Tắt âm';
+    if (soundOn) playTone(540, 0.1, 'sine');
+  });
+
+  // Initial render
+  renderTower();
+})();
+</script>
+</body>
+</html>
