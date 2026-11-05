@@ -23,7 +23,7 @@ Phương pháp sư phạm của tôi luôn lấy "Thực hành - Dự án thực
 
 Quý đơn vị có thể tham khảo thêm hồ sơ năng lực chi tiết và phong cách truyền đạt của tôi qua các liên kết dưới đây:
 - Hồ sơ năng lực (CV trực tuyến): {cv_link}
-- Kênh YouTube bài giảng công nghệ: {youtube_link}
+- Kênh YouTube bài giảng công nghệ (hơn 200+ video thực hành): {youtube_link}
 
 Tôi rất mong có cơ hội được trao đổi trực tiếp hoặc gửi Đề cương chi tiết (Syllabus) để cùng {target_name} triển khai các khóa đào tạo chất lượng cao.
 

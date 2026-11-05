@@ -181,7 +181,7 @@ Phương pháp giảng dạy của tôi luôn lấy "Thực hành trên Case Stu
 
 Quý đơn vị có thể tham khảo thêm hồ sơ năng lực chi tiết và phong cách truyền đạt của tôi qua các liên kết dưới đây:
 - Hồ sơ năng lực (CV trực tuyến): {CV_LINK}
-- Kênh YouTube bài giảng công nghệ (500+ video): {YOUTUBE_LINK}
+- Kênh YouTube bài giảng công nghệ (hơn 200+ video thực hành): {YOUTUBE_LINK}
 
 Tôi rất mong có cơ hội được trao đổi trực tiếp hoặc gửi Đề cương chi tiết (Syllabus) để cùng {name} mang lại giá trị cao nhất cho học viên.
 
@@ -213,7 +213,7 @@ Tôi tên là Nguyễn Đức Hoàng. Tôi viết thư này để kết nối v�
 3. Xây dựng Data Pipeline & Triển khai mô hình (Deployment):
 - Đóng gói ứng dụng với Docker, thiết kế RESTful API để đưa mô hình dữ liệu vào vận hành thực tế.
 
-Với kinh nghiệm xây dựng kênh YouTube giáo dục công nghệ hơn 500+ video thực hành, phong cách giảng dạy của tôi luôn trực quan, cuốn hút và truyền cảm hứng mạnh mẽ đến người học.
+Với kinh nghiệm xây dựng kênh YouTube giáo dục công nghệ hơn 200+ video thực hành chất lượng cao, phong cách giảng dạy của tôi luôn trực quan, cuốn hút và truyền cảm hứng mạnh mẽ đến người học.
 
 Quý đơn vị có thể xem thêm chi tiết về kinh nghiệm và bài giảng của tôi:
 - Hồ sơ năng lực (CV): {CV_LINK}
@@ -250,7 +250,7 @@ Qua tìm hiểu về mô hình đào tạo theo dự án của {name} trong các
 
 Hồ sơ năng lực chi tiết và phong cách truyền đạt của tôi được thể hiện qua:
 - CV trực tuyến: {CV_LINK}
-- Kênh bài giảng YouTube (500+ video lập trình & dữ liệu): {YOUTUBE_LINK}
+- Kênh bài giảng YouTube (hơn 200+ video lập trình & dữ liệu): {YOUTUBE_LINK}
 
 Tôi rất mong có cơ hội được gửi Đề cương bài giảng hoặc hẹn lịch trao đổi trực tiếp để thảo luận về kế hoạch khai giảng các lớp học sắp tới.
 
@@ -285,7 +285,7 @@ Phương pháp sư phạm của tôi luôn bám sát chuẩn đầu ra thực t�
 
 Quý đơn vị có thể tham khảo thêm:
 - CV năng lực: {CV_LINK}
-- Kênh YouTube bài giảng (500+ video): {YOUTUBE_LINK}
+- Kênh YouTube bài giảng (hơn 200+ video thực chiến): {YOUTUBE_LINK}
 
 Tôi rất hân hạnh nếu có cơ hội được gặp gỡ hoặc trao đổi qua video call để cùng Quý đơn vị thảo luận chi tiết hơn về cơ hội hợp tác.
 
