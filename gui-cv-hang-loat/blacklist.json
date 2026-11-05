@@ -8,7 +8,10 @@
     "vietis",
     "aptech",
     "aprotrain",
-    "smartpro"
+    "smartpro",
+    "datapot",
+    "vti",
+    "vti academy"
   ],
   "domains": [
     "cecomtech.com.vn",
@@ -19,7 +22,10 @@
     "vietis.com.vn",
     "aptech.vn",
     "aprotrain.com",
-    "smartpro.vn"
+    "smartpro.vn",
+    "datapot.vn",
+    "vtiacademy.edu.vn",
+    "vti.com.vn"
   ],
   "emails": [
     "anhlm@cecomtech.com.vn",
@@ -27,6 +33,8 @@
     "contact@netpro.com.vn",
     "daotao@netpro.com.vn",
     "info@qnet.vn",
-    "hr@vietis.com.vn"
+    "hr@vietis.com.vn",
+    "contact@datapot.vn",
+    "info@vtiacademy.edu.vn"
   ]
 }
