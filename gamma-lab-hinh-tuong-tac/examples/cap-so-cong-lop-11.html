@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cấp Số Cộng & Khối Cầu Thang Gauss · Gamma Lab</title>
+<meta name="description" content="Khám phá số hạng tổng quát qua bóc tách đa tầng 3D, và chứng minh hình học kỳ diệu của nhà toán học Carl Friedrich Gauss về công thức tính tổng Sn bằng không gian 3D Isometric.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<style>
+/* the.css — khung thẻ và bộ nhận diện Gamma Lab cho hình tương tác (skill hinh-tuong-tac)
+   Thẻ theo kiểu Anatomy: góc trên-trái "Hình n", trên-phải tên hình, dưới-trái gợi ý thao tác, dưới-phải số đọc sống. */
+:root{
+  --bg:#F6EAD0; --paper:#FFFDF7; --ink:#2b1b17; --mute:#7a6e63; --line:#d9c9a8;
+  --brand:#7F0220; --green:#1F6B3B; --gold:#F2B33D;
+  --water:#5aa9d6; --coffee:#4a2412; --steam:#ffffff;
+  --display:'Dela Gothic One',system-ui,sans-serif; --body:'Be Vietnam Pro',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#1d1613; --paper:#2a211c; --ink:#F6EAD0; --mute:#b8a994; --line:#4a3b31; color-scheme:dark } }
+:root[data-theme="dark"]{ --bg:#1d1613; --paper:#2a211c; --ink:#F6EAD0; --mute:#b8a994; --line:#4a3b31; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 20px}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+h1{font:400 clamp(26px,4.5vw,40px)/1.1 var(--display);margin:6px 0 0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--brand)}
+.lead{max-width:62ch;color:var(--mute);margin:0;font-size:15px;line-height:1.5}
+.stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.9fr);gap:18px;align-items:start}
+@media (max-width:760px){.stage{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1.5px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(43,27,23,.08)}
+/* thẻ hình: 4 góc chữ nhỏ */
+.fig{padding:8px 10px 6px;min-width:0;display:grid;gap:2px}
+.fig svg{width:100%;height:auto;display:block}
+.figbar{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between;padding:4px 6px;font-size:12.5px;color:var(--mute)}
+.figbar b{font-family:var(--display);font-weight:400;color:var(--ink);font-size:12.5px;font-variant-numeric:tabular-nums}
+.figbar .fign{font-family:var(--display);color:var(--brand);font-size:12.5px}
+/* bảng điều khiển */
+.panel{padding:16px;display:grid;gap:14px}
+.ctl{display:grid;gap:5px}
+.ctl .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ctl label{font-weight:600;font-size:14px}
+.ctl output{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:15px;color:var(--brand)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+.hint{font-size:12px;color:var(--mute);line-height:1.4}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 14px var(--body);padding:10px 14px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+button.primary{background:var(--brand);border-color:var(--brand);color:#F6EAD0}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.read{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:var(--bg);border-radius:12px;padding:10px 12px;min-width:0}
+.tile .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.tile .v{font-family:var(--display);font-size:22px;line-height:1.1;margin-top:2px;font-variant-numeric:tabular-nums}
+.verdict{border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45;background:var(--bg);border-left:5px solid var(--green)}
+.verdict.sour{border-left-color:var(--gold)} .verdict.bitter{border-left-color:var(--brand)}
+/* thẻ chú thích bộ phận đang chọn + legend */
+.note{padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.note .n{font-family:var(--display);color:var(--brand);font-size:22px;line-height:1}
+.note h2{margin:0 0 4px;font:400 17px var(--display)}
+.note p{margin:0;font-size:14px;line-height:1.5;max-width:70ch}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.parts button{padding:6px 10px;font-size:12px;border-color:var(--line)}
+.parts button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.foot{font-size:12px;color:var(--mute);line-height:1.5;max-width:80ch}
+/* bộ phận trong SVG */
+svg .p{cursor:pointer;transition:transform .6s cubic-bezier(.2,.8,.2,1);outline:none}
+svg .p.sel .edge{stroke:var(--brand);stroke-width:2}
+svg .p:focus-visible .edge{stroke:var(--gold);stroke-width:2}
+svg .pipe{transition:opacity .4s}
+svg.apart .pipe{opacity:.2}
+svg .pin.apart-only{opacity:0;transition:opacity .3s}
+svg.apart .pin.apart-only{opacity:1}
+svg .flow{animation:flow 2.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-36}}
+svg .puff{animation:puff 2.8s ease-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+svg .puff:nth-child(2){animation-delay:.9s} svg .puff:nth-child(3){animation-delay:1.8s}
+@keyframes puff{0%{transform:translateY(0) scale(.6);opacity:0}25%{opacity:1}100%{transform:translateY(-26px) scale(1.4);opacity:0}}
+svg .vib{animation:vib .18s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes vib{0%{transform:translate(0,0)}25%{transform:translate(.6px,-.3px)}50%{transform:translate(-.5px,.4px)}75%{transform:translate(.4px,.5px)}100%{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){svg .p,svg .pipe{transition:none}svg .flow,svg .puff,svg .vib{animation:none}}
+
+.wrap{max-width:1320px;gap:20px}.wrap>*{min-width:0}.stage{min-width:0;grid-template-columns:minmax(0,1.85fr) minmax(300px,1fr);gap:20px}.fig{position:sticky;top:18px}.figbar{font-size:11px;line-height:1.6}.figbar:last-child{border-top:1px solid var(--line);padding-top:10px}.figbar #live{font-family:var(--display);font-size:11px;color:var(--brand)}
+header{padding:8px 0 6px;gap:16px}.eyebrow{font-size:10px;line-height:1.6}h1{max-width:700px;font-size:clamp(29px,3.8vw,47px);line-height:1.2}.lead{max-width:45ch;font-size:13px}header .lead{margin-left:auto}.panel{gap:16px}.tea-choices{display:flex;flex-wrap:wrap;gap:6px}.tea-choices button{font-size:12px;padding:8px 12px;border-color:var(--line)}.tea-choices [aria-pressed=true],.subtype [aria-pressed=true]{background:var(--brand);color:var(--bg);border-color:var(--brand)}.subtype{display:flex;gap:6px}.subtype[hidden]{display:none}.subtype button{font-size:12px;padding:6px 14px}.ctl output{font-size:14px;white-space:nowrap}.hint{line-height:1.6}.route{border-block:1px solid var(--line);padding-block:10px}.route .hint{margin-bottom:7px}.route-track{font-weight:700;line-height:1.8;font-size:13px;color:var(--green)}.route small{display:block;margin-top:5px;font-size:11px;line-height:1.6;color:var(--mute)}
+.read{grid-template-columns:1fr 1fr}.tile .v{font-size:19px}.verdict{font-size:12px;line-height:1.65}.btns button{font-size:12px;padding:11px 14px}button:disabled{opacity:.55;cursor:default}input:disabled{opacity:.35}.note{padding:20px}.note p{max-width:95ch}.foot{max-width:none;font-size:12px;line-height:1.8;margin:0}.foot h2{font:400 16px var(--display);margin:0 0 8px}.foot p{margin:8px 0}.table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px}.ref-table{border-collapse:collapse;width:100%;font-size:11px;line-height:1.6;min-width:650px}.ref-table th,.ref-table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}.ref-table th{color:var(--ink);background:var(--bg);font-size:10px}.ref-table tr:last-child td{border-bottom:0}.foot a{color:var(--brand)}.distinction{display:grid;grid-template-columns:1fr 1fr;gap:18px;border-block:1px solid var(--line);padding:14px 0}.distinction strong{color:var(--brand)}.status{min-height:34px;font-size:11px;color:var(--mute);line-height:1.6}.fig svg{min-width:0;background:radial-gradient(ellipse at 53% 50%,#f6ead044,transparent 66%);overflow:visible}.art{transition:opacity .25s}.skipped .art{opacity:.6}.skipped .art [fill]:not([fill="none"]){fill:#bdb8ad!important}.skipped .art .halo{display:none}.skipped .art [stroke]:not([stroke="none"]){stroke:#8c887f!important}.skipped .pin circle{fill:#8d887e}.skipped .pin rect{fill:#f0ede6}.pin{pointer-events:auto}.leader{fill:none;stroke:#8c8272;stroke-width:.65;pointer-events:none}.order{font-family:var(--display);font-size:8px;fill:#fffdf7;pointer-events:none}.running .order-bg{fill:var(--gold)}.running .art .edge{stroke:var(--brand);stroke-width:1.7}.machine-caption{font:600 8px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.legend-title{font:600 8px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.cup-label{font:600 7px 'Be Vietnam Pro',sans-serif;fill:#655c4e}.pin text{font-size:8.5px}.pin text:last-child{font-size:10px}.pin rect{height:19px;rx:5px}.pin circle{r:9px}.note .n{font-size:28px}.motion-belt{transition:opacity .3s}.is-apart .motion-belt{opacity:.18}.ref-table td:first-child{font-weight:700;white-space:nowrap}.compare-link{font-size:11px;margin-left:auto}.zoom-link{font-size:10px;color:var(--mute);text-decoration:none;border-bottom:1px dotted var(--line)}
+@media(max-width:900px){.stage{grid-template-columns:1fr}.fig{position:static}.panel{grid-template-columns:1fr 1fr}.panel>.selector,.panel>.route,.panel>.btns,.panel>.verdict,.panel>.status{grid-column:1/-1}.lead{max-width:65ch}header .lead{margin-left:0}}
+@media(max-width:480px){body{padding:16px 12px 30px}.wrap{gap:14px}.fig{padding:7px 6px}.figbar{display:grid;gap:4px;font-size:10px;padding:4px 6px}.figbar span{overflow-wrap:anywhere}.figbar #live{font-size:10px}.panel{display:grid;grid-template-columns:1fr;padding:15px}.panel>*{grid-column:1!important}.note{padding:15px;gap:8px}.note h2{font-size:15px}.note p{font-size:12px}.parts button{font-size:11px}.distinction{grid-template-columns:1fr;gap:8px}h1{font-size:29px}.lead{font-size:12px}.eyebrow{font-size:9px;letter-spacing:.09em}.read .v{font-size:17px}.zoom-link{display:inline-block}.table-wrap{max-width:100%}}
+@media(prefers-reduced-motion:reduce){.art,.motion-belt{transition:none}}
+
+/* liên kết thẻ ↔ trạm */
+svg .leaders .leader{fill:none;stroke:#2b1b17;stroke-width:1;opacity:.5;transition:all .25s}
+svg .leaders .leader-dot{fill:#2b1b17;opacity:.5;transition:all .25s}
+svg .leaders .leader.sel{stroke:#7F0220;stroke-width:2.6;opacity:1}
+svg .leaders .leader-dot.sel{fill:#7F0220;opacity:1;r:4}
+svg .label-layer .pin{cursor:pointer}
+svg .label-layer .pin:hover rect{stroke-width:1.6}
+svg .label-layer .pin.sel rect{fill:#7F0220;stroke:#7F0220}
+svg .label-layer .pin.sel text:last-of-type{fill:#F6EAD0}
+svg .label-layer .pin.sel text:nth-of-type(1){fill:#F6EAD0}
+svg .p.sel .art{animation:pulse .7s ease-out 1;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes pulse{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
+/* ghi chú cạnh hình */
+.callout{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin:4px 6px 2px;padding:12px 14px;border:2px solid #7F0220;border-radius:14px;background:var(--paper);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+.callout.show{opacity:1;transform:none}
+.callout.pop{animation:calloutPop .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes calloutPop{0%{transform:translateY(10px) scale(.98)}100%{transform:none}}
+.callout .n{font:400 26px/1 var(--display);color:#F6EAD0;background:#7F0220;border-radius:999px;width:38px;height:38px;display:grid;place-items:center}
+.callout h3{margin:0 0 4px;font:400 16px var(--display)}
+.callout p{margin:0;font-size:13px;line-height:1.5}
+@media (prefers-reduced-motion:reduce){.callout.pop,svg .p.sel .art{animation:none}}
+.figtools{display:flex;gap:10px;align-items:center}.soundbtn{font:600 12px var(--body);padding:5px 10px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}.soundbtn[aria-pressed="true"]{background:#1F6B3B;border-color:#1F6B3B;color:#F6EAD0}
+.strip-title{font:600 8px var(--body);fill:#7a6e63;letter-spacing:.04em;text-transform:uppercase}.strip-label{font:600 7.5px var(--body);fill:#2b1b17}.strip-cell{cursor:pointer}.strip-cell:hover ellipse,.strip-cell:hover path{filter:brightness(1.08)}
+
+
+/* Tinh chỉnh nhận diện bổ sung cho Cấp số cộng Gamma Lab */
+.math-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--bg);
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--brand);
+}
+.legend-dot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.dot-base { background: #d4a373; border: 1px solid #a28356; }
+.dot-diff { background: #7F0220; border: 1px solid #5a0117; }
+.dot-gauss { background: #5aa9d6; border: 1px solid #3b82f6; }
+
+.legend-bar {
+  display: flex;
+  gap: 16px;
+  font-size: 12.5px;
+  color: var(--mute);
+  flex-wrap: wrap;
+  padding: 4px 2px;
+}
+.badge-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.badge-state.inc { color: var(--green); border-color: var(--green); }
+.badge-state.dec { color: var(--brand); border-color: var(--brand); }
+.badge-state.const { color: var(--gold); border-color: var(--gold); }
+
+.formula-box {
+  background: var(--bg);
+  border-left: 4px solid var(--brand);
+  padding: 10px 14px;
+  border-radius: 0 10px 10px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.formula-box b {
+  font-family: var(--display);
+  font-size: 14px;
+  color: var(--brand);
+}
+
+.ctl output {
+  min-width: 32px;
+  text-align: right;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Gamma Lab · Toán Học Trực Quan Lớp 11</div>
+      <h1>Cấp Số Cộng <em>&amp; Khối Cầu Thang Gauss</em></h1>
+    </div>
+    <p class="lead">Trực quan hoá số hạng tổng quát qua bóc tách đa tầng 3D, và chứng minh hình học kỳ diệu của nhà toán học Carl Friedrich Gauss về công thức tính tổng <i>S<sub>n</sub></i>.</p>
+  </header>
+
+  <div class="legend-bar">
+    <span><span class="legend-dot dot-base"></span> <b>Đế gốc u₁</b> (Độ cao cơ sở cố định ở mọi cột)</span>
+    <span><span class="legend-dot dot-diff"></span> <b>Khối công sai (k - 1)d</b> (Xếp tầng bậc thang tăng tiến)</span>
+    <span><span class="legend-dot dot-gauss"></span> <b>Khối bù đối xứng Gauss</b> (Ghép đôi hình học tính tổng S<sub>n</sub>)</span>
+  </div>
+
+  <div class="stage">
+    <!-- Khung hình Anatomy Card -->
+    <div class="card fig">
+      <div class="figbar">
+        <span><span class="fign">Hình 1</span> · Không gian số học Isometric 3D</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span>Góc nhìn 45°</span>
+          <button id="btn-sound" style="padding:4px 10px;font-size:12px;">🔊 Âm thanh</button>
+        </div>
+      </div>
+
+      <svg id="iso" viewBox="0 0 860 480" role="img" aria-label="Mô hình cấp số cộng 3D"></svg>
+
+      <div class="figbar">
+        <span>Gợi ý: Nhấn chọn cột · Kéo thanh d đổi chiều · Tháo rời hoặc Ghép Gauss</span>
+        <span id="fig-status" class="badge-state inc">Dãy tăng (d > 0)</span>
+      </div>
+    </div>
+
+    <!-- Bảng điều khiển -->
+    <div class="panel card">
+      <div class="ctl">
+        <div class="row">
+          <label for="rng-u1">Số hạng đầu (u₁)</label>
+          <output id="val-u1">3</output>
+        </div>
+        <input type="range" id="rng-u1" min="1" max="8" value="3" step="1">
+        <div class="hint">Độ cao của bệ móng cơ sở, chung cho tất cả các số hạng.</div>
+      </div>
+
+      <div class="ctl">
+        <div class="row">
+          <label for="rng-d">Công sai (d)</label>
+          <output id="val-d">+2</output>
+        </div>
+        <input type="range" id="rng-d" min="-3" max="4" value="2" step="1">
+        <div class="hint">Bước nhảy giữa hai số hạng: d &gt; 0 (tăng), d &lt; 0 (giảm), d = 0 (dãy hằng).</div>
+      </div>
+
+      <div class="ctl">
+        <div class="row">
+          <label for="rng-n">Số lượng số hạng (n)</label>
+          <output id="val-n">5</output>
+        </div>
+        <input type="range" id="rng-n" min="3" max="7" value="5" step="1">
+        <div class="hint">Số cột bậc thang hiển thị trên bệ không gian.</div>
+      </div>
+
+      <div class="btns">
+        <button id="btn-apart" class="primary">⚡ Tháo rời (Bóc tách u₁ &amp; d)</button>
+        <button id="btn-gauss">🧩 Ghép đôi Gauss (Tính Sₙ)</button>
+        <button id="btn-arpeggio">▶ Chạy âm giai</button>
+      </div>
+
+      <!-- Số đọc sống (Live Readouts) -->
+      <div class="read">
+        <div class="tile">
+          <div class="k">Số hạng đầu (u₁)</div>
+          <div class="v" id="stat-u1">3</div>
+        </div>
+        <div class="tile">
+          <div class="k">Số hạng cuối (uₙ)</div>
+          <div class="v" id="stat-un">11</div>
+        </div>
+        <div class="tile">
+          <div class="k">Tổng dãy (Sₙ)</div>
+          <div class="v" id="stat-sn" style="color:var(--brand)">35</div>
+        </div>
+      </div>
+
+      <!-- Thẻ kết luận / Lời giải thích -->
+      <div class="verdict" id="verdict-box">
+        Đang tính toán...
+      </div>
+    </div>
+  </div>
+
+  <!-- Thẻ chú thích chi tiết bộ phận (Note Card) -->
+  <div class="card note">
+    <div class="n" id="note-n">1</div>
+    <div>
+      <h2 id="note-title">Số hạng u₁ = 3</h2>
+      <div class="formula-box" id="note-formula" style="margin-bottom:10px;">
+        Công thức: u₁ = 3 (Số hạng nền móng mở đầu cho toàn dãy).
+      </div>
+      <p id="note-desc">Nhấn vào từng cột số hạng để giải phẫu cấu trúc đại số và tính chất trung bình cộng.</p>
+      <div class="parts" id="parts-legend"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    Gamma Lab · Bộ môn Toán THPT Chuyên biệt &amp; Trực quan hoá Hình học Trục đo Isometric 3D. Kiến thức trọng tâm: SGK Toán 11 (Cánh Diều, Kết Nối Tri Thức, Chân Trời Sáng Tạo).
+  </footer>
+</div>
+
+<script>
+/* iso-kit.js — bộ dựng hình isometric tương tác cho Gamma Lab (skill hinh-tuong-tac)
+   Không phụ thuộc thư viện. Dán nguyên file này vào <script> của trang (hoặc dùng assets/ghep.mjs).
+   Toạ độ mô hình: x đi sang phải-xuống, y đi sang trái-xuống, z đi lên. Đơn vị = px khi scale = 1.
+   Quy tắc màu: mỗi bộ phận MỘT màu gốc, kit tự ra 4 tông (đỉnh sáng, mặt phải, mặt trái tối, bóng dưới).
+*/
+(function (global) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const hex = h => { const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h); return m ? m.slice(1).map(s => parseInt(s, 16)) : [128, 128, 128]; };
+  const toHex = c => '#' + c.map(v => clamp(Math.round(v), 0, 255).toString(16).padStart(2, '0')).join('');
+  const shade = (col, k) => toHex(hex(col).map(v => v * k));          // k<1 tối, k>1 sáng
+  const mix = (a, b, t) => { const A = hex(a), B = hex(b); return toHex(A.map((v, i) => v + (B[i] - v) * t)); };
+  const tones = col => ({ top: shade(col, 1.10), right: shade(col, 0.90), left: shade(col, 0.72), lo: shade(col, 0.55) });
+  const fmt = (n, d = 1) => Number(n).toFixed(d).replace('.', ',');  // kiểu số Việt: 9,0
+
+  /** Tạo ngữ cảnh vẽ trên một <svg>. opt: {ox, oy, scale, edge, edgeWidth} */
+  function create(svg, opt = {}) {
+    const ox = opt.ox ?? 320, oy = opt.oy ?? 250, S = opt.scale ?? 1;
+    const EDGE = opt.edge || '#2b1b17', EW = opt.edgeWidth ?? 1;
+    const iso = (x, y, z) => [ox + (x - y) * 0.866 * S, oy + (x + y) * 0.5 * S - z * S];
+    const el = (n, a = {}, par) => { const e = document.createElementNS(NS, n); for (const k in a) if (a[k] != null) e.setAttribute(k, a[k]); (par || svg).appendChild(e); return e; };
+    const pts = arr => arr.map(p => p.map(v => +v.toFixed(2)).join(',')).join(' ');
+    const E = { stroke: EDGE, 'stroke-width': EW, 'stroke-linejoin': 'round', class: 'edge' };
+    const poly = (p, fill, par, extra) => el('polygon', Object.assign({ points: pts(p), fill }, E, extra || {}), par);
+    let defs = svg.querySelector('defs') || el('defs');
+    const grads = {};
+    /** gradient ngang cho trụ: tối ở mép trái, sáng gần giữa-phải (ánh sáng từ trên-phải) */
+    function cylGrad(col) {
+      if (grads[col]) return grads[col];
+      const id = 'cg' + Object.keys(grads).length + '_' + col.slice(1);
+      const g = el('linearGradient', { id, x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
+      [[0, 0.62], [0.35, 0.92], [0.62, 1.02], [1, 0.70]].forEach(([o, k]) => el('stop', { offset: o, 'stop-color': shade(col, k) }, g));
+      grads[col] = `url(#${id})`; return grads[col];
+    }
+
+    /** bóng mờ dưới chân một bộ phận (đổ lên mặt đang đỡ nó) */
+    function halo(g, x, y, z, rx, ry, k = 0.14) {
+      const [cx, cy] = iso(x, y, z); return el('ellipse', { cx, cy: cy + 1, rx, ry, fill: 'rgba(0,0,0,' + k + ')', class: 'halo' }, g);
+    }
+
+    /** hộp: gốc (x,y,z), kích thước w (theo x), d (theo y), h (lên). o: {halo:true (bóng dưới chân, chỉ cho bộ phận đứng trên sàn), seam, screws} */
+    function box(g, x, y, z, w, d, h, col, o = {}) {
+      const T = tones(col);
+      if (o.halo) halo(g, x + w / 2, y + d / 2, z, (w + d) * 0.5, (w + d) * 0.26);   // chỉ bật halo cho bộ phận đứng trên sàn
+      const top = [iso(x, y, z + h), iso(x + w, y, z + h), iso(x + w, y + d, z + h), iso(x, y + d, z + h)];
+      const right = [iso(x + w, y, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x + w, y, z + h)];
+      const left = [iso(x, y + d, z), iso(x + w, y + d, z), iso(x + w, y + d, z + h), iso(x, y + d, z + h)];
+      const fL = poly(left, T.left, g), fR = poly(right, T.right, g), fT = poly(top, T.top, g);
+      if (o.screws) [[x + 4, y + 4], [x + w - 4, y + 4], [x + w - 4, y + d - 4], [x + 4, y + d - 4]].forEach(([sx, sy]) => { const [cx, cy] = iso(sx, sy, z + h); el('circle', { cx, cy, r: 1.4, fill: T.lo }, g); });
+      if (o.seam) { // một đường gân chạy quanh thân, cao o.seam từ đáy, chạy hết mép (không hụt góc)
+        const s = z + o.seam; el('polyline', { points: pts([iso(x, y + d, s), iso(x + w, y + d, s), iso(x + w, y, s)]), fill: 'none', stroke: T.lo, 'stroke-width': EW, opacity: .7 }, g);
+      }
+      return { top: fT, right: fR, left: fL, tones: T };
+    }
+
+    /** tấm phẳng mỏng (sàn, khay): như box nhưng không halo */
+    const slab = (g, x, y, z, w, d, h, col, o = {}) => box(g, x, y, z, w, d, h, col, Object.assign({ halo: false }, o));
+
+    /** trụ đứng tâm (x,y) đáy z, bán kính r, cao h. o: {bands:[z1,z2], halo:true, flat:true (không gradient)} */
+    function cyl(g, x, y, z, r, h, col, o = {}) {
+      const rx = r * 0.866 * 1.15, ry = r * 0.5 * 1.15;
+      const [cx, cy] = iso(x, y, z), [tx, ty] = iso(x, y, z + h);
+      if (o.halo) halo(g, x, y, z, rx * 1.15, ry * 1.15);
+      const body = el('path', { d: `M${cx - rx},${cy} L${tx - rx},${ty} A${rx},${ry} 0 0 0 ${tx + rx},${ty} L${cx + rx},${cy} A${rx},${ry} 0 0 1 ${cx - rx},${cy} Z`, fill: o.flat ? shade(col, .85) : cylGrad(col), stroke: EDGE, 'stroke-width': EW, class: 'edge' }, g);
+      (o.bands || []).forEach(bz => { const [bx, by] = iso(x, y, z + bz); el('path', { d: `M${bx - rx},${by} A${rx},${ry} 0 0 0 ${bx + rx},${by}`, fill: 'none', stroke: shade(col, .6), 'stroke-width': EW, opacity: .8 }, g); });
+      const top = el('ellipse', { cx: tx, cy: ty, rx, ry, fill: shade(col, 1.1), stroke: EDGE, 'stroke-width': EW, class: 'edge' }, g);
+      return { body, top, rx, ry, cx: tx, cy: ty, tones: tones(col) };
+    }
+
+    /** ống: đi qua các điểm mô hình, bán kính r. Đầu ống có chấm nối (ống không lơ lửng). o: {dots: true | false | 'start' | 'end'} */
+    function tube(g, points, r, col, o = {}) {
+      const P = points.map(p => iso(...p)); const d = 'M' + P.map(p => p.map(v => v.toFixed(1)).join(',')).join(' L');
+      const base = { d, fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round' };
+      el('path', Object.assign({}, base, { stroke: EDGE, 'stroke-width': r * 2 + EW * 2 }), g);
+      const body = el('path', Object.assign({}, base, { stroke: shade(col, .85), 'stroke-width': r * 2 }), g);
+      const hi = el('path', Object.assign({}, base, { stroke: shade(col, 1.25), 'stroke-width': Math.max(1, r * .5), opacity: .7 }), g);
+      const ends = o.dots === false ? [] : o.dots === 'start' ? [P[0]] : o.dots === 'end' ? [P[P.length - 1]] : [P[0], P[P.length - 1]];
+      ends.forEach(([cx, cy]) => el('circle', { cx, cy, r: r * 1.5, fill: shade(col, .7), stroke: EDGE, 'stroke-width': EW }, g));
+      return { d, body, hi, P };
+    }
+
+    /** nhãn số (balloon) tại điểm mô hình, kèm thẻ chữ bên phải nếu có tag (tên + số sống, cập nhật bằng figure.setTag).
+     *  Người dùng Gamma Lab muốn đọc được "ô này là gì, đang bao nhiêu" ngay trong hình. */
+    function pin(g, x, y, z, n, col = '#7F0220', tag, opt = {}) {
+      const [cx, cy] = iso(x, y, z); const t = el('g', { class: 'pin' + (opt.apartOnly ? ' apart-only' : '') }, g); let bg = null, txt = null;
+      if (tag) {
+        bg = el('rect', { x: cx + 12, y: cy - 8.5, width: 40, height: 17, rx: 8.5, fill: '#FFFDF7', stroke: '#2b1b17', 'stroke-width': .8, opacity: .96 }, t);
+        txt = el('text', { x: cx + 19, y: cy + 3.6, fill: '#2b1b17', 'font-size': 10, 'font-weight': 600, 'font-family': 'Be Vietnam Pro, sans-serif' }, t); txt.textContent = tag;
+      }
+      el('circle', { cx, cy, r: 11, fill: col, stroke: '#F6EAD0', 'stroke-width': 1.5 }, t);
+      el('text', { x: cx, y: cy + 4.2, 'text-anchor': 'middle', fill: '#F6EAD0', 'font-size': 12, 'font-family': 'Dela Gothic One, sans-serif' }, t).textContent = n;
+      const fit = () => { if (txt) bg.setAttribute('width', (txt.getComputedTextLength() + 14).toFixed(1)); };
+      fit();
+      return { g: t, txt, bg, set(s) { if (txt) { txt.textContent = s; fit(); } }, fit };
+    }
+
+    /** lưới ô vuông trên một mặt phẳng (khay thoát nước, sàn) */
+    function grid(g, x, y, z, w, d, step, col) {
+      for (let i = step; i < w; i += step) el('line', { x1: iso(x + i, y, z)[0], y1: iso(x + i, y, z)[1], x2: iso(x + i, y + d, z)[0], y2: iso(x + i, y + d, z)[1], stroke: col, 'stroke-width': .6, opacity: .7 }, g);
+      for (let j = step; j < d; j += step) el('line', { x1: iso(x, y + j, z)[0], y1: iso(x, y + j, z)[1], x2: iso(x + w, y + j, z)[0], y2: iso(x + w, y + j, z)[1], stroke: col, 'stroke-width': .6, opacity: .7 }, g);
+    }
+
+    /** chữ nhỏ khắc trên mặt (tối đa một nhãn/hình, theo nguyên tắc Anatomy) */
+    function engrave(g, x, y, z, text, col = '#2b1b17', size = 9) {
+      const [cx, cy] = iso(x, y, z); return el('text', { x: cx, y: cy, 'text-anchor': 'middle', fill: col, 'font-size': size, 'font-family': 'Be Vietnam Pro, sans-serif', 'font-weight': 600, opacity: .8 }, g);
+    }
+
+    return { svg, iso, el, poly, box, slab, cyl, tube, pin, halo, grid, engrave, shade, mix, tones, EDGE, EW, S, defs };
+  }
+
+  /** Hình = tập bộ phận. parts: [{id, n, h, p, tag, draw(g, ctx), pin:[x,y,z], apart:[dx,dy,dz], depth}]
+   *  - tag: chữ ngắn hiện cạnh nhãn số ("Nồi hơi 93 °C"); đổi lúc chạy bằng fig.setTag(id, text).
+   *  - pinApartOnly: true cho bộ phận bị bao bên trong (nhãn chỉ hiện khi tháo rời).
+   *  - depth: số càng nhỏ vẽ càng trước (xa). Mặc định theo thứ tự khai báo.
+   *  - draw() vẽ vào <g> riêng; pin đặt nhãn số; apart là độ dời khi tháo rời.
+   *  Trả về {groups, select, setApart, on, parts}
+   */
+  function figure(ctx, parts, opt = {}) {
+    const groups = {}, pins = {}; const listeners = { select: [] }; let sel = opt.selected || parts[0].id; let apart = false;
+    const ordered = parts.map((p, i) => Object.assign({ _i: i }, p)).sort((a, b) => (a.depth ?? a._i) - (b.depth ?? b._i));
+    ordered.forEach((pt, k) => {
+      const g = ctx.el('g', { class: 'p', id: 'g-' + pt.id, tabindex: 0, role: 'button', 'aria-label': pt.h });
+      g.style.transitionDelay = (k * 35) + 'ms';
+      pt.draw(g, ctx); groups[pt.id] = g;
+      if (pt.pin) pins[pt.id] = ctx.pin(g, ...pt.pin, pt.n, undefined, pt.tag, { apartOnly: !!pt.pinApartOnly });   // pinApartOnly: bộ phận nằm trong, nhãn chỉ hiện khi tháo rời
+      g.addEventListener('click', () => select(pt.id));
+      g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(pt.id); } });
+    });
+    function select(id) { sel = id; parts.forEach(p => groups[p.id].classList.toggle('sel', p.id === id)); listeners.select.forEach(f => f(parts.find(p => p.id === id))); }
+    function setApart(v) {
+      apart = v; parts.forEach(p => { const g = groups[p.id]; const a = apart && p.apart ? p.apart : [0, 0, 0]; const k = opt.apartScale ?? 0.9;
+        const x = (a[0] - a[1]) * 0.866 * k, y = (a[0] + a[1]) * 0.5 * k - a[2] * k; g.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`; });
+      ctx.svg.classList.toggle('apart', apart);
+    }
+    const on = (ev, f) => listeners[ev].push(f);
+    const setTag = (id, text) => { if (pins[id]) pins[id].set(text); };
+    const refreshTags = () => Object.values(pins).forEach(p => p.fit());
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTags);   // font tải xong thì đo lại bề rộng thẻ
+    /** tạo nút chọn bộ phận (legend) vào một phần tử HTML */
+    function legend(container) {
+      parts.forEach(pt => { const b = document.createElement('button'); b.type = 'button'; b.textContent = pt.n + '. ' + pt.h.split(' (')[0]; b.id = 'pb-' + pt.id; b.addEventListener('click', () => select(pt.id)); container.appendChild(b); });
+      on('select', pt => parts.forEach(p => document.getElementById('pb-' + p.id).setAttribute('aria-pressed', p.id === pt.id)));
+    }
+    return { groups, pins, select, setApart, on, legend, setTag, refreshTags, parts, get selected() { return sel; }, get apart() { return apart; } };
+  }
+
+  /** gắn nhiều thanh trượt vào một hàm update; trả về hàm đọc giá trị */
+  function bindRange(ids, update) {
+    const read = () => Object.fromEntries(ids.map(id => [id, +document.getElementById(id).value]));
+    ids.forEach(id => document.getElementById(id).addEventListener('input', () => update(read())));
+    return read;
+  }
+
+  global.IsoKit = { create, figure, bindRange, shade, mix, tones, fmt, clamp };
+})(window);
+
+</script>
+
+<script>
+(function() {
+  'use strict';
+  const { create, figure, clamp } = IsoKit;
+  const $ = id => document.getElementById(id);
+
+  // State
+  let u1 = 3;
+  let d = 2;
+  let n = 5;
+  let isApart = false;
+  let isGauss = false;
+  let soundOn = true;
+  let selectedK = 1;
+
+  // Web Audio Synthesizer
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  function playTone(freq, duration = 0.25, type = 'sine') {
+    if (!soundOn) return;
+    const ctx = getAudio();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  function playStepSound(k) {
+    const val = u1 + (k - 1) * d;
+    const baseFreq = 220;
+    const clampedVal = clamp(val, -8, 30);
+    const freq = baseFreq * Math.pow(2, (clampedVal + 4) / 12);
+    playTone(freq, 0.28, 'triangle');
+  }
+
+  function playArpeggio() {
+    if (!soundOn) return;
+    for (let k = 1; k <= n; k++) {
+      setTimeout(() => {
+        selectTerm(k);
+        playStepSound(k);
+      }, (k - 1) * 160);
+    }
+  }
+
+  function playClick() {
+    playTone(540, 0.08, 'sine');
+  }
+
+  // Visual constants
+  const svg = $('iso');
+  const unitH = 15;
+  const colW = 38;
+  const colD = 42;
+  const stepX = 66;
+
+  let currentFig = null;
+
+  function renderScene() {
+    svg.innerHTML = '';
+    const ctx = create(svg, { ox: 430, oy: 290, scale: 0.95 });
+
+    const totalW = n * stepX;
+    const startX = -totalW / 2 + 10;
+    const endX = startX + totalW + 20;
+
+    // Platform slab & grid
+    ctx.slab(svg, startX - 35, -55, -12, (endX - startX) + 70, 110, 12, '#eedfc4', { halo: true });
+    ctx.grid(svg, startX - 25, -45, 0, (endX - startX) + 50, 90, 20, '#d9c9a8');
+
+    const parts = [];
+
+    for (let k = 1; k <= n; k++) {
+      const uk = u1 + (k - 1) * d;
+      const xk = startX + (k - 1) * stepX + 15;
+      const yk = -colD / 2;
+
+      const hBase = Math.max(0, u1) * unitH;
+      const addUnits = (k - 1) * d;
+      const hAdd = Math.max(0, addUnits) * unitH;
+      const totalH = Math.max(4, uk * unitH);
+
+      ctx.engrave(svg, xk + 6, -50, 0, `n=${k}`, '#7a6e63', 10);
+
+      if (!isApart) {
+        parts.push({
+          id: `col_${k}`,
+          n: k,
+          kIndex: k,
+          h: `Số hạng u_${k} = ${uk}`,
+          p: `Giá trị: u_${k} = u₁ + (${k} - 1)d = ${u1} + ${k - 1} × (${d}) = ${uk}.`,
+          draw(g, c) {
+            c.halo(g, xk + colW / 2, yk + colD / 2, 0, 28, 16, 0.18);
+
+            if (uk >= 0) {
+              if (d >= 0) {
+                // Đế u1
+                c.box(g, xk, yk, 0, colW, colD, hBase, '#d4a373', { seam: true });
+                // Gia số (k-1)d
+                if (k > 1 && hAdd > 0) {
+                  for (let step = 1; step < k; step++) {
+                    const zStep = hBase + (step - 1) * d * unitH;
+                    const stepHeight = d * unitH;
+                    c.box(g, xk, yk, zStep, colW, colD, stepHeight, '#7F0220', {
+                      seam: true,
+                      screws: [8, colD - 8]
+                    });
+                  }
+                }
+              } else {
+                c.box(g, xk, yk, 0, colW, colD, totalH, '#b5653a', { seam: true });
+              }
+
+              // Gauss block bù đắp
+              if (isGauss) {
+                const uComplement = u1 + (n - k) * d;
+                const hGauss = Math.max(4, uComplement * unitH);
+                c.box(g, xk, yk, totalH, colW, colD, hGauss, '#5aa9d6', {
+                  seam: true,
+                  screws: [colW / 2, colD / 2]
+                });
+              }
+            } else {
+              c.box(g, xk, yk, uk * unitH, colW, colD, Math.abs(uk) * unitH, '#8e8a80', { seam: true });
+            }
+          },
+          pin: [
+            xk + colW / 2,
+            yk + colD / 2,
+            isGauss ? ((u1 + (u1 + (n - 1) * d)) * unitH) : (uk >= 0 ? totalH : 0)
+          ],
+          tag: isGauss
+            ? `u${k}+u${n - k + 1} = ${u1 + (u1 + (n - 1) * d)}`
+            : `u${k} = ${uk}`,
+          depth: k
+        });
+      } else {
+        // Exploded view
+        parts.push({
+          id: `base_${k}`,
+          n: k,
+          kIndex: k,
+          h: `Bệ gốc u₁ (Cột ${k})`,
+          p: `Bệ móng u₁ = ${u1} đơn vị, nằm cố định trên mặt phẳng cơ sở.`,
+          draw(g, c) {
+            c.halo(g, xk + colW / 2, yk + colD / 2, 0, 24, 14, 0.15);
+            c.box(g, xk, yk, 0, colW, colD, hBase, '#d4a373', { seam: true });
+          },
+          pin: [xk + colW / 2, yk + colD / 2, hBase],
+          tag: `Đế u₁ = ${u1}`,
+          apart: [0, 0, 0],
+          depth: k * 2 - 1
+        });
+
+        if (k > 1 && addUnits !== 0) {
+          parts.push({
+            id: `add_${k}`,
+            n: k,
+            kIndex: k,
+            h: `Gia số (${k} - 1)d = ${addUnits}`,
+            p: `Phần tăng tiến gồm ${k - 1} đốt công sai d (${k - 1} × ${d} = ${addUnits}).`,
+            draw(g, c) {
+              if (addUnits > 0) {
+                for (let step = 1; step < k; step++) {
+                  const zStep = (step - 1) * d * unitH;
+                  c.box(g, xk, yk, zStep, colW, colD, d * unitH, '#7F0220', {
+                    seam: true,
+                    screws: [8, colD - 8]
+                  });
+                }
+              } else {
+                c.box(g, xk, yk, 0, colW, colD, Math.abs(addUnits) * unitH, '#b5653a', { seam: true });
+              }
+            },
+            pin: [xk + colW / 2, yk + colD / 2, Math.abs(hAdd)],
+            tag: `+(${k} - 1)d = ${addUnits}`,
+            apart: [0, -35, 60 + (k - 1) * 14],
+            depth: k * 2
+          });
+        }
+      }
+    }
+
+    currentFig = figure(ctx, parts, {
+      selected: parts[0] ? parts[0].id : null,
+      apartScale: 1
+    });
+
+    if (isApart) {
+      currentFig.setApart(true);
+    }
+
+    const legContainer = $('parts-legend');
+    legContainer.innerHTML = '';
+    currentFig.legend(legContainer);
+
+    currentFig.on('select', pt => {
+      selectedK = pt.kIndex || 1;
+      updateNote(selectedK);
+      playStepSound(selectedK);
+    });
+
+    updateUI();
+  }
+
+  function updateUI() {
+    const un = u1 + (n - 1) * d;
+    const sn = (n * (u1 + un)) / 2;
+
+    $('val-u1').textContent = u1;
+    $('val-d').textContent = (d > 0 ? '+' : '') + d;
+    $('val-n').textContent = n;
+
+    $('stat-u1').textContent = u1;
+    $('stat-un').textContent = un;
+    $('stat-sn').textContent = sn;
+
+    const badge = $('fig-status');
+    if (d > 0) {
+      badge.className = 'badge-state inc';
+      badge.innerHTML = `● Dãy tăng nghiêm ngặt (d = +${d} &gt; 0)`;
+    } else if (d < 0) {
+      badge.className = 'badge-state dec';
+      badge.innerHTML = `● Dãy giảm nghiêm ngặt (d = ${d} &lt; 0)`;
+    } else {
+      badge.className = 'badge-state const';
+      badge.innerHTML = `● Dãy không đổi / Dãy hằng (d = 0)`;
+    }
+
+    const verdict = $('verdict-box');
+    if (isGauss) {
+      verdict.className = 'verdict';
+      verdict.innerHTML = `
+        <b>Phương pháp ghép cặp Gauss tính tổng S_${n}:</b><br>
+        Mỗi cột được ghép với một cột đối xứng ngược lại:
+        <span class="math-chip">u₁ + u_${n} = ${u1} + ${un} = ${u1 + un}</span>,
+        <span class="math-chip">u₂ + u_${n - 1} = ${u1 + d} + ${un - d} = ${u1 + un}</span>...<br>
+        Tất cả <b>${n} cột</b> sau khi ghép đôi đều có cùng độ cao hoàn hảo là <b>${u1 + un}</b>.<br>
+        Khối chữ nhật tạo thành có diện tích: <b>2 × S_${n} = ${n} × (${u1} + ${un}) = ${n * (u1 + un)}</b><br>
+        Suy ra công thức: <b style="color:var(--brand);font-size:16px;">S_${n} = [${n} × (${u1} + ${un})] / 2 = ${sn}</b>.
+      `;
+    } else if (isApart) {
+      verdict.className = 'verdict';
+      verdict.innerHTML = `
+        <b>Bóc tách giải phẫu công thức số hạng tổng quát:</b><br>
+        Quan sát các khối đang bay lơ lửng: Mọi cột đều giữ nguyên bệ móng màu vàng đất <span class="math-chip">u₁ = ${u1}</span>.<br>
+        Phần màu đỏ nhấc bổng lên trên gồm đúng <b>(k - 1) tầng công sai d</b>.<br>
+        Chính vì thế: <b style="color:var(--brand);font-size:16px;">uₖ = u₁ + (k - 1)d</b>.
+      `;
+    } else {
+      verdict.className = 'verdict';
+      verdict.innerHTML = `
+        <b>Trạng thái dãy số hiện tại:</b><br>
+        Cấp số cộng có số hạng đầu <b>u₁ = ${u1}</b> và công sai <b>d = ${d}</b>.<br>
+        Số hạng thứ ${n} là: <span class="math-chip">u_${n} = ${u1} + (${n} - 1)×(${d}) = ${un}</span>.<br>
+        Tổng ${n} số hạng đầu: <span class="math-chip">S_${n} = ${sn}</span>.
+      `;
+    }
+
+    updateNote(selectedK);
+  }
+
+  function updateNote(k) {
+    if (k < 1) k = 1;
+    if (k > n) k = n;
+    const uk = u1 + (k - 1) * d;
+
+    $('note-n').textContent = k;
+    $('note-title').textContent = `Số hạng thứ ${k}: u_${k} = ${uk}`;
+
+    const formulaEl = $('note-formula');
+    const descEl = $('note-desc');
+
+    if (k === 1) {
+      formulaEl.innerHTML = `<b>u₁ = ${u1}</b>: Đây là số hạng đầu tiên (nền móng khởi phát của dãy số).`;
+      descEl.textContent = 'Mọi số hạng tiếp theo trong cấp số cộng đều được kiến tạo bằng cách cộng dồn công sai d vào số hạng nền tảng này.';
+    } else if (k === n) {
+      formulaEl.innerHTML = `<b>u_${n} = u₁ + (${n} - 1)d = ${u1} + ${n - 1}×(${d}) = ${uk}</b> (Số hạng biên cuối cùng).`;
+      descEl.innerHTML = `Tại n = ${n}, ta đã cộng đúng ${n - 1} lần công sai d vào u₁. Cột này đại diện cho đỉnh cao nhất (hoặc thấp nhất nếu d &lt; 0) của phân đoạn khảo sát.`;
+    } else {
+      const uPrev = u1 + (k - 2) * d;
+      const uNext = u1 + k * d;
+      const mean = (uPrev + uNext) / 2;
+      formulaEl.innerHTML = `
+        <b>Đại số:</b> u_${k} = u₁ + (${k} - 1)d = ${u1} + ${k - 1}×(${d}) = <b>${uk}</b><br>
+        <b>Tính chất Trung Bình Cộng:</b> u_${k} = (u_${k - 1} + u_${k + 1}) / 2 = (${uPrev} + ${uNext}) / 2 = <b>${mean}</b>.
+      `;
+      descEl.innerHTML = `Trong hình học không gian, đỉnh cột <b>u_${k}</b> nằm chính xác tại trung điểm của đoạn thẳng nối đỉnh cột đứng trước <b>u_${k - 1} (${uPrev})</b> và đỉnh cột đứng sau <b>u_${k + 1} (${uNext})</b>!`;
+    }
+  }
+
+  function selectTerm(k) {
+    selectedK = k;
+    if (currentFig) {
+      const targetId = isApart ? `base_${k}` : `col_${k}`;
+      if (currentFig.groups[targetId]) {
+        currentFig.select(targetId);
+      }
+    }
+  }
+
+  // Bind Sliders
+  $('rng-u1').addEventListener('input', e => {
+    u1 = +e.target.value;
+    renderScene();
+    playClick();
+  });
+
+  $('rng-d').addEventListener('input', e => {
+    d = +e.target.value;
+    renderScene();
+    playClick();
+  });
+
+  $('rng-n').addEventListener('input', e => {
+    n = +e.target.value;
+    if (selectedK > n) selectedK = n;
+    renderScene();
+    playClick();
+  });
+
+  // Action Buttons
+  $('btn-apart').addEventListener('click', () => {
+    isApart = !isApart;
+    if (isApart) isGauss = false;
+    $('btn-apart').textContent = isApart ? 'Ráp lại bậc thang' : '⚡ Tháo rời (Bóc tách u₁ & d)';
+    $('btn-apart').classList.toggle('primary', !isApart);
+    $('btn-gauss').textContent = '🧩 Ghép đôi Gauss (Tính Sₙ)';
+    $('btn-gauss').classList.remove('primary');
+    playTone(440, 0.15, 'sine');
+    renderScene();
+  });
+
+  $('btn-gauss').addEventListener('click', () => {
+    isGauss = !isGauss;
+    if (isGauss) isApart = false;
+    $('btn-gauss').textContent = isGauss ? 'Bỏ ghép đối xứng' : '🧩 Ghép đôi Gauss (Tính Sₙ)';
+    $('btn-gauss').classList.toggle('primary', isGauss);
+    $('btn-apart').textContent = '⚡ Tháo rời (Bóc tách u₁ & d)';
+    $('btn-apart').classList.remove('primary');
+    playTone(isGauss ? 660 : 330, 0.2, 'triangle');
+    renderScene();
+  });
+
+  $('btn-arpeggio').addEventListener('click', () => {
+    playArpeggio();
+  });
+
+  $('btn-sound').addEventListener('click', () => {
+    soundOn = !soundOn;
+    $('btn-sound').textContent = soundOn ? '🔊 Âm thanh' : '🔇 Tắt âm';
+    if (soundOn) playTone(520, 0.1, 'sine');
+  });
+
+  // Initial draw
+  renderScene();
+})();
+</script>
+</body>
+</html>
