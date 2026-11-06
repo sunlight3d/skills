@@ -167,5 +167,163 @@
     "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
     "sent_at": "2026-11-05T07:37:08.711448",
     "status": "SENT"
+  },
+  {
+    "name": "Viện CNTT ITPlus (ITPlus Academy)",
+    "email": "tuyensinh@itplus-academy.edu.vn",
+    "website": "https://itplus-academy.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Thiết kế đồ họa",
+      "AI",
+      "Data"
+    ],
+    "category": "UNIVERSITY_ACADEMY",
+    "subject": "[Hợp tác đào tạo] Giới thiệu năng lực giảng dạy / Thỉnh giảng chuyên ngành CNTT, AI Ứng dụng & Kỹ thuật Phần mềm - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:51:41.629799",
+    "status": "SENT"
+  },
+  {
+    "name": "Robusta Technology & Training",
+    "email": "learn@robusta.vn",
+    "website": "https://robusta.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Cloud",
+      "DevOps",
+      "AI",
+      "Big Data",
+      "Bảo mật"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:51:52.015648",
+    "status": "SENT"
+  },
+  {
+    "name": "VTC Academy",
+    "email": "info@vtc.edu.vn",
+    "website": "https://vtc.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Trí tuệ nhân tạo (AI)",
+      "Thiết kế 3D"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:52:02.469447",
+    "status": "SENT"
+  },
+  {
+    "name": "Kmin Academy",
+    "email": "contact@kmin.edu.vn",
+    "website": "https://kmin.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Lập trình ứng dụng",
+      "Thuật toán",
+      "Python",
+      "Data"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:52:12.910758",
+    "status": "SENT"
+  },
+  {
+    "name": "MasterDev Academy",
+    "email": "contact@masterdev.edu.vn",
+    "website": "https://masterdev.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Backend Architecture",
+      "Java Spring Boot",
+      "AI Tools"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:52:23.315296",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Quốc tế NIIT ICT Hà Nội",
+    "email": "tuyensinh@niithanoi.edu.vn",
+    "website": "https://niithanoi.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Data Analytics",
+      "AI"
+    ],
+    "category": "UNIVERSITY_ACADEMY",
+    "subject": "[Hợp tác đào tạo] Giới thiệu năng lực giảng dạy / Thỉnh giảng chuyên ngành CNTT, AI Ứng dụng & Kỹ thuật Phần mềm - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:52:33.672648",
+    "status": "SENT"
+  },
+  {
+    "name": "FPT Software Academy",
+    "email": "academy@fpt.com",
+    "website": "https://fptsoftwareacademy.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": [
+      "Lập trình phần mềm",
+      "AI",
+      "Data Engineering",
+      "Cloud"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:52:44.143241",
+    "status": "SENT"
+  },
+  {
+    "name": "Sun* CI (Sun Asterisk Academy)",
+    "email": "hr-ci@sun-asterisk.com",
+    "website": "https://sun-asterisk.com",
+    "city": "Hà Nội / Đà Nẵng",
+    "specialties": [
+      "Lập trình phần mềm",
+      "AI",
+      "Mobile",
+      "DevOps"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:52:54.482293",
+    "status": "SENT"
+  },
+  {
+    "name": "Nordic Coder",
+    "email": "info@nordiccoder.com",
+    "website": "https://nordiccoder.com",
+    "city": "TP.HCM",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Data Analytics",
+      "AI",
+      "Full-stack"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:53:04.972005",
+    "status": "SENT"
+  },
+  {
+    "name": "DevPro Vietnam",
+    "email": "devpro.vn@gmail.com",
+    "website": "https://devpro.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình phần mềm thực chiến",
+      "Python",
+      "Java",
+      "Mobile"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-06T17:53:15.327042",
+    "status": "SENT"
   }
 ]

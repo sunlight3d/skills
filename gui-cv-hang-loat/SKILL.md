@@ -7,7 +7,7 @@ description: "Tự động tìm kiếm các đơn vị đào tạo AI, lập tr�
 
 ## 1. Giới thiệu tổng quan
 Skill **`gui-cv-hang-loat`** là trợ lý tự động hóa chuyên biệt phục vụ công tác phát triển đối tác đào tạo cho **Thầy Nguyễn Đức Hoàng**:
-- **Mục tiêu**: Hàng ngày tìm kiếm các học viện, trung tâm công nghệ, viện đào tạo hoặc doanh nghiệp EdTech có nhu cầu đào tạo/tuyển dụng giảng viên về **Trí tuệ nhân tạo (AI)**, **Lập trình phần mềm (Java, Python, Full-stack, Mobile)**, **Phân tích dữ liệu (Data Analytics)** và **Tạo báo cáo động (Power BI, Dashboard)**.
+- **Mục tiêu**: Hàng ngày tìm kiếm các học viện, trường đại học/cao đẳng (khoa CNTT), trung tâm công nghệ, viện đào tạo hoặc doanh nghiệp EdTech có nhu cầu đào tạo/tuyển dụng giảng viên về **Trí tuệ nhân tạo (AI, GenAI, AI Agents, Vibe Coding)**, **Lập trình phần mềm (Java, Python, Full-stack, Mobile, Cấu trúc dữ liệu & Thuật toán)**, **Công nghệ & Kỹ thuật hệ thống (Cloud, DevOps, Microservices)**, và **Phân tích dữ liệu (Data Analytics, Power BI, Dashboard)**.
 - **Quy mô xử lý**: Mỗi đợt thực hiện **tìm 10 đơn vị mới** và **soạn thảo/gửi 10 email hợp tác**.
 - **Cơ chế gửi thư an toàn**: Tương tác trực tiếp qua AppleScript với tài khoản Gmail (`sunlight4d@gmail.com`) đang đăng nhập sẵn trên Google Chrome, bảo đảm tỷ lệ vào Inbox cao nhất và không lo lỗi xác thực SMTP.
 
@@ -44,7 +44,7 @@ Hệ thống tự động bỏ qua và **tuyệt đối không gửi email** đ�
 ├── SKILL.md                  # Hướng dẫn toàn diện cho Agent & User
 ├── gui_cv_assistant.py       # Core script xử lý logic, lọc blacklist, gửi mail Chrome
 ├── blacklist.json            # Danh sách từ khóa, domain, email cấm
-├── database_registry.json    # Kho dữ liệu 40+ học viện/trung tâm CNTT uy tín tại VN
+├── database_registry.json    # Kho dữ liệu 55+ học viện, trường ĐH, trung tâm CNTT uy tín
 ├── history.json              # Nhật ký các email và đơn vị đã gửi thành công
 ├── templates/
 │   └── email_template.txt    # Mẫu email hợp tác giảng dạy chuyên nghiệp

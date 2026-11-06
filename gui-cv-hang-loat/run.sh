@@ -4,17 +4,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PYTHON_BIN="python3"
 
 ACTION="${1:-preview}"
+FIELD="${2:-tech}"
 
 case "$ACTION" in
     preview)
-        echo "🔍 Đang tìm và tổng hợp 10 đơn vị đào tạo mới..."
-        $PYTHON_BIN "$SCRIPT_DIR/gui_cv_assistant.py" --action preview --count 10
+        echo "🔍 Đang tìm và tổng hợp 10 đơn vị đào tạo mới (Lĩnh vực: $FIELD)..."
+        $PYTHON_BIN "$SCRIPT_DIR/gui_cv_assistant.py" --action preview --field "$FIELD" --count 10
         ;;
     send)
-        echo "⚠️ BẠN ĐANG CHUẨN BỊ GỬI 10 EMAIL THẬT QUA GMAIL TRÊN CHROME!"
+        echo "⚠️ BẠN ĐANG CHUẨN BỊ GỬI 10 EMAIL THẬT QUA GMAIL TRÊN CHROME (Lĩnh vực: $FIELD)!"
         read -p "👉 Bạn có chắc chắn muốn gửi không? (Nhập 'yes' hoặc 'y' để xác nhận): " CONFIRM
         if [[ "$CONFIRM" =~ ^[Yy](es)?$ ]]; then
-            $PYTHON_BIN "$SCRIPT_DIR/gui_cv_assistant.py" --action send --count 10 --confirm
+            $PYTHON_BIN "$SCRIPT_DIR/gui_cv_assistant.py" --action send --field "$FIELD" --count 10 --confirm
         else
             echo "❌ Đã hủy thao tác gửi. Chưa có email nào được gửi đi."
         fi
