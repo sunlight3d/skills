@@ -30,7 +30,8 @@ Hệ thống tự động bỏ qua và **tuyệt đối không gửi email** đ�
 - **VietIS** (`vietis.com.vn`)
 - **Aptech / Aprotrain** (`aptech.vn`, `aprotrain.com`)
 - **SmartPro** (`smartpro.vn`)
-*(Lý do: Đây là các đơn vị đối tác chiến lược mà Thầy Hoàng đã và đang giảng dạy).*
+- **FUNiX** (`funix.edu.vn`)
+*(Lý do: Đây là các đơn vị đối tác chiến lược hoặc nơi Thầy Hoàng đã và đang giảng dạy/cộng tác).*
 
 ### 🛡️ C. Chống gửi trùng lặp (Zero Duplicates)
 - Mọi email đã gửi được ghi nhận tức thì vào `history.json` kèm ngày giờ (ISO timestamp).

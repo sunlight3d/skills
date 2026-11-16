@@ -304,7 +304,9 @@ def post_comment_chrome(post_url: str, comment_text: str) -> bool:
     scpt = f'''
     tell application "Google Chrome"
         tell front window
+            set oldTabIdx to active tab index
             make new tab with properties {{URL:"{post_url}"}}
+            set active tab index to (count of tabs)
         end tell
         delay 5
         tell application "Google Chrome"
@@ -321,6 +323,9 @@ def post_comment_chrome(post_url: str, comment_text: str) -> bool:
         end if
         tell application "Google Chrome"
             close (last tab of front window)
+            try
+                set active tab index of front window to oldTabIdx
+            end try
         end tell
         return fillRes
     end tell

@@ -495,17 +495,18 @@
   },
   {
     "id": 37,
+    "priority": 1,
     "name": "FUNiX (Tập đoàn FPT)",
     "email": "tuyendung@funix.edu.vn",
     "website": "https://funix.edu.vn",
     "city": "Hà Nội / Toàn quốc",
     "specialties": [
-      "CNTT trực tuyến",
-      "Data Science",
-      "Machine Learning",
-      "Software Dev"
+      "Mentor 1-1 CNTT",
+      "Dạy Lập trình & AI 1-1",
+      "Automotive Embedded",
+      "Data Science & Software Dev"
     ],
-    "description": "Trường đào tạo lập trình trực tuyến thuộc Tổ chức Giáo dục FPT"
+    "description": "Trường đào tạo lập trình trực tuyến theo mô hình Mentor 1-1 thuộc Tổ chức Giáo dục FPT"
   },
   {
     "id": 38,
@@ -576,17 +577,18 @@
   },
   {
     "id": 43,
+    "priority": 1,
     "name": "Viện Đào tạo Quốc tế FPT Jetking",
     "email": "jetking@fpt.edu.vn",
     "website": "https://jetking.fpt.edu.vn",
     "city": "Hà Nội / TP.HCM",
     "specialties": [
+      "Lập trình Nhúng & IoT",
       "An ninh mạng",
       "Quản trị hệ thống Cloud",
-      "Lập trình IoT",
       "AI ứng dụng"
     ],
-    "description": "Hệ thống đào tạo CNTT chuẩn quốc tế liên kết giữa Tập đoàn FPT và Jetking Ấn Độ"
+    "description": "Hệ thống đào tạo CNTT, Phần cứng và IoT chuẩn quốc tế liên kết giữa Tập đoàn FPT và Jetking Ấn Độ"
   },
   {
     "id": 44,
@@ -757,5 +759,536 @@
       "AI ứng dụng"
     ],
     "description": "Học viện đào tạo lập trình viên và kỹ sư cầu nối chất lượng cao cho thị trường quốc tế"
+  },
+  {
+    "id": 56,
+    "priority": 1,
+    "name": "DEVIOT",
+    "email": "deviotcore@gmail.com",
+    "website": "https://deviot.vn",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Lập trình nhúng (Embedded C/C++)",
+      "Vi điều khiển STM32 & ESP32",
+      "FreeRTOS",
+      "IoT"
+    ],
+    "description": "Đơn vị đào tạo chuyên sâu về lập trình nhúng, vi điều khiển STM32/ESP32 và hệ thống IoT tại Việt Nam"
+  },
+  {
+    "id": 57,
+    "priority": 1,
+    "name": "IMIC Technology Việt Nam",
+    "email": "training@imic.edu.vn",
+    "website": "https://imic.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình nhúng Embedded System",
+      "IoT STM32 & ESP32",
+      "Lập trình phần mềm",
+      "AI ứng dụng"
+    ],
+    "description": "Đơn vị đào tạo lập trình nhúng vi điều khiển, Embedded System, IoT và công nghệ phần mềm chuẩn doanh nghiệp"
+  },
+  {
+    "id": 58,
+    "priority": 1,
+    "name": "TAPIT (Công ty TNHH Kỹ thuật TAPIT)",
+    "email": "nhatthuongqn@gmail.com",
+    "website": "https://tapit.vn",
+    "city": "Đà Nẵng / Online",
+    "specialties": [
+      "Lập trình nhúng STM32 & ARM Cortex",
+      "Vi điều khiển Arduino",
+      "IoT & Hệ thống nhúng"
+    ],
+    "description": "Đơn vị đào tạo kỹ thuật lập trình nhúng, vi điều khiển STM32/ARM Cortex và nghiên cứu giải pháp IoT"
+  },
+  {
+    "id": 59,
+    "priority": 1,
+    "name": "TioT LAB",
+    "email": "dientuiotlab@gmail.com",
+    "website": "https://tiotlab.com",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình nhúng Firmware",
+      "Vi điều khiển ESP32, STM32, Arduino",
+      "IoT Dashboard & Cloud"
+    ],
+    "description": "Phòng nghiên cứu và đào tạo thực hành phần cứng, firmware vi điều khiển và nền tảng IoT"
+  },
+  {
+    "id": 60,
+    "priority": 1,
+    "name": "Code Dream",
+    "email": "info@codedream.edu.vn",
+    "website": "https://codedream.edu.vn",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Luyện thi Học sinh giỏi Tin học",
+      "Tin học trẻ",
+      "Thuật toán C++ & Python",
+      "Lập trình thi đấu"
+    ],
+    "description": "Trung tâm chuyên bồi dưỡng Học sinh giỏi Tin học, luyện thi Tin học trẻ, Chuyên Tin và thuật toán C++/Python"
+  },
+  {
+    "id": 61,
+    "priority": 1,
+    "name": "Lớp Luyện thi HSG Tin học (Học Tin Cùng Thủ Khoa)",
+    "email": "tosonnguyen@moet.edu.vn",
+    "website": "http://hoctincungthukhoa.com",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Bồi dưỡng Học sinh giỏi Tin học",
+      "Luyện thi Olympic & Tin học trẻ",
+      "Lập trình C/C++ & Python",
+      "Scratch"
+    ],
+    "description": "Hệ thống lớp bồi dưỡng học sinh giỏi Tin học, luyện thi Olympic, chuyên Tin và Tin học trẻ các cấp"
+  },
+  {
+    "id": 62,
+    "priority": 1,
+    "name": "CodeLearn (FPT Software)",
+    "email": "support@codelearn.io",
+    "website": "https://codelearn.io",
+    "city": "Toàn quốc / Online",
+    "specialties": [
+      "Luyện thi Tin học & Thuật toán",
+      "Cấu trúc dữ liệu & Giải thuật",
+      "C/C++ & Python",
+      "Đấu trường lập trình"
+    ],
+    "description": "Nền tảng học tập, rèn luyện thuật toán và tổ chức thi lập trình trực tuyến thuộc Tập đoàn FPT"
+  },
+  {
+    "id": 63,
+    "priority": 1,
+    "name": "Học viện Sáng tạo Công nghệ TEKY",
+    "email": "tuyendung@teky.edu.vn",
+    "website": "https://teky.edu.vn",
+    "city": "Hà Nội / TP.HCM / Toàn quốc",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình Scratch & Python Kids",
+      "STEM Robotics",
+      "AI cho học sinh"
+    ],
+    "description": "Học viện giáo dục STEAM, lập trình trẻ em và Robotics quy mô hàng đầu Việt Nam"
+  },
+  {
+    "id": 64,
+    "priority": 1,
+    "name": "Học viện Công nghệ SUMATO",
+    "email": "tuyendung@sumato.edu.vn",
+    "website": "https://sumato.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình thiếu nhi & Scratch",
+      "STEM Robotics",
+      "AI sáng tạo"
+    ],
+    "description": "Học viện đào tạo lập trình trẻ em, công nghệ đa phương tiện, STEM Robotics và AI cho học sinh"
+  },
+  {
+    "id": 65,
+    "priority": 1,
+    "name": "Algorithmics International Programming School",
+    "email": "talent@algo.edu.vn",
+    "website": "https://algorithmics.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Tin học trẻ em (5-17 tuổi)",
+      "Lập trình Python & Game",
+      "Tư duy thuật toán trẻ em",
+      "AI ứng dụng"
+    ],
+    "description": "Trường lập trình quốc tế dành cho trẻ em và thanh thiếu niên từ 5.5 đến 17 tuổi"
+  },
+  {
+    "id": 66,
+    "priority": 1,
+    "name": "KDI Education",
+    "email": "tuyendung@kdi.edu.vn",
+    "website": "https://kdi.edu.vn",
+    "city": "TP.HCM / Toàn quốc",
+    "specialties": [
+      "Giáo dục STEM/STEAM",
+      "Tin học trẻ em (Scratch, Python)",
+      "Robotics & Arduino",
+      "AI cho trường học"
+    ],
+    "description": "Đơn vị tiên phong triển khai giáo dục STEM/STEAM, lập trình trẻ em và Robotics trong các trường học"
+  },
+  {
+    "id": 67,
+    "priority": 1,
+    "name": "Học viện Vietstem",
+    "email": "support@vietstem.com",
+    "website": "https://vietstem.com",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình Scratch & Python",
+      "Giáo dục STEM",
+      "Luyện thi Tin học trẻ"
+    ],
+    "description": "Học viện đào tạo lập trình Scratch, Python và STEM dành cho học sinh tiểu học đến THPT"
+  },
+  {
+    "id": 68,
+    "priority": 1,
+    "name": "Kidscode (KC Education)",
+    "email": "stem@kidscode.edu.vn",
+    "website": "https://kcedu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Tin học trẻ em",
+      "STEM Robotics",
+      "Lập trình & AI cho trẻ em"
+    ],
+    "description": "Tổ chức giáo dục chuyên đào tạo STEM, Robotics, AI và lập trình cho trẻ em"
+  },
+  {
+    "id": 69,
+    "priority": 1,
+    "name": "KASE Edutech (I Can Code)",
+    "email": "qldt@kase.edu.vn",
+    "website": "https://kase.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Lập trình trẻ em I Can Code",
+      "Scratch & Python",
+      "Web Development thiếu niên"
+    ],
+    "description": "Trung tâm giáo dục công nghệ triển khai chương trình I Can Code đào tạo lập trình cho trẻ em và thiếu niên"
+  },
+  {
+    "id": 70,
+    "priority": 1,
+    "name": "Blacasa Việt Nam (TOT.EDU.VN)",
+    "email": "contact@blacasa.vn",
+    "website": "https://tot.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Dạy Lập trình & AI 1-1",
+      "Gia sư công nghệ trực tuyến"
+    ],
+    "description": "Nền tảng kết nối gia sư và giảng viên dạy kèm 1-1 các môn Tin học, Lập trình và AI ứng dụng"
+  },
+  {
+    "id": 71,
+    "priority": 1,
+    "name": "eTeacher",
+    "email": "tuyendung@eteacher.vn",
+    "website": "https://eteacher.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "Gia sư 1-1 chất lượng cao",
+      "Dạy Tin học 1-1",
+      "Lập trình & Kỹ năng số 1-1"
+    ],
+    "description": "Hệ thống gia sư chất lượng cao chuyên cung cấp dịch vụ dạy kèm 1-1 tại nhà và trực tuyến"
+  },
+  {
+    "id": 72,
+    "priority": 1,
+    "name": "Gia sư Tin học (giasutinhoc.vn)",
+    "email": "giasutinhoc.vn@gmail.com",
+    "website": "https://giasutinhoc.vn",
+    "city": "Hà Nội / TP.HCM / Online",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Dạy Lập trình 1-1",
+      "Dạy AI 1-1",
+      "Tin học văn phòng nâng cao"
+    ],
+    "description": "Đơn vị chuyên đào tạo kèm 1-1 Tin học ứng dụng, Lập trình, Công nghệ thông tin và AI cho người đi làm, học sinh"
+  },
+  {
+    "id": 73,
+    "priority": 1,
+    "name": "Trung tâm Tin học Sao Việt",
+    "email": "Trungtamtinhocsaoviet@gmail.com",
+    "website": "https://blogdaytinhoc.com",
+    "city": "TP.HCM / Bình Dương / Online",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Tin học trẻ em (Scratch, Python)",
+      "Lập trình Robot",
+      "Tin học ứng dụng"
+    ],
+    "description": "Trung tâm đào tạo Tin học kèm 1-1 và lập trình thiếu nhi uy tín tại TP.HCM và các tỉnh phía Nam"
+  },
+  {
+    "id": 74,
+    "priority": 2,
+    "name": "OhStem Education",
+    "email": "contact@ohstem.vn",
+    "website": "https://ohstem.vn",
+    "city": "TP.HCM / Toàn quốc",
+    "specialties": [
+      "STEM Robotics",
+      "Tin học trẻ em",
+      "Lập trình nhúng giáo dục (Yolo:Bit, xBot)"
+    ],
+    "description": "Đơn vị phát triển học cụ STEM, Robot lập trình và tập huấn giáo viên STEM trên toàn quốc"
+  },
+  {
+    "id": 75,
+    "priority": 2,
+    "name": "Etech Mekong",
+    "email": "info@etechmekong.edu.vn",
+    "website": "https://etechmekong.edu.vn",
+    "city": "Cần Thơ / Online",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình thiếu nhi",
+      "Công nghệ & STEM"
+    ],
+    "description": "Trung tâm Tin học và Lập trình trẻ em khu vực Đồng bằng sông Cửu Long và đào tạo trực tuyến"
+  },
+  {
+    "id": 76,
+    "priority": 2,
+    "name": "Việt Robot (VietRobot Education)",
+    "email": "trucbnt@vietrobot.edu.vn",
+    "website": "https://vietrobot.edu.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "STEM Robotics",
+      "Tin học trẻ em",
+      "Lập trình điều khiển Robot"
+    ],
+    "description": "Hệ thống đào tạo Robotics và lập trình STEM cho học sinh các cấp"
+  },
+  {
+    "id": 77,
+    "priority": 2,
+    "name": "Kyna for Kids (Dream Viet Education)",
+    "email": "teachers@kynaforkids.vn",
+    "website": "https://kynaforkids.vn",
+    "city": "Toàn quốc / Online",
+    "specialties": [
+      "Dạy kèm 1-1 trực tuyến",
+      "Tin học & Lập trình trẻ em",
+      "Kỹ năng số cho học sinh"
+    ],
+    "description": "Nền tảng giáo dục trực tuyến và dạy kèm 1-1 cho trẻ em về kỹ năng số, lập trình và tư duy"
+  },
+  {
+    "id": 78,
+    "priority": 2,
+    "name": "Trung tâm Gia sư Nhân Văn",
+    "email": "ttgiasunhanvan1@gmail.com",
+    "website": "https://giasunhanvan.com.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Gia sư Lập trình Python, C/C++",
+      "Tin học phổ thông & văn phòng"
+    ],
+    "description": "Trung tâm gia sư cung cấp giáo viên dạy kèm 1-1 Tin học và Lập trình tại nhà và online"
+  },
+  {
+    "id": 79,
+    "priority": 2,
+    "name": "Trung tâm Gia sư Sư Phạm Hà Nội",
+    "email": "suphamhanoi.edu@gmail.com",
+    "website": "https://giasusupham.com.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Gia sư 1-1 môn Tin học",
+      "Bồi dưỡng HSG Tin học 1-1",
+      "Dạy lập trình cơ bản"
+    ],
+    "description": "Trung tâm gia sư khu vực Hà Nội cung cấp giáo viên dạy kèm 1-1 môn Tin học và luyện thi"
+  },
+  {
+    "id": 80,
+    "priority": 2,
+    "name": "Unica (Hợp tác Giảng viên)",
+    "email": "teacher@unica.vn",
+    "website": "https://unica.vn",
+    "city": "Toàn quốc / Online",
+    "specialties": [
+      "Khóa học AI ứng dụng",
+      "Đào tạo Lập trình & Tin học",
+      "Coaching & Video Course"
+    ],
+    "description": "Nền tảng học trực tuyến lớn tại Việt Nam hợp tác cùng chuyên gia triển khai khóa học AI, Lập trình và Dữ liệu"
+  },
+  {
+    "id": 81,
+    "priority": 2,
+    "name": "VioEdu (Tập đoàn FPT)",
+    "email": "support@vio.edu.vn",
+    "website": "https://vio.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Giáo dục ứng dụng AI",
+      "Đấu trường Tin học & Toán",
+      "Nội dung số & Trợ lý AI học tập"
+    ],
+    "description": "Hệ thống giáo dục trực tuyến ứng dụng Trí tuệ nhân tạo thuộc Tập đoàn FPT"
+  },
+  {
+    "id": 82,
+    "priority": 2,
+    "name": "HOCMAI",
+    "email": "hotro@hocmai.vn",
+    "website": "https://hocmai.vn",
+    "city": "Hà Nội / TP.HCM / Toàn quốc",
+    "specialties": [
+      "Bồi dưỡng Tin học phổ thông",
+      "Dạy kèm trực tuyến 1-1",
+      "Luyện thi HSG & Kỹ năng số"
+    ],
+    "description": "Nền tảng giáo dục trực tuyến hàng đầu Việt Nam triển khai đào tạo phổ thông, gia sư 1-1 và STEM"
+  },
+  {
+    "id": 83,
+    "name": "F8 - Fullstack Vietnam",
+    "email": "contact@fullstack.edu.vn",
+    "website": "https://fullstack.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Lập trình Full-stack",
+      "JavaScript/React",
+      "Python",
+      "AI-Augmented Development"
+    ],
+    "description": "Cộng đồng và nền tảng học lập trình thực chiến hàng đầu Việt Nam"
+  },
+  {
+    "id": 84,
+    "name": "Apex Global Corporation",
+    "email": "info@apexglobal.com.vn",
+    "website": "https://apexglobal.com.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "Đào tạo CNTT doanh nghiệp",
+      "DevOps",
+      "Kiến trúc hệ thống",
+      "ITIL",
+      "Tư vấn Chuyển đổi số"
+    ],
+    "description": "Đơn vị đào tạo và tư vấn quản trị CNTT, chuyển đổi số và kiến trúc phần mềm hàng đầu cho doanh nghiệp"
+  },
+  {
+    "id": 85,
+    "name": "Viện Quản trị & Công nghệ FSB (Đại học FPT)",
+    "email": "fsb.contact@fe.edu.vn",
+    "website": "https://fsb.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": [
+      "Quản trị Công nghệ",
+      "Chuyển đổi số",
+      "Khóa học AI cho Lãnh đạo",
+      "Tư vấn Chuyển đổi số"
+    ],
+    "description": "Viện đào tạo cao cấp về Quản trị, Chuyển đổi số và Ứng dụng AI trong quản lý điều hành thuộc Tập đoàn FPT"
+  },
+  {
+    "id": 86,
+    "name": "Học viện Đào tạo CNTT T3H",
+    "email": "tuyensinh@t3h.edu.vn",
+    "website": "https://t3h.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình Phần mềm",
+      "Data Analysis",
+      "Kiểm thử phần mềm",
+      "Thiết kế hệ thống"
+    ],
+    "description": "Đơn vị đào tạo công nghệ thông tin thực hành lâu năm uy tín tại Việt Nam"
+  },
+  {
+    "id": 87,
+    "name": "SmartGate E-Learning & Corporate Tech Training",
+    "email": "contact@smartgate.vn",
+    "website": "https://smartgate.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Đào tạo Công nghệ Doanh nghiệp",
+      "Khóa học AI ứng dụng",
+      "Hệ sinh thái EdTech",
+      "Chuyển đổi số"
+    ],
+    "description": "Hệ sinh thái đào tạo số và phát triển năng lực công nghệ cho các tập đoàn và doanh nghiệp"
+  },
+  {
+    "id": 88,
+    "name": "BAP Academy (BAP Software)",
+    "email": "service@bap.jp",
+    "website": "https://bap.jp",
+    "city": "Đà Nẵng / Hà Nội / TP.HCM",
+    "specialties": [
+      "Đào tạo Kỹ sư AI",
+      "Web & Mobile",
+      "Cloud & DevOps",
+      "Phát triển phần mềm thực chiến"
+    ],
+    "description": "Học viện đào tạo và phát triển năng lực kỹ sư công nghệ chất lượng cao của BAP Software"
+  },
+  {
+    "id": 89,
+    "name": "NashTech Academy (NashTech Global)",
+    "email": "career@nashtechglobal.com",
+    "website": "https://nashtechglobal.com",
+    "city": "TP.HCM / Hà Nội / Đà Nẵng",
+    "specialties": [
+      "Kỹ sư Phần mềm .NET/Java",
+      "Cloud Computing",
+      "AI Engineering",
+      "Kiến trúc giải pháp"
+    ],
+    "description": "Chương trình đào tạo và ươm mầm kỹ sư phần mềm công nghệ cao chuẩn quốc tế của NashTech"
+  },
+  {
+    "id": 90,
+    "name": "Niteco Academy",
+    "email": "info@niteco.com",
+    "website": "https://niteco.com",
+    "city": "Hà Nội / Quốc tế",
+    "specialties": [
+      "Kỹ sư .NET / Full-stack",
+      "Kiến trúc phần mềm",
+      "Tư vấn giải pháp số",
+      "Đào tạo kỹ sư phần mềm"
+    ],
+    "description": "Học viện đào tạo kỹ sư công nghệ của tập đoàn phần mềm Niteco Thụy Điển tại Việt Nam"
+  },
+  {
+    "id": 91,
+    "name": "CodersX / CoderHub",
+    "email": "contact@codersx.com",
+    "website": "https://codersx.com",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Lập trình Full-stack",
+      "AI-Augmented Coding",
+      "Mentoring 1-1 Kỹ sư",
+      "Phát triển sản phẩm"
+    ],
+    "description": "Nền tảng đào tạo lập trình thực chiến và cộng đồng kỹ sư phần mềm thế hệ mới"
+  },
+  {
+    "id": 92,
+    "name": "Học viện CNTT Bách Khoa Đà Nẵng",
+    "email": "contact@bkdanang.edu.vn",
+    "website": "https://bkdanang.edu.vn",
+    "city": "Đà Nẵng / Miền Trung",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Quản trị mạng & Cloud",
+      "AI & Khoa học Dữ liệu",
+      "Đào tạo doanh nghiệp"
+    ],
+    "description": "Học viện đào tạo công nghệ thông tin và chuyển giao kỹ thuật số tại miền Trung"
   }
 ]

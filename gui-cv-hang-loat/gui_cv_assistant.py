@@ -104,19 +104,26 @@ def get_available_batch(count=10, field="all"):
     """
     Lấy danh sách tối đa `count` (mặc định 10) đơn vị đào tạo hợp lệ,
     chưa từng gửi và không bị blacklist.
+    Sắp xếp ổn định theo trường `priority` (ưu tiên 1 -> 2 -> 99).
     Hỗ trợ lọc theo `field`:
     - 'all': Tất cả đơn vị hợp lệ
-    - 'tech': Các đơn vị giảng dạy Công nghệ, AI, Lập trình, Kỹ sư hệ thống, Đại học/Cao đẳng
+    - 'tech': Các đơn vị giảng dạy Công nghệ, AI, Lập trình, Kỹ sư hệ thống, Đại học/Cao đẳng, Nhúng
     - 'ai': Các đơn vị chuyên sâu về AI, GenAI, Machine Learning
     - 'dev': Các đơn vị chuyên về Lập trình, Coding Bootcamp
     - 'data': Các đơn vị chuyên về Phân tích dữ liệu & BI
+    - 'embedded': Các đơn vị đào tạo Lập trình Nhúng, Vi điều khiển & IoT
+    - 'hsg': Các đơn vị bồi dưỡng HSG Tin học, Thuật toán, Luyện thi Chuyên Tin
+    - 'kids': Các đơn vị Tin học trẻ em, STEM & Robotics
+    - 'tutor': Các nền tảng / trung tâm Dạy Tin học 1-1, Lập trình & AI 1-1
     """
     registry = load_json(REGISTRY_PATH, [])
     blacklist = load_json(BLACKLIST_PATH, {})
     history = load_json(HISTORY_PATH, [])
 
+    sorted_registry = sorted(registry, key=lambda x: x.get("priority", 99))
+
     valid_batch = []
-    for item in registry:
+    for item in sorted_registry:
         bl, _ = is_blacklisted(item, blacklist)
         if bl:
             continue
@@ -126,13 +133,21 @@ def get_available_batch(count=10, field="all"):
             continue
 
         cat = detect_focus_category(item)
-        if field == "tech" and cat not in ["AI_GENAI_AGENT", "PROGRAMMING_SOFTWARE", "ENTERPRISE_TECH", "UNIVERSITY_ACADEMY"]:
+        if field == "tech" and cat not in ["AI_GENAI_AGENT", "PROGRAMMING_SOFTWARE", "ENTERPRISE_TECH", "UNIVERSITY_ACADEMY", "EMBEDDED_IOT"]:
             continue
         elif field == "ai" and cat != "AI_GENAI_AGENT":
             continue
         elif field == "dev" and cat != "PROGRAMMING_SOFTWARE":
             continue
         elif field == "data" and cat != "DATA_BI":
+            continue
+        elif field == "embedded" and cat != "EMBEDDED_IOT":
+            continue
+        elif field == "hsg" and cat != "OLYMPIAD_ALGO":
+            continue
+        elif field == "kids" and cat != "KIDS_STEM":
+            continue
+        elif field == "tutor" and cat != "TUTOR_1ON1_MENTOR":
             continue
 
         valid_batch.append(item)
@@ -145,6 +160,10 @@ def get_available_batch(count=10, field="all"):
 def detect_focus_category(item):
     """
     Phân loại thế mạnh / nhu cầu chính của từng đơn vị đào tạo:
+    - EMBEDDED_IOT: Đào tạo Lập trình Nhúng (C/C++, STM32, ESP32, FreeRTOS, Embedded Linux, IoT)
+    - OLYMPIAD_ALGO: Bồi dưỡng HSG Tin học, Tin học trẻ, Thuật toán & Lập trình thi đấu (C++, Python)
+    - KIDS_STEM: Tin học trẻ em, Scratch, Python Kids, STEM & Robotics
+    - TUTOR_1ON1_MENTOR: Dạy kèm 1-1, Mentor 1-1 Tin học, Lập trình & AI thực chiến
     - AI_GENAI_AGENT: Trí tuệ nhân tạo, GenAI, AI Agents, Prompt Engineering, Vibe Coding
     - PROGRAMMING_SOFTWARE: Lập trình phần mềm, Coding Bootcamp, Java, Python, Web/Mobile
     - ENTERPRISE_TECH: Đào tạo công nghệ doanh nghiệp, Cloud, DevOps, Kỹ sư hệ thống
@@ -156,15 +175,48 @@ def detect_focus_category(item):
     desc = (item.get("description") or "").lower()
     text = f"{name} {specs} {desc}"
 
-    # 1. Trí tuệ nhân tạo, GenAI, AI Agents, Vibe Coding
+    # 1. Dạy kèm 1-1, Mentor 1-1 Tin học / Lập trình / AI
     if any(k in text for k in [
+        "1-1", "1 kèm 1", "gia sư", "mentor 1-1", "funix", "blacasa",
+        "eteacher", "giasutinhoc", "sao việt", "nhân văn", "sư phạm",
+        "unica", "hocmai", "vioedu"
+    ]):
+        return "TUTOR_1ON1_MENTOR"
+
+    # 2. Đào tạo Lập trình Nhúng & IoT
+    elif any(k in text for k in [
+        "lập trình nhúng", "embedded", "stm32", "esp32", "vi điều khiển",
+        "freertos", "rtos", "firmware", "lập trình iot", "deviot", "tapit",
+        "imic", "tiot", "jetking"
+    ]):
+        return "EMBEDDED_IOT"
+
+    # 3. Bồi dưỡng Học sinh giỏi (HSG) Tin học, Olympic, Thuật toán thi đấu
+    elif any(k in text for k in [
+        "học sinh giỏi", "hsg", "luyện thi tin học & thuật toán", "olympic", "chuyên tin",
+        "lập trình thi đấu", "đấu trường lập trình", "codedream", "code dream",
+        "thukhoa", "codelearn"
+    ]):
+        return "OLYMPIAD_ALGO"
+
+    # 4. Tin học trẻ em, Scratch, STEM Robotics
+    elif any(k in text for k in [
+        "tin học trẻ em", "trẻ em", "thiếu nhi", "scratch", "stem", "steam",
+        "robotics", "teky", "sumato", "algorithmics", "algo.edu", "kdi",
+        "vietstem", "kidscode", "kcedu", "kase", "i can code", "ohstem",
+        "etech mekong", "vietrobot", "kyna for kids"
+    ]):
+        return "KIDS_STEM"
+
+    # 5. Trí tuệ nhân tạo, GenAI, AI Agents, Vibe Coding
+    elif any(k in text for k in [
         "trí tuệ nhân tạo", "machine learning", "deep learning", "genai", "ai agents",
         "prompt engineering", "vibe coding", "llm", "ai ứng dụng", "ai education",
         "aivn", "ai vietnam"
     ]):
         return "AI_GENAI_AGENT"
 
-    # 2. Đào tạo Công nghệ Doanh nghiệp, Cloud, DevOps, Hạ tầng kỹ sư
+    # 6. Đào tạo Công nghệ Doanh nghiệp, Cloud, DevOps, Hạ tầng kỹ sư
     elif any(k in text for k in [
         "cloud", "devops", "aws", "azure", "docker", "kubernetes", "an ninh mạng",
         "hạ tầng mạng", "quản trị hệ thống", "robusta", "ipmac", "pnh", "tel4vn",
@@ -172,24 +224,24 @@ def detect_focus_category(item):
     ]):
         return "ENTERPRISE_TECH"
 
-    # 3. Giảng viên Thỉnh giảng / Khoa CNTT các trường Đại học, Cao đẳng, Học viện quốc tế
+    # 7. Giảng viên Thỉnh giảng / Khoa CNTT các trường Đại học, Cao đẳng, Học viện quốc tế
     elif any(k in text for k in [
-        "đại học", "cao đẳng", "khoa cntt", "greenwich", "jetking", "polytechnic",
+        "đại học", "cao đẳng", "khoa cntt", "greenwich", "polytechnic",
         "cmc university", "phenikaa", "csc.hcmus", "csc", "itplus", "niit", "bkacad",
-        "green academy", "funix"
+        "green academy"
     ]):
         return "UNIVERSITY_ACADEMY"
 
-    # 4. Lập trình Phần mềm, Coding Bootcamp, Web, Mobile
+    # 8. Lập trình Phần mềm, Coding Bootcamp, Web, Mobile
     elif any(k in text for k in [
         "bootcamp", "codegym", "cybersoft", "lập trình", "kỹ thuật phần mềm",
         "software engineering", "full-stack", "java", "react", "front-end", "backend",
         "web development", "mobile", "thuật toán", "masterdev", "kmin", "devpro",
-        "stanford", "techmaster", "vnext", "codelearn", "nordic coder", "ant academy"
+        "stanford", "techmaster", "vnext", "nordic coder", "ant academy"
     ]):
         return "PROGRAMMING_SOFTWARE"
 
-    # 5. Phân tích Dữ liệu, Power BI, SQL, Dashboard (dành cho đơn vị chuyên data)
+    # 9. Phân tích Dữ liệu, Power BI, SQL, Dashboard (dành cho đơn vị chuyên data)
     elif any(k in text for k in [
         "power bi", "powerbi", "dashboard", "báo cáo động", "báo cáo quản trị",
         "data analytics", "business intelligence", "data-driven", "datarock",
@@ -211,7 +263,148 @@ def build_tailored_email(target_item):
     specialties_str = ", ".join(specialties)
     category = detect_focus_category(target_item)
 
-    if category == "AI_GENAI_AGENT":
+    if category == "EMBEDDED_IOT":
+        # Dành cho các đơn vị đào tạo Lập trình Nhúng, Vi điều khiển STM32/ESP32, IoT (DEVIOT, TAPIT, IMIC, TioT LAB, FPT Jetking...)
+        subject = f"[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - {SENDER_NAME}"
+        body = f"""Kính gửi: Ban Đào tạo & Tuyển dụng {name},
+
+Tôi tên là Nguyễn Đức Hoàng. Tôi gửi email này với mong muốn ứng tuyển và đề xuất hợp tác giảng dạy các khóa học về Lập trình Nhúng (Embedded System), Vi điều khiển và IoT thực chiến tại {name}.
+
+Qua tìm hiểu về thế mạnh đào tạo của {name} trong các mảng {specialties_str}, tôi nhận thấy định hướng thực hành bám sát thiết bị thật của Quý đơn vị rất phù hợp với nền tảng chuyên môn của tôi. Với hơn 12 năm kinh nghiệm phát triển phần mềm/hệ thống cùng hơn 8 năm trực tiếp đứng lớp đào tạo kỹ sư công nghệ, tôi có thể đảm nhận giảng dạy và hướng dẫn đồ án ở các mảng:
+
+1. Lập trình Nhúng & Vi điều khiển Thực chiến (Embedded C/C++, ARM/STM32, ESP32):
+- Lập trình C/C++ chuẩn công nghiệp cho hệ thống nhúng, làm việc trực tiếp với thanh ghi, ngắt (Interrupt), Timer, DMA và các chuẩn giao tiếp ngoại vi (UART, SPI, I2C, CAN).
+- Xây dựng ứng dụng đa nhiệm với FreeRTOS, Embedded Linux và thiết kế kiến trúc Firmware sạch, dễ bảo trì.
+
+2. Kết nối Hệ thống IoT Toàn diện (End-to-End IoT):
+- Kết nối phần cứng (ESP32, Arduino, STM32) với giao thức MQTT/HTTP, xây dựng Backend Server, Cơ sở dữ liệu và Dashboard giám sát thời gian thực (Web/Mobile/Cloud).
+
+3. Ứng dụng AI tăng tốc phát triển Firmware & Phần mềm Nhúng:
+- Hướng dẫn học viên ứng dụng AI (Cursor, Copilot, Gemini) vào đọc nhanh datasheet phức tạp, hỗ trợ debug driver, viết Unit Test tự động và tăng tốc hoàn thành sản phẩm gấp 3 lần.
+
+Tôi có thể linh hoạt tham gia giảng dạy theo hình thức Full-time, Part-time, Thỉnh giảng hoặc Mentoring (Online & Offline tại Hà Nội) và sẵn sàng nhận lớp ngay.
+
+Quý đơn vị có thể tham khảo thêm:
+- Hồ sơ năng lực (CV trực tuyến): {CV_LINK}
+- Kênh YouTube bài giảng công nghệ (200+ video thực hành): {YOUTUBE_LINK}
+
+Tôi rất mong có cơ hội được trao đổi trực tiếp hoặc gửi Đề cương chi tiết để cùng {name} triển khai các khóa học chất lượng cao.
+
+Kính chúc {name} ngày càng phát triển vững mạnh!
+
+Trân trọng,
+{SENDER_NAME}
+Kỹ sư Phần mềm Cao cấp | Giảng viên Đào tạo Công nghệ & Nhúng/IoT
+Email: {SENDER_EMAIL}
+YouTube: {YOUTUBE_LINK}"""
+
+    elif category == "OLYMPIAD_ALGO":
+        # Dành cho các đơn vị Bồi dưỡng Học sinh giỏi (HSG) Tin học, Tin học trẻ, Chuyên Tin, Thuật toán C++/Python
+        subject = f"[Hợp tác giảng dạy] Đề xuất hợp tác Bồi dưỡng HSG Tin học, Tin học trẻ & Thuật toán C++/Python - {SENDER_NAME}"
+        body = f"""Kính gửi: Ban Điều hành & Bộ phận Chuyên môn {name},
+
+Tôi tên là Nguyễn Đức Hoàng. Tôi gửi email này với mong muốn kết nối và đề xuất hợp tác giảng dạy, trợ giảng hoặc đồng hành bồi dưỡng các lớp Lập trình Thuật toán, Luyện thi Học sinh giỏi (HSG) Tin học và Hội thi Tin học trẻ tại {name}.
+
+Được biết {name} là đơn vị uy tín chuyên sâu trong các mảng {specialties_str}, tôi rất ấn tượng với chất lượng đào tạo tư duy thuật toán bài bản của Quý đơn vị. Với hơn 12 năm kinh nghiệm kỹ thuật phần mềm thực chiến cùng hơn 8 năm trực tiếp giảng dạy lập trình cho nhiều lứa học viên, tôi có thể đồng hành cùng {name} ở các nội dung trọng tâm:
+
+1. Lập trình C/C++ & Python Chuyên sâu cho Luyện thi HSG / Chuyên Tin:
+- Củng cố nền tảng tư duy logic, lập trình C++ (STL, tối ưu độ phức tạp thời gian/bộ nhớ) và Python thuật toán.
+- Giảng dạy chuyên đề Cấu trúc dữ liệu & Giải thuật từ cơ bản đến nâng cao: Đệ quy, Quay lui, Chia để trị, Quy hoạch động, Đồ thị (BFS/DFS, Dijkstra...), Cây phân đoạn.
+
+2. Luyện thi Hội thi Tin học trẻ & Scratch/Python Phổ thông:
+- Hướng dẫn học sinh Tiểu học & THCS tư duy giải quyết bài toán qua Scratch, Python và chuyển tiếp mượt mà sang lập trình thi đấu.
+
+3. Phương pháp sư phạm trực quan & Lồng ghép AI hỗ trợ học tập thông minh:
+- Truyền cảm hứng yêu thích thuật toán thông qua phân tích bài toán từng bước rõ ràng, rèn luyện kỹ năng tự phân tích test case và debug hiệu quả.
+
+Tôi rất linh hoạt về thời gian (sẵn sàng nhận lớp Online toàn quốc hoặc Offline tại Hà Nội) và có thể bắt đầu ngay.
+
+Quý đơn vị có thể tham khảo thêm:
+- Hồ sơ năng lực (CV trực tuyến): {CV_LINK}
+- Kênh YouTube bài giảng lập trình & thuật toán (200+ video): {YOUTUBE_LINK}
+
+Rất mong có cơ hội được trao đổi trực tiếp hoặc dạy thử (demo) cùng {name} để thống nhất phương án hợp tác phù hợp nhất.
+
+Kính chúc {name} tiếp tục gặt hái thật nhiều thành tích xuất sắc trong các kỳ thi sắp tới!
+
+Trân trọng,
+{SENDER_NAME}
+Kỹ sư Phần mềm Cao cấp | Giảng viên Lập trình & Thuật toán
+Email: {SENDER_EMAIL}
+YouTube: {YOUTUBE_LINK}"""
+
+    elif category == "KIDS_STEM":
+        # Dành cho các trung tâm Tin học Trẻ em, Scratch, Python Kids, STEM Robotics (TEKY, SUMATO, Algorithmics, KDI, Vietstem, Kidscode, KASE...)
+        subject = f"[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - {SENDER_NAME}"
+        body = f"""Kính gửi: Ban Tuyển dụng & Quản lý Đào tạo {name},
+
+Tôi tên là Nguyễn Đức Hoàng. Tôi gửi email này để ứng tuyển và đề xuất hợp tác vị trí Giảng viên / Giáo viên giảng dạy Lập trình trẻ em, Tin học sáng tạo và STEM Robotics tại {name}.
+
+Qua tìm hiểu về các chương trình đào tạo của {name} trong lĩnh vực {specialties_str}, tôi rất yêu thích mô hình giáo dục giúp học sinh phát triển tư duy công nghệ từ sớm của Quý đơn vị. Với hơn 12 năm kinh nghiệm trong ngành phần mềm và hơn 8 năm kinh nghiệm đứng lớp giảng dạy công nghệ trực quan, tôi hoàn toàn tự tin đồng hành cùng {name} giảng dạy các học phần:
+
+1. Lập trình Trẻ em & Tư duy Khoa học Máy tính:
+- Lập trình kéo thả sáng tạo với Scratch / ScratchJr, thiết kế Game và câu chuyện tương tác cho học sinh Tiểu học.
+- Lập trình Python thực tế, phát triển Web/Game cho học sinh THCS & THPT, giúp các em chuyển từ người dùng công nghệ thành người kiến tạo công nghệ.
+
+2. Giáo dục STEM, Robotics & Lập trình Phần cứng Giáo dục:
+- Hướng dẫn lắp ráp, lập trình điều khiển Robot, mạch vi điều khiển (Arduino, micro:bit) gắn với các dự án khoa học vui.
+
+3. Đưa Trí tuệ nhân tạo (AI) vào học tập một cách an toàn & sáng tạo:
+- Hướng dẫn học sinh hiểu bản chất AI, biết cách sử dụng công cụ AI đúng đắn để hỗ trợ học tập, thiết kế sản phẩm số và phát triển tư duy phản biện.
+
+Với phong cách giảng dạy gần gũi, kiên nhẫn, biến kiến thức kỹ thuật khô khan thành những bài học thú vị (cùng kinh nghiệm xây dựng kênh YouTube hơn 200+ video hướng dẫn dễ hiểu), tôi có thể linh hoạt đứng lớp Full-time, Part-time (buổi tối/cuối tuần) hoặc dạy Online và sẵn sàng nhận lớp ngay.
+
+Quý đơn vị có thể tham khảo thêm hồ sơ năng lực của tôi qua:
+- Hồ sơ năng lực (CV trực tuyến): {CV_LINK}
+- Kênh YouTube bài giảng công nghệ: {YOUTUBE_LINK}
+
+Tôi rất mong có dịp được tham gia phỏng vấn và dạy demo cùng {name} trong thời gian sớm nhất.
+
+Kính chúc {name} ngày càng lan tỏa đam mê công nghệ đến thật nhiều học sinh Việt Nam!
+
+Trân trọng,
+{SENDER_NAME}
+Giảng viên Công nghệ & STEM | Kỹ sư Phần mềm Cao cấp
+Email: {SENDER_EMAIL}
+YouTube: {YOUTUBE_LINK}"""
+
+    elif category == "TUTOR_1ON1_MENTOR":
+        # Dành cho các nền tảng / trung tâm Dạy Tin học 1-1, Lập trình 1-1, Dạy AI 1-1, Mentor 1-1 (FUNiX, Blacasa, eTeacher, Sao Việt, Gia sư Tin học...)
+        subject = f"[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - {SENDER_NAME}"
+        body = f"""Kính gửi: Ban Quản lý Đào tạo & Tuyển dụng {name},
+
+Tôi tên là Nguyễn Đức Hoàng. Tôi gửi email này với mong muốn đăng ký hợp tác làm Giảng viên / Mentor dạy kèm 1-1 cho các chương trình {specialties_str} tại {name}.
+
+Tôi đặc biệt ấn tượng với mô hình cá nhân hóa lộ trình học tập 1 kèm 1 của {name} giúp học viên đạt mục tiêu nhanh chóng. Là một Kỹ sư phần mềm cao cấp với hơn 12 năm kinh nghiệm thực chiến và hơn 8 năm kinh nghiệm đứng lớp đào tạo cũng như mentoring cá nhân, tôi có thể đảm nhận kèm 1-1 đa dạng đối tượng (học sinh, sinh viên, người đi làm, chuyển ngành) ở các nội dung:
+
+1. Dạy AI 1-1 Thực chiến & Vibe Coding (Cho người đi làm, sinh viên & doanh nhân):
+- Kèm cặp 1-1 sử dụng thành thạo ChatGPT, Gemini, Claude, Cursor và AI Agents để tự động hóa công việc văn phòng, phân tích dữ liệu, viết báo cáo động và tăng tốc lập trình gấp 3-5 lần.
+- Thiết kế giáo trình "đo ni đóng giày" theo đúng công việc thực tế của từng học viên.
+
+2. Dạy Lập trình 1-1 & Mentoring Đồ án (Python, Java, C/C++, Web/Mobile, Embedded):
+- Kèm sát tiến độ từng buổi học, hướng dẫn từ mất gốc đến làm chủ dự án thực tế (Backend, Frontend, Data Analytics/Power BI hoặc Lập trình Nhúng).
+- Sửa lỗi trực tiếp (live coding & review code), giúp học viên chuyển ngành tự tin đi làm ngay.
+
+3. Dạy Tin học 1-1 & Bồi dưỡng Học sinh (Phổ thông, Scratch, Python, HSG & Tin học Văn phòng nâng cao):
+- Bám sát năng lực từng học viên với phương pháp truyền đạt dễ hiểu, kiên nhẫn và truyền cảm hứng.
+
+Tôi có thể nhận lớp dạy Online 1-1 toàn quốc hoặc dạy trực tiếp tại Hà Nội với lịch trình cực kỳ linh hoạt (cả ban ngày, buổi tối và cuối tuần) và sẵn sàng bắt đầu ngay.
+
+Quý đơn vị có thể tham khảo thêm về tôi qua:
+- Hồ sơ năng lực (CV trực tuyến): {CV_LINK}
+- Kênh YouTube bài giảng (hơn 200+ video thực hành trực quan): {YOUTUBE_LINK}
+
+Tôi rất mong nhận được phản hồi để có thể trao đổi chi tiết hơn về quy trình hợp tác giảng dạy/mentoring cùng {name}.
+
+Kính chúc {name} ngày càng phát triển và kết nối thêm nhiều học viên thành công!
+
+Trân trọng,
+{SENDER_NAME}
+Kỹ sư Phần mềm Cao cấp | Giảng viên & Mentor Công nghệ/AI 1-1
+Email: {SENDER_EMAIL}
+YouTube: {YOUTUBE_LINK}"""
+
+    elif category == "AI_GENAI_AGENT":
         # Dành cho các đơn vị đào tạo AI, GenAI, Machine Learning (như AI Vietnam, AI Education, VTC Academy, CoderSchool...)
         subject = f"[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - {SENDER_NAME}"
         body = f"""Kính gửi: Ban Đào tạo & Tuyển dụng {name},
@@ -392,9 +585,11 @@ YouTube: {YOUTUBE_LINK}"""
     return subject, body, category
 
 
-def send_email_via_chrome(to_email, subject, body, wait_seconds=5):
+def send_email_via_chrome(to_email, subject, body, wait_seconds=15):
     """
     Gửi email tự động qua Google Chrome bằng AppleScript tương tác với giao diện Gmail.
+    Sử dụng tab ID + window ID để không bị nhiễu nếu người dùng thao tác tab khác,
+    chờ nút Gửi sẵn sàng, xác nhận đã gửi xong và đóng tab gọn gàng.
     """
     params = urllib.parse.urlencode({
         "view": "cm",
@@ -405,45 +600,139 @@ def send_email_via_chrome(to_email, subject, body, wait_seconds=5):
     })
     compose_url = f"https://mail.google.com/mail/u/0/?{params}"
 
-    open_tab_script = f'''
+    send_btn_selector = (
+        'div[role="button"][data-tooltip*="Send"],'
+        'div[role="button"][aria-label*="Send"],'
+        'div[role="button"][data-tooltip*="Gửi"],'
+        'div[role="button"][aria-label*="Gửi"]'
+    )
+    js_click_send = (
+        "(function(){"
+        f"var btn=document.querySelector({json.dumps(send_btn_selector, ensure_ascii=False)});"
+        "var box=document.querySelector('div[role=\"textbox\"]');"
+        "if(!btn||!box)return 'WAIT';"
+        "btn.click();"
+        "return 'CLICKED';"
+        "})()"
+    )
+    js_verify_sent = (
+        "(function(){"
+        f"var btn=document.querySelector({json.dumps(send_btn_selector, ensure_ascii=False)});"
+        "var txt=(document.body?document.body.innerText:'');"
+        "if(!btn||txt.indexOf('Message sent')!==-1||txt.indexOf('Đã gửi thư')!==-1||txt.indexOf('Thư đã được gửi')!==-1)return 'VERIFIED';"
+        "return 'STILL_OPEN';"
+        "})()"
+    )
+    # Nếu email chứa link Google Drive và Gmail bật hộp thoại xác nhận quyền truy cập
+    # (iframe driveshare), tự động nhấn 'Send anyway' / 'Vẫn gửi' thay vì click trùng nút Send.
+    js_fallback_click = (
+        "(function(){"
+        "var confirmLabels=['send anyway','vẫn gửi','share & send','share and send','chia sẻ và gửi','gửi ngay'];"
+        "function fireClick(el){"
+        "['pointerdown','mousedown','pointerup','mouseup','click'].forEach(function(ev){"
+        "el.dispatchEvent(new MouseEvent(ev,{bubbles:true,cancelable:true,view:el.ownerDocument.defaultView||window}));"
+        "});"
+        "if(typeof el.click==='function')el.click();"
+        "}"
+        "function clickModalConfirm(doc){"
+        "if(!doc)return false;"
+        "var btns=Array.from(doc.querySelectorAll('button,div[role=\"button\"]'));"
+        "var hits=btns.filter(function(b){"
+        "var r=b.getBoundingClientRect();"
+        "if(r.width<=0||r.height<=0)return false;"
+        "var t=((b.innerText||b.textContent||b.getAttribute('aria-label')||'')).trim().toLowerCase();"
+        "return confirmLabels.some(function(lbl){return t===lbl||t.indexOf(lbl)!==-1;});"
+        "});"
+        "if(!hits.length)return false;"
+        "fireClick(hits[hits.length-1]);"
+        "return true;"
+        "}"
+        "var ifrs=Array.from(document.querySelectorAll('iframe.Qr-Mr-Jz-avO,iframe[src*=\"driveshare\"]'));"
+        "for(var i=ifrs.length-1;i>=0;i--){"
+        "try{"
+        "var idoc=ifrs[i].contentDocument||ifrs[i].contentWindow.document;"
+        "if(clickModalConfirm(idoc))return 'MODAL_CONFIRMED';"
+        "}catch(e){}"
+        "}"
+        "if(clickModalConfirm(document))return 'DOC_MODAL_CONFIRMED';"
+        f"var btn=document.querySelector({json.dumps(send_btn_selector, ensure_ascii=False)});"
+        "if(!btn)return 'VERIFIED';"
+        "fireClick(btn);"
+        "return 'FALLBACK_CLICKED';"
+        "})()"
+    )
+
+    applescript = f'''
     tell application "Google Chrome"
-        activate
-        tell front window
-            make new tab with properties {{URL:"{compose_url}"}}
-        end tell
+        if (count of windows) is 0 then
+            make new window
+        end if
+        set w to front window
+        set wid to id of w
+        set t to make new tab at end of tabs of w with properties {{URL:{json.dumps(compose_url, ensure_ascii=False)}}}
+        set tid to id of t
+
+        set clicked to false
+        repeat {max(10, int(wait_seconds))} times
+            delay 1
+            try
+                tell window id wid
+                    set targetTab to (first tab whose id is tid)
+                    set res to execute targetTab javascript {json.dumps(js_click_send, ensure_ascii=False)}
+                    if res is "CLICKED" then
+                        set clicked to true
+                        exit repeat
+                    end if
+                end tell
+            end try
+        end repeat
+
+        if not clicked then
+            return "ERR:BTN_NOT_FOUND"
+        end if
+
+        delay 2
+        set verified to false
+        repeat 6 times
+            try
+                tell window id wid
+                    set targetTab to (first tab whose id is tid)
+                    set vres to execute targetTab javascript {json.dumps(js_verify_sent, ensure_ascii=False)}
+                    if vres is "VERIFIED" then
+                        set verified to true
+                        exit repeat
+                    else
+                        execute targetTab javascript {json.dumps(js_fallback_click, ensure_ascii=False)}
+                    end if
+                end tell
+            on error
+                set verified to true
+                exit repeat
+            end try
+            delay 1
+        end repeat
+
+        if verified then
+            delay 1
+            try
+                tell window id wid to close (first tab whose id is tid)
+            end try
+            return "SENT_OK"
+        end if
+
+        return "ERR:COMPOSE_STILL_OPEN"
     end tell
     '''
-    res = subprocess.run(["osascript", "-e", open_tab_script], capture_output=True, text=True)
+
+    res = subprocess.run(["osascript", "-"], input=applescript, capture_output=True, text=True)
+    out = (res.stdout or "").strip()
+    err = (res.stderr or "").strip()
+
     if res.returncode != 0:
-        return False, f"Lỗi mở tab Chrome: {res.stderr}"
-
-    time.sleep(wait_seconds)
-
-    click_send_script = '''
-    tell application "Google Chrome"
-        tell active tab of front window
-            execute javascript "
-            (function() {
-                var btn = document.querySelector('div[role=\\"button\\"][data-tooltip*=\\"Send\\"], div[role=\\"button\\"][aria-label*=\\"Send\\"], div[role=\\"button\\"][data-tooltip*=\\"Gửi\\"], div[role=\\"button\\"][aria-label*=\\"Gửi\\"]');
-                if (btn) {
-                    btn.click();
-                    return 'SENT_OK';
-                }
-                return 'BTN_NOT_FOUND';
-            })()
-            "
-        end tell
-    end tell
-    '''
-    res_send = subprocess.run(["osascript", "-e", click_send_script], capture_output=True, text=True)
-    out = (res_send.stdout or "").strip()
-
-    time.sleep(2)
-
+        return False, f"Lỗi AppleScript Chrome: {err or out}"
     if "SENT_OK" in out:
         return True, "Gửi thành công qua Chrome Gmail"
-    else:
-        return True, f"Đã mở khung soạn thảo và kích hoạt lệnh gửi ({out})"
+    return False, f"Không xác nhận được trạng thái gửi ({out})"
 
 
 def action_preview(count=10, field="all"):
@@ -454,11 +743,15 @@ def action_preview(count=10, field="all"):
     batch, total_registry, total_sent = get_available_batch(count=count, field=field)
 
     field_title = {
-        "all": "TẤT CẢ LĨNH VỰC",
-        "tech": "CÔNG NGHỆ, AI & LẬP TRÌNH",
+        "all": "TẤT CẢ LĨNH VỰC (ƯU TIÊN NHÚNG / HSG / TRẺ EM / 1-1)",
+        "tech": "CÔNG NGHỆ, AI, NHÚNG & LẬP TRÌNH",
         "ai": "TRÍ TUỆ NHÂN TẠO & GENAI",
         "dev": "LẬP TRÌNH PHẦN MỀM & BOOTCAMP",
-        "data": "DỮ LIỆU & BI"
+        "data": "DỮ LIỆU & BI",
+        "embedded": "LẬP TRÌNH NHÚNG & IOT",
+        "hsg": "TIN HỌC THI HỌC SINH GIỎI & THUẬT TOÁN",
+        "kids": "TIN HỌC TRẺ EM & STEM ROBOTICS",
+        "tutor": "DẠY TIN HỌC / LẬP TRÌNH / AI 1-1"
     }.get(field, field.upper())
 
     print("=" * 80)
@@ -480,23 +773,28 @@ def action_preview(count=10, field="all"):
         print(f"     ✉️ Tiêu đề may đo: {subject}")
         print("-" * 80)
 
-    # Hiển thị 2 mẫu email khác nhau đại diện cho các nhóm khác nhau
-    print("\n📨 [XEM TRƯỚC CHI TIẾT 2 EMAIL MẪU MAY ĐO THEO NHU CẦU RIÊNG]")
-    for sample_idx in [0, 3]:
-        if sample_idx < len(batch):
-            target = batch[sample_idx]
-            sub, body, cat = build_tailored_email(target)
-            print(f"\n--- MẪU CHO [{target.get('name')}] ({cat}) ---")
+    # Hiển thị tối đa 4 mẫu email đại diện cho các nhóm khác nhau trong danh sách
+    print("\n📨 [XEM TRƯỚC CHI TIẾT EMAIL MẪU MAY ĐO THEO TỪNG NHÓM NGÀNH]")
+    seen_cats = set()
+    sample_count = 0
+    for target in batch:
+        sub, body, cat = build_tailored_email(target)
+        if cat not in seen_cats:
+            seen_cats.add(cat)
+            sample_count += 1
+            print(f"\n--- MẪU {sample_count} CHO [{target.get('name')}] ({cat}) ---")
             print(f"Tiêu đề: {sub}")
             print(f"Người nhận: {target.get('email')}")
             print("-" * 50)
             print("\n".join(body.splitlines()[:16]) + "\n... [phần còn lại của email] ...\n")
+            if sample_count >= 4:
+                break
 
     print("=" * 80)
     print("⚠️  CHỐT CHẶN AN TOÀN (HUMAN-IN-THE-LOOP - BẮT BUỘC):")
     print(f"👉 Vui lòng kiểm tra kỹ danh sách {len(batch)} đơn vị và nội dung may đo trên.")
     print("👉 Khi bạn duyệt và đồng ý, hãy phản hồi 'Đồng ý' / 'Gửi' hoặc chạy lệnh:")
-    print(f"   python3 gui_cv_assistant.py --action send --field {field} --confirm")
+    print(f"   python3 gui_cv_assistant.py --action send --count {count} --field {field} --confirm")
     print("=" * 80)
     return batch
 
@@ -527,7 +825,7 @@ def action_send(count=10, confirmed=False, field="all"):
 
         print(f"[{idx:02d}/{len(batch)}] Đang gửi tới: {target_name} ({target_email}) [Nhóm: {cat}]...", end=" ", flush=True)
 
-        ok, msg = send_email_via_chrome(target_email, subject, body, wait_seconds=5)
+        ok, msg = send_email_via_chrome(target_email, subject, body, wait_seconds=15)
         if ok:
             print("✅ ĐÃ GỬI")
             success_count += 1
@@ -578,8 +876,8 @@ def main():
     parser.add_argument("--action", choices=["preview", "send", "status"], default="preview",
                         help="Hành động: preview (mặc định), send, status")
     parser.add_argument("--count", type=int, default=10, help="Số lượng đơn vị cần xử lý mỗi lần (mặc định 10)")
-    parser.add_argument("--field", default="all", choices=["all", "tech", "ai", "dev", "data"],
-                        help="Lĩnh vực lọc: all, tech (Công nghệ/AI/Lập trình), ai, dev, data")
+    parser.add_argument("--field", default="all", choices=["all", "tech", "ai", "dev", "data", "embedded", "hsg", "kids", "tutor"],
+                        help="Lĩnh vực lọc: all, tech, ai, dev, data, embedded, hsg, kids, tutor")
     parser.add_argument("--confirm", action="store_true", help="Xác nhận gửi email thật")
 
     args = parser.parse_args()

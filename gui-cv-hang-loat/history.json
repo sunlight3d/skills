@@ -325,5 +325,1106 @@
     "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
     "sent_at": "2026-11-06T17:53:15.327042",
     "status": "SENT"
+  },
+  {
+    "name": "FUNiX (Tập đoàn FPT)",
+    "email": "tuyendung@funix.edu.vn",
+    "website": "https://funix.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Mentor 1-1 CNTT",
+      "Dạy Lập trình & AI 1-1",
+      "Automotive Embedded",
+      "Data Science & Software Dev"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:24:26.047237",
+    "status": "SENT"
+  },
+  {
+    "name": "Viện Đào tạo Quốc tế FPT Jetking",
+    "email": "jetking@fpt.edu.vn",
+    "website": "https://jetking.fpt.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình Nhúng & IoT",
+      "An ninh mạng",
+      "Quản trị hệ thống Cloud",
+      "AI ứng dụng"
+    ],
+    "category": "EMBEDDED_IOT",
+    "subject": "[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:24:36.516886",
+    "status": "SENT"
+  },
+  {
+    "name": "DEVIOT",
+    "email": "deviotcore@gmail.com",
+    "website": "https://deviot.vn",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Lập trình nhúng (Embedded C/C++)",
+      "Vi điều khiển STM32 & ESP32",
+      "FreeRTOS",
+      "IoT"
+    ],
+    "category": "EMBEDDED_IOT",
+    "subject": "[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:24:46.858088",
+    "status": "SENT"
+  },
+  {
+    "name": "IMIC Technology Việt Nam",
+    "email": "training@imic.edu.vn",
+    "website": "https://imic.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình nhúng Embedded System",
+      "IoT STM32 & ESP32",
+      "Lập trình phần mềm",
+      "AI ứng dụng"
+    ],
+    "category": "EMBEDDED_IOT",
+    "subject": "[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:24:57.222385",
+    "status": "SENT"
+  },
+  {
+    "name": "TAPIT (Công ty TNHH Kỹ thuật TAPIT)",
+    "email": "nhatthuongqn@gmail.com",
+    "website": "https://tapit.vn",
+    "city": "Đà Nẵng / Online",
+    "specialties": [
+      "Lập trình nhúng STM32 & ARM Cortex",
+      "Vi điều khiển Arduino",
+      "IoT & Hệ thống nhúng"
+    ],
+    "category": "EMBEDDED_IOT",
+    "subject": "[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:25:06.555942",
+    "status": "SENT"
+  },
+  {
+    "name": "TioT LAB",
+    "email": "dientuiotlab@gmail.com",
+    "website": "https://tiotlab.com",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình nhúng Firmware",
+      "Vi điều khiển ESP32, STM32, Arduino",
+      "IoT Dashboard & Cloud"
+    ],
+    "category": "EMBEDDED_IOT",
+    "subject": "[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:25:16.921989",
+    "status": "SENT"
+  },
+  {
+    "name": "Code Dream",
+    "email": "info@codedream.edu.vn",
+    "website": "https://codedream.edu.vn",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Luyện thi Học sinh giỏi Tin học",
+      "Tin học trẻ",
+      "Thuật toán C++ & Python",
+      "Lập trình thi đấu"
+    ],
+    "category": "OLYMPIAD_ALGO",
+    "subject": "[Hợp tác giảng dạy] Đề xuất hợp tác Bồi dưỡng HSG Tin học, Tin học trẻ & Thuật toán C++/Python - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:25:27.290023",
+    "status": "SENT"
+  },
+  {
+    "name": "Lớp Luyện thi HSG Tin học (Học Tin Cùng Thủ Khoa)",
+    "email": "tosonnguyen@moet.edu.vn",
+    "website": "http://hoctincungthukhoa.com",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Bồi dưỡng Học sinh giỏi Tin học",
+      "Luyện thi Olympic & Tin học trẻ",
+      "Lập trình C/C++ & Python",
+      "Scratch"
+    ],
+    "category": "OLYMPIAD_ALGO",
+    "subject": "[Hợp tác giảng dạy] Đề xuất hợp tác Bồi dưỡng HSG Tin học, Tin học trẻ & Thuật toán C++/Python - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:25:37.653569",
+    "status": "SENT"
+  },
+  {
+    "name": "CodeLearn (FPT Software)",
+    "email": "support@codelearn.io",
+    "website": "https://codelearn.io",
+    "city": "Toàn quốc / Online",
+    "specialties": [
+      "Luyện thi Tin học & Thuật toán",
+      "Cấu trúc dữ liệu & Giải thuật",
+      "C/C++ & Python",
+      "Đấu trường lập trình"
+    ],
+    "category": "OLYMPIAD_ALGO",
+    "subject": "[Hợp tác giảng dạy] Đề xuất hợp tác Bồi dưỡng HSG Tin học, Tin học trẻ & Thuật toán C++/Python - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:25:47.994809",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Sáng tạo Công nghệ TEKY",
+    "email": "tuyendung@teky.edu.vn",
+    "website": "https://teky.edu.vn",
+    "city": "Hà Nội / TP.HCM / Toàn quốc",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình Scratch & Python Kids",
+      "STEM Robotics",
+      "AI cho học sinh"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:25:57.348326",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Công nghệ SUMATO",
+    "email": "tuyendung@sumato.edu.vn",
+    "website": "https://sumato.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình thiếu nhi & Scratch",
+      "STEM Robotics",
+      "AI sáng tạo"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:26:07.724978",
+    "status": "SENT"
+  },
+  {
+    "name": "Algorithmics International Programming School",
+    "email": "talent@algo.edu.vn",
+    "website": "https://algorithmics.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Tin học trẻ em (5-17 tuổi)",
+      "Lập trình Python & Game",
+      "Tư duy thuật toán trẻ em",
+      "AI ứng dụng"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:26:17.065027",
+    "status": "SENT"
+  },
+  {
+    "name": "KDI Education",
+    "email": "tuyendung@kdi.edu.vn",
+    "website": "https://kdi.edu.vn",
+    "city": "TP.HCM / Toàn quốc",
+    "specialties": [
+      "Giáo dục STEM/STEAM",
+      "Tin học trẻ em (Scratch, Python)",
+      "Robotics & Arduino",
+      "AI cho trường học"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:26:27.398052",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Vietstem",
+    "email": "support@vietstem.com",
+    "website": "https://vietstem.com",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình Scratch & Python",
+      "Giáo dục STEM",
+      "Luyện thi Tin học trẻ"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:26:37.737953",
+    "status": "SENT"
+  },
+  {
+    "name": "Kidscode (KC Education)",
+    "email": "stem@kidscode.edu.vn",
+    "website": "https://kcedu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Tin học trẻ em",
+      "STEM Robotics",
+      "Lập trình & AI cho trẻ em"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:26:48.100260",
+    "status": "SENT"
+  },
+  {
+    "name": "KASE Edutech (I Can Code)",
+    "email": "qldt@kase.edu.vn",
+    "website": "https://kase.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Lập trình trẻ em I Can Code",
+      "Scratch & Python",
+      "Web Development thiếu niên"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:26:58.438973",
+    "status": "SENT"
+  },
+  {
+    "name": "eTeacher",
+    "email": "tuyendung@eteacher.vn",
+    "website": "https://eteacher.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "Gia sư 1-1 chất lượng cao",
+      "Dạy Tin học 1-1",
+      "Lập trình & Kỹ năng số 1-1"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:27:21.311043",
+    "status": "SENT"
+  },
+  {
+    "name": "Gia sư Tin học (giasutinhoc.vn)",
+    "email": "giasutinhoc.vn@gmail.com",
+    "website": "https://giasutinhoc.vn",
+    "city": "Hà Nội / TP.HCM / Online",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Dạy Lập trình 1-1",
+      "Dạy AI 1-1",
+      "Tin học văn phòng nâng cao"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:27:31.674806",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Tin học Sao Việt",
+    "email": "Trungtamtinhocsaoviet@gmail.com",
+    "website": "https://blogdaytinhoc.com",
+    "city": "TP.HCM / Bình Dương / Online",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Tin học trẻ em (Scratch, Python)",
+      "Lập trình Robot",
+      "Tin học ứng dụng"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:27:42.047082",
+    "status": "SENT"
+  },
+  {
+    "name": "Blacasa Việt Nam (TOT.EDU.VN)",
+    "email": "contact@blacasa.vn",
+    "website": "https://tot.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Dạy Lập trình & AI 1-1",
+      "Gia sư công nghệ trực tuyến"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-12T14:33:37.203782",
+    "status": "SENT"
+  },
+  {
+    "name": "OhStem Education",
+    "email": "contact@ohstem.vn",
+    "website": "https://ohstem.vn",
+    "city": "TP.HCM / Toàn quốc",
+    "specialties": [
+      "STEM Robotics",
+      "Tin học trẻ em",
+      "Lập trình nhúng giáo dục (Yolo:Bit, xBot)"
+    ],
+    "category": "EMBEDDED_IOT",
+    "subject": "[Hợp tác giảng dạy] Đề xuất giảng dạy Lập trình Nhúng (Embedded C/C++, STM32, IoT) & Ứng dụng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:56:02.810164",
+    "status": "SENT"
+  },
+  {
+    "name": "Etech Mekong",
+    "email": "info@etechmekong.edu.vn",
+    "website": "https://etechmekong.edu.vn",
+    "city": "Cần Thơ / Online",
+    "specialties": [
+      "Tin học trẻ em",
+      "Lập trình thiếu nhi",
+      "Công nghệ & STEM"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:56:14.256431",
+    "status": "SENT"
+  },
+  {
+    "name": "Việt Robot (VietRobot Education)",
+    "email": "trucbnt@vietrobot.edu.vn",
+    "website": "https://vietrobot.edu.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "STEM Robotics",
+      "Tin học trẻ em",
+      "Lập trình điều khiển Robot"
+    ],
+    "category": "KIDS_STEM",
+    "subject": "[Ứng tuyển Giảng viên] Đề xuất giảng dạy Tin học Trẻ em (Scratch, Python, STEM Robotics) & AI Sáng tạo - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:56:25.685117",
+    "status": "SENT"
+  },
+  {
+    "name": "Kyna for Kids (Dream Viet Education)",
+    "email": "teachers@kynaforkids.vn",
+    "website": "https://kynaforkids.vn",
+    "city": "Toàn quốc / Online",
+    "specialties": [
+      "Dạy kèm 1-1 trực tuyến",
+      "Tin học & Lập trình trẻ em",
+      "Kỹ năng số cho học sinh"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:56:36.040591",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Gia sư Nhân Văn",
+    "email": "ttgiasunhanvan1@gmail.com",
+    "website": "https://giasunhanvan.com.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "Dạy Tin học 1-1",
+      "Gia sư Lập trình Python, C/C++",
+      "Tin học phổ thông & văn phòng"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:56:47.426887",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Gia sư Sư Phạm Hà Nội",
+    "email": "suphamhanoi.edu@gmail.com",
+    "website": "https://giasusupham.com.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Gia sư 1-1 môn Tin học",
+      "Bồi dưỡng HSG Tin học 1-1",
+      "Dạy lập trình cơ bản"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:56:57.796286",
+    "status": "SENT"
+  },
+  {
+    "name": "Unica (Hợp tác Giảng viên)",
+    "email": "teacher@unica.vn",
+    "website": "https://unica.vn",
+    "city": "Toàn quốc / Online",
+    "specialties": [
+      "Khóa học AI ứng dụng",
+      "Đào tạo Lập trình & Tin học",
+      "Coaching & Video Course"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:57:08.239401",
+    "status": "SENT"
+  },
+  {
+    "name": "VioEdu (Tập đoàn FPT)",
+    "email": "support@vio.edu.vn",
+    "website": "https://vio.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Giáo dục ứng dụng AI",
+      "Đấu trường Tin học & Toán",
+      "Nội dung số & Trợ lý AI học tập"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:57:18.592846",
+    "status": "SENT"
+  },
+  {
+    "name": "HOCMAI",
+    "email": "hotro@hocmai.vn",
+    "website": "https://hocmai.vn",
+    "city": "Hà Nội / TP.HCM / Toàn quốc",
+    "specialties": [
+      "Bồi dưỡng Tin học phổ thông",
+      "Dạy kèm trực tuyến 1-1",
+      "Luyện thi HSG & Kỹ năng số"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:57:28.931088",
+    "status": "SENT"
+  },
+  {
+    "name": "UniGap",
+    "email": "contact@unigap.edu.vn",
+    "website": "https://unigap.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Phân tích dữ liệu",
+      "Product Management",
+      "SQL",
+      "Dashboard"
+    ],
+    "category": "DATA_BI",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:57:39.298124",
+    "status": "SENT"
+  },
+  {
+    "name": "Tomorrow Marketers Academy",
+    "email": "info@tomorrowmarketers.org",
+    "website": "https://tomorrowmarketers.org",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Data Analytics for Business",
+      "Power BI",
+      "Data-driven Decision"
+    ],
+    "category": "DATA_BI",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:57:49.647788",
+    "status": "SENT"
+  },
+  {
+    "name": "Gitiho for Business",
+    "email": "doanhnghiep@gitiho.com",
+    "website": "https://gitiho.com",
+    "city": "Hà Nội",
+    "specialties": [
+      "Data Analysis",
+      "Power BI",
+      "Báo cáo tự động hóa",
+      "Excel nâng cao"
+    ],
+    "category": "DATA_BI",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:57:58.988239",
+    "status": "SENT"
+  },
+  {
+    "name": "Stanford - Dạy kinh nghiệm lập trình",
+    "email": "stanford@stanford.com.vn",
+    "website": "https://stanford.com.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình ứng dụng",
+      "Python",
+      "Java",
+      "C#",
+      "Cơ sở dữ liệu"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:58:13.541383",
+    "status": "SENT"
+  },
+  {
+    "name": "Ant Academy",
+    "email": "contact@antacademy.vn",
+    "website": "https://antacademy.vn",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Lập trình ứng dụng",
+      "AI ứng dụng",
+      "Python"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:58:24.925367",
+    "status": "SENT"
+  },
+  {
+    "name": "UAC Academy (Học viện Phân tích Dữ liệu UAC)",
+    "email": "contact@uac.edu.vn",
+    "website": "https://uac.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Phân tích dữ liệu",
+      "Báo cáo động",
+      "Business Intelligence"
+    ],
+    "category": "DATA_BI",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Phân tích Dữ liệu, SQL & Báo cáo Động (Power BI) - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:58:35.241986",
+    "status": "SENT"
+  },
+  {
+    "name": "TopDev Training",
+    "email": "contact@topdev.vn",
+    "website": "https://topdev.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "Khóa học công nghệ chuyên sâu",
+      "AI",
+      "Tech Lead",
+      "Architecture"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:58:46.663523",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Viettel (Viettel Academy)",
+    "email": "viettelacademy@viettel.com.vn",
+    "website": "https://viettel.com.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "AI",
+      "Khoa học dữ liệu",
+      "Chuyển đổi số",
+      "Công nghệ cao"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:58:57.019267",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Đào tạo Công nghệ VNPT (VNPT-IT Training)",
+    "email": "vnptit.training@vnpt.vn",
+    "website": "https://vnpt.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Chuyển đổi số",
+      "Dữ liệu lớn",
+      "AI",
+      "Phần mềm doanh nghiệp"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:59:07.383711",
+    "status": "SENT"
+  },
+  {
+    "name": "TechX Academy",
+    "email": "info@techx.vn",
+    "website": "https://techx.vn",
+    "city": "TP.HCM",
+    "specialties": [
+      "Cloud Computing",
+      "DevOps",
+      "AI & Big Data"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:59:18.755125",
+    "status": "SENT"
+  },
+  {
+    "name": "BigData Academy Vietnam",
+    "email": "contact@bigdataacademy.vn",
+    "website": "https://bigdataacademy.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Big Data",
+      "Data Engineering",
+      "Machine Learning",
+      "AI"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:59:29.150644",
+    "status": "SENT"
+  },
+  {
+    "name": "AI Education Vietnam",
+    "email": "info@aieducation.vn",
+    "website": "https://aieducation.vn",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Trí tuệ nhân tạo",
+      "Prompt Engineering",
+      "GenAI",
+      "Vibe Coding"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:59:40.720276",
+    "status": "SENT"
+  },
+  {
+    "name": "DataScience Center Vietnam",
+    "email": "info@datascience.vn",
+    "website": "https://datascience.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Data Science",
+      "Python Analytics",
+      "Machine Learning"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T09:59:50.122238",
+    "status": "SENT"
+  },
+  {
+    "name": "TechMaster Vietnam",
+    "email": "lienhe@techmaster.vn",
+    "website": "https://techmaster.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình Web/Mobile",
+      "Data Analytics",
+      "DevOps",
+      "AI"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:00:00.505020",
+    "status": "SENT"
+  },
+  {
+    "name": "AHT Academy",
+    "email": "hr@ahtacademy.vn",
+    "website": "https://ahtacademy.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình ứng dụng",
+      "Data Analytics",
+      "Cloud"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:00:10.960790",
+    "status": "SENT"
+  },
+  {
+    "name": "NextTech Digital Academy",
+    "email": "academy@nexttech.asia",
+    "website": "https://nexttech.asia",
+    "city": "Hà Nội",
+    "specialties": [
+      "Fintech",
+      "Data-driven Management",
+      "AI ứng dụng"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:00:21.303408",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Đổi mới Sáng tạo & Chuyển đổi số",
+    "email": "daotao@inno-transform.vn",
+    "website": "https://inno-transform.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "AI ứng dụng doanh nghiệp",
+      "Phân tích dữ liệu điều hành",
+      "Báo cáo thông minh"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:00:31.676172",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Tin học - Trường ĐH Khoa học Tự nhiên TP.HCM (CSC)",
+    "email": "tuvan@csc.hcmus.edu.vn",
+    "website": "https://csc.edu.vn",
+    "city": "TP.HCM",
+    "specialties": [
+      "Lập trình Web/Mobile",
+      "Trí tuệ nhân tạo (AI)",
+      "Python",
+      "Khoa học Dữ liệu"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:00:42.014264",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Đào tạo Trí tuệ Nhân tạo AI Vietnam (AIVN)",
+    "email": "contact@aivietnam.edu.vn",
+    "website": "https://aivietnam.edu.vn",
+    "city": "Hà Nội / TP.HCM / Online",
+    "specialties": [
+      "Trí tuệ nhân tạo (AI)",
+      "Machine Learning",
+      "Deep Learning",
+      "LLM & GenAI"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:00:52.412761",
+    "status": "SENT"
+  },
+  {
+    "name": "Trường Đại học Công nghệ CMC (CMC University - Khoa CNTT)",
+    "email": "tuyensinh@cmc-u.edu.vn",
+    "website": "https://cmc-u.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Kỹ thuật phần mềm",
+      "Trí tuệ nhân tạo (AI)",
+      "Khoa học dữ liệu",
+      "Điện toán đám mây"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:01:02.784741",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Đào tạo Công nghệ Thông tin Sài Gòn (Saigon CTT)",
+    "email": "info@saigonctt.com.vn",
+    "website": "https://saigonctt.com.vn",
+    "city": "TP.HCM",
+    "specialties": [
+      "Hạ tầng mạng",
+      "Cloud Computing AWS/Azure",
+      "DevOps",
+      "Bảo mật & Phần mềm"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:01:13.145027",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Công nghệ IPMAC",
+    "email": "info@ipmac.vn",
+    "website": "https://ipmac.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Quản trị hệ thống",
+      "DevOps & Cloud",
+      "Lập trình Python Automation",
+      "Bảo mật"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:01:23.478016",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Mạng & Lập trình PNH",
+    "email": "contact@pnh.vn",
+    "website": "https://pnh.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Lập trình Linux",
+      "DevOps",
+      "Python Automation",
+      "Quản trị mạng doanh nghiệp"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:01:33.831644",
+    "status": "SENT"
+  },
+  {
+    "name": "Viện Công nghệ Tel4VN (Tel4VN Technology Academy)",
+    "email": "tuyensinh@tel4vn.com",
+    "website": "https://tel4vn.edu.vn",
+    "city": "TP.HCM / Online",
+    "specialties": [
+      "DevOps",
+      "Cloud AWS",
+      "VoIP & Telecom",
+      "Lập trình Python/Go",
+      "AI Automation"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:01:44.182652",
+    "status": "SENT"
+  },
+  {
+    "name": "Trung tâm Đào tạo FPT Greenwich Vietnam (Bộ môn Kỹ thuật Phần mềm & AI)",
+    "email": "tuyensinh.gre@fe.edu.vn",
+    "website": "https://greenwich.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng / Cần Thơ",
+    "specialties": [
+      "Software Engineering",
+      "Artificial Intelligence",
+      "Data Science",
+      "Web/Mobile Dev"
+    ],
+    "category": "UNIVERSITY_ACADEMY",
+    "subject": "[Hợp tác đào tạo] Giới thiệu năng lực giảng dạy / Thỉnh giảng chuyên ngành CNTT, AI Ứng dụng & Kỹ thuật Phần mềm - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:01:54.583874",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Đào tạo Nâng cao Năng lực Kỹ sư TMA (TMA Academy)",
+    "email": "training@tma.com.vn",
+    "website": "https://tma.vn",
+    "city": "TP.HCM / Bình Định",
+    "specialties": [
+      "Kỹ thuật phần mềm",
+      "5G & Viễn thông",
+      "Trí tuệ nhân tạo (AI)",
+      "Cloud & IoT"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:02:04.950849",
+    "status": "SENT"
+  },
+  {
+    "name": "KMS Technology Campus (KMS Fresher Academy)",
+    "email": "career-vn@kms-technology.com",
+    "website": "https://kms-technology.com",
+    "city": "TP.HCM / Đà Nẵng",
+    "specialties": [
+      "Software Engineering",
+      "Java Spring Boot",
+      "Automation Testing",
+      "AI Assisted Coding"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:02:15.313511",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Cao đẳng FPT Polytechnic (Khoa Công nghệ Thông tin)",
+    "email": "caodang@fpt.edu.vn",
+    "website": "https://caodang.fpt.edu.vn",
+    "city": "Toàn quốc",
+    "specialties": [
+      "Lập trình Web (Full-stack)",
+      "Lập trình Mobile",
+      "Ứng dụng phần mềm",
+      "AI ứng dụng"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:02:25.683985",
+    "status": "SENT"
+  },
+  {
+    "name": "Trường Đại học Phenikaa (Khoa Công nghệ Thông tin)",
+    "email": "cs@phenikaa-uni.edu.vn",
+    "website": "https://phenikaa-uni.edu.vn",
+    "city": "Hà Nội",
+    "specialties": [
+      "Khoa học máy tính",
+      "Kỹ thuật phần mềm",
+      "Trí tuệ nhân tạo (AI)",
+      "Hệ thống thông tin"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:02:37.146942",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Công nghệ VTC Academy Plus",
+    "email": "vtcacademyplus@vtc.edu.vn",
+    "website": "https://plus.vtc.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Kỹ thuật phần mềm quốc tế",
+      "Trí tuệ nhân tạo",
+      "Game Development",
+      "3D Animation"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:02:47.572475",
+    "status": "SENT"
+  },
+  {
+    "name": "VNEXT Academy (VNEXT Holdings)",
+    "email": "hr@vnext.vn",
+    "website": "https://vnext.vn",
+    "city": "Hà Nội / Đà Nẵng",
+    "specialties": [
+      "Lập trình ứng dụng thị trường Nhật Bản",
+      "Java",
+      "PHP",
+      "ReactJS",
+      "AI ứng dụng"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:02:57.953315",
+    "status": "SENT"
+  },
+  {
+    "name": "F8 - Fullstack Vietnam",
+    "email": "contact@fullstack.edu.vn",
+    "website": "https://fullstack.edu.vn",
+    "city": "Hà Nội / Toàn quốc",
+    "specialties": [
+      "Lập trình Full-stack",
+      "JavaScript/React",
+      "Python",
+      "AI-Augmented Development"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:03:08.331087",
+    "status": "SENT"
+  },
+  {
+    "name": "Apex Global Corporation",
+    "email": "info@apexglobal.com.vn",
+    "website": "https://apexglobal.com.vn",
+    "city": "TP.HCM / Hà Nội",
+    "specialties": [
+      "Đào tạo CNTT doanh nghiệp",
+      "DevOps",
+      "Kiến trúc hệ thống",
+      "ITIL",
+      "Tư vấn Chuyển đổi số"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:03:18.707096",
+    "status": "SENT"
+  },
+  {
+    "name": "Viện Quản trị & Công nghệ FSB (Đại học FPT)",
+    "email": "fsb.contact@fe.edu.vn",
+    "website": "https://fsb.edu.vn",
+    "city": "Hà Nội / TP.HCM / Đà Nẵng",
+    "specialties": [
+      "Quản trị Công nghệ",
+      "Chuyển đổi số",
+      "Khóa học AI cho Lãnh đạo",
+      "Tư vấn Chuyển đổi số"
+    ],
+    "category": "UNIVERSITY_ACADEMY",
+    "subject": "[Hợp tác đào tạo] Giới thiệu năng lực giảng dạy / Thỉnh giảng chuyên ngành CNTT, AI Ứng dụng & Kỹ thuật Phần mềm - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:03:29.063209",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện Đào tạo CNTT T3H",
+    "email": "tuyensinh@t3h.edu.vn",
+    "website": "https://t3h.edu.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Lập trình Phần mềm",
+      "Data Analysis",
+      "Kiểm thử phần mềm",
+      "Thiết kế hệ thống"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:03:39.419996",
+    "status": "SENT"
+  },
+  {
+    "name": "SmartGate E-Learning & Corporate Tech Training",
+    "email": "contact@smartgate.vn",
+    "website": "https://smartgate.vn",
+    "city": "Hà Nội / TP.HCM",
+    "specialties": [
+      "Đào tạo Công nghệ Doanh nghiệp",
+      "Khóa học AI ứng dụng",
+      "Hệ sinh thái EdTech",
+      "Chuyển đổi số"
+    ],
+    "category": "AI_GENAI_AGENT",
+    "subject": "[Hợp tác đào tạo] Đề xuất giảng dạy các khóa Trí tuệ nhân tạo (AI), GenAI, AI Agents & Vibe Coding - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:03:49.839424",
+    "status": "SENT"
+  },
+  {
+    "name": "BAP Academy (BAP Software)",
+    "email": "service@bap.jp",
+    "website": "https://bap.jp",
+    "city": "Đà Nẵng / Hà Nội / TP.HCM",
+    "specialties": [
+      "Đào tạo Kỹ sư AI",
+      "Web & Mobile",
+      "Cloud & DevOps",
+      "Phát triển phần mềm thực chiến"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:04:00.199511",
+    "status": "SENT"
+  },
+  {
+    "name": "NashTech Academy (NashTech Global)",
+    "email": "career@nashtechglobal.com",
+    "website": "https://nashtechglobal.com",
+    "city": "TP.HCM / Hà Nội / Đà Nẵng",
+    "specialties": [
+      "Kỹ sư Phần mềm .NET/Java",
+      "Cloud Computing",
+      "AI Engineering",
+      "Kiến trúc giải pháp"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:04:11.576109",
+    "status": "SENT"
+  },
+  {
+    "name": "Niteco Academy",
+    "email": "info@niteco.com",
+    "website": "https://niteco.com",
+    "city": "Hà Nội / Quốc tế",
+    "specialties": [
+      "Kỹ sư .NET / Full-stack",
+      "Kiến trúc phần mềm",
+      "Tư vấn giải pháp số",
+      "Đào tạo kỹ sư phần mềm"
+    ],
+    "category": "PROGRAMMING_SOFTWARE",
+    "subject": "[Hợp tác giảng dạy] Đề xuất đào tạo Lập trình Phần mềm Thực chiến & Tăng tốc Code bằng AI - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:04:22.963422",
+    "status": "SENT"
+  },
+  {
+    "name": "CodersX / CoderHub",
+    "email": "contact@codersx.com",
+    "website": "https://codersx.com",
+    "city": "Hà Nội / Online",
+    "specialties": [
+      "Lập trình Full-stack",
+      "AI-Augmented Coding",
+      "Mentoring 1-1 Kỹ sư",
+      "Phát triển sản phẩm"
+    ],
+    "category": "TUTOR_1ON1_MENTOR",
+    "subject": "[Hợp tác Giảng viên / Mentor 1-1] Đề xuất dạy kèm 1-1 Tin học, Lập trình & AI Thực chiến - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:04:33.371716",
+    "status": "SENT"
+  },
+  {
+    "name": "Học viện CNTT Bách Khoa Đà Nẵng",
+    "email": "contact@bkdanang.edu.vn",
+    "website": "https://bkdanang.edu.vn",
+    "city": "Đà Nẵng / Miền Trung",
+    "specialties": [
+      "Lập trình phần mềm",
+      "Quản trị mạng & Cloud",
+      "AI & Khoa học Dữ liệu",
+      "Đào tạo doanh nghiệp"
+    ],
+    "category": "ENTERPRISE_TECH",
+    "subject": "[Hợp tác đào tạo] Đề xuất chương trình đào tạo Kỹ sư Phần mềm, DevOps & Ứng dụng AI Doanh nghiệp - Nguyễn Đức Hoàng",
+    "sent_at": "2026-11-15T10:04:43.758307",
+    "status": "SENT"
   }
 ]
