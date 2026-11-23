@@ -861,7 +861,7 @@ def add_callout(doc, title, lines, box_type="ghi_nho"):
             add_rich_text(p, line)
 
 def add_example_box(doc, ex_title, problem_desc, solution_lines):
-    """Thêm khung ví dụ minh họa chuẩn SGK với đề bài nghiệp vụ mới và lời giải chi tiết."""
+    """Thêm khung ví dụ minh họa chuẩn SGK với đề bài nghiệp vụ mới và lời giải chi tiết (hỗ trợ DISPLAY:, IMAGE:, CAPTION:)."""
     if isinstance(problem_desc, str):
         problem_desc = [problem_desc]
     if isinstance(solution_lines, str):
@@ -879,22 +879,50 @@ def add_example_box(doc, ex_title, problem_desc, solution_lines):
     r_icon = p0.add_run("★ ")
     r_icon.font.name = "Times New Roman"
     r_icon.font.size = Pt(11)
-    r_title = p0.add_run(ex_title)
-    r_title.font.name = "Times New Roman"
-    r_title.font.size = Pt(11)
-    r_title.font.bold = True
-    r_title.font.color.rgb = RGBColor(0, 86, 179)
+    add_rich_text(p0, ex_title, default_size=Pt(11), default_bold=True, default_color=RGBColor(0, 86, 179))
     
     for p_line in problem_desc:
-        if p_line.startswith("DISPLAY:"):
-            latex_code = p_line[len("DISPLAY:"):].strip()
+        if isinstance(p_line, (tuple, list)):
+            kind = p_line[0]
+            if kind == 'image' and os.path.exists(p_line[1]):
+                img_w = p_line[2] if len(p_line) > 2 else Mm(115)
+                p = c.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(3)
+                p.paragraph_format.space_after = Pt(2)
+                r = p.add_run()
+                r.add_picture(p_line[1], width=img_w)
+            elif kind == 'caption':
+                p = c.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(0)
+                p.paragraph_format.space_after = Pt(3)
+                add_rich_text(p, p_line[1], default_size=Pt(10), default_italic=True, default_color=COLOR_BLACK)
+        elif str(p_line).startswith("IMAGE:"):
+            img_path = str(p_line)[len("IMAGE:"):].strip()
+            if os.path.exists(img_path):
+                p = c.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(3)
+                p.paragraph_format.space_after = Pt(2)
+                r = p.add_run()
+                r.add_picture(img_path, width=Mm(115))
+        elif str(p_line).startswith("CAPTION:"):
+            cap_text = str(p_line)[len("CAPTION:"):].strip()
+            p = c.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_before = Pt(0)
+            p.paragraph_format.space_after = Pt(3)
+            add_rich_text(p, cap_text, default_size=Pt(10), default_italic=True, default_color=COLOR_BLACK)
+        elif str(p_line).startswith("DISPLAY:"):
+            latex_code = str(p_line)[len("DISPLAY:"):].strip()
             add_display_math(c, latex_code)
         else:
             p_prob = c.add_paragraph()
             p_prob.paragraph_format.space_before = Pt(1)
             p_prob.paragraph_format.space_after = Pt(2)
             p_prob.paragraph_format.left_indent = Mm(3)
-            add_rich_text(p_prob, p_line)
+            add_rich_text(p_prob, str(p_line))
         
     p_sol_head = c.add_paragraph()
     p_sol_head.paragraph_format.space_before = Pt(4)
@@ -907,15 +935,47 @@ def add_example_box(doc, ex_title, problem_desc, solution_lines):
     r_sol.font.color.rgb = RGBColor(178, 31, 45)
     
     for step in solution_lines:
-        if step.startswith("DISPLAY:"):
-            latex_code = step[len("DISPLAY:"):].strip()
+        if isinstance(step, (tuple, list)):
+            kind = step[0]
+            if kind == 'image' and os.path.exists(step[1]):
+                img_w = step[2] if len(step) > 2 else Mm(115)
+                p = c.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(3)
+                p.paragraph_format.space_after = Pt(2)
+                r = p.add_run()
+                r.add_picture(step[1], width=img_w)
+            elif kind == 'caption':
+                p = c.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(0)
+                p.paragraph_format.space_after = Pt(3)
+                add_rich_text(p, step[1], default_size=Pt(10), default_italic=True, default_color=COLOR_BLACK)
+        elif str(step).startswith("IMAGE:"):
+            img_path = str(step)[len("IMAGE:"):].strip()
+            if os.path.exists(img_path):
+                p = c.add_paragraph()
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.space_before = Pt(3)
+                p.paragraph_format.space_after = Pt(2)
+                r = p.add_run()
+                r.add_picture(img_path, width=Mm(115))
+        elif str(step).startswith("CAPTION:"):
+            cap_text = str(step)[len("CAPTION:"):].strip()
+            p = c.add_paragraph()
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_before = Pt(0)
+            p.paragraph_format.space_after = Pt(3)
+            add_rich_text(p, cap_text, default_size=Pt(10), default_italic=True, default_color=COLOR_BLACK)
+        elif str(step).startswith("DISPLAY:"):
+            latex_code = str(step)[len("DISPLAY:"):].strip()
             add_display_math(c, latex_code)
         else:
             p_step = c.add_paragraph()
             p_step.paragraph_format.space_before = Pt(1)
             p_step.paragraph_format.space_after = Pt(2)
             p_step.paragraph_format.left_indent = Mm(4)
-            add_rich_text(p_step, step)
+            add_rich_text(p_step, str(step))
 
 def add_figure_box(doc, image_path, caption_title, explanation_lines=None):
     """Thêm hình vẽ minh họa trực quan độ nét cao kèm chú thích sư phạm."""
