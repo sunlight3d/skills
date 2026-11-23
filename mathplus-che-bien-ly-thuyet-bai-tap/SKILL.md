@@ -22,7 +22,7 @@ Skill `mathplus-che-bien-ly-thuyet-bai-tap` giải quyết triệt để 2 vấn
 
 ---
 
-## 2. Bốn Nguyên Tắc Vàng Bất Biến (Core Commandments)
+## 2. Năm Nguyên Tắc Vàng Bất Biến (Core Commandments)
 
 ### Nguyên tắc 1: 100% Công thức & Ký hiệu Chuẩn Sách Giáo Khoa
 * **Tuyệt đối không tự ý thay đổi ký hiệu của SGK**: Mọi ký hiệu chuẩn như $\vec{a}, \vec{0}, |\vec{a}|, (\vec{u}, \vec{v}), \vec{u} \cdot \vec{v}$, $M_e, M_o, Q_1, Q_2, Q_3$, $\lim_{x \to x_0} f(x) = L$ phải giữ nguyên vẹn.
@@ -35,15 +35,20 @@ Skill `mathplus-che-bien-ly-thuyet-bai-tap` giải quyết triệt để 2 vấn
    * Bản chất toán học đằng sau thuật ngữ đó.
 3. **Hình vẽ minh họa trực quan độ nét cao (300 DPI)**: Cuối mỗi phần lý thuyết lớn, bắt buộc chèn 1 – 2 hình vẽ trực quan (`add_figure_box`) giải thích bản chất hình học.
 
-### Nguyên tắc 3: Nguyên Tắc "Biến Chế" Bài Tập Từ SGK (Chống Chép Giải)
+### Nguyên tắc 3: Bắt Buộc Chèn Bài Tập & Lời Giải Xen Kẽ Ngay Sau Từng Mục Lý Thuyết (Interleaved Practice)
+* **Bố cục sư phạm xen kẽ (Interleaved Layout)**: Tuyệt đối không gom toàn bộ lý thuyết thành một khối dài rồi mới để bài tập ở cuối bài. Sau mỗi mục lý thuyết lớn (khái niệm, định lí, tính chất), BẮT BUỘC chèn ngay 1 – 2 bài tập áp dụng biến chế từ SGK kèm khung lời giải chi tiết từng bước qua hàm `add_example_box`.
+* **Học đến đâu – Vận dụng và xem lời giải mẫu ngay đến đó**: Giúp học sinh khắc sâu phương pháp chứng minh và tư duy hình học không gian ngay sau khi tiếp nhận định lí.
+* **Nguồn bài tập biến chế**: Lấy trực tiếp từ các bài Luyện tập, Vận dụng, hoặc Bài tập SGK tương ứng với mục đó, chế biến nhẹ (đổi tên đỉnh, đổi số liệu nghiệm đẹp, đổi tỉ số) để học sinh chống chép giải nhưng vẫn bám sát 100% dạng bài SGK.
+
+### Nguyên tắc 4: Nguyên Tắc "Biến Chế" Bài Tập Từ SGK (Chống Chép Giải)
 * **Bám sát 100% câu chữ, văn phong và dạng toán của SGK**: Giữ nguyên tinh thần bài tập trong SGK (từ Luyện tập, Vận dụng đến Bài tập cuối bài).
 * **TUYỆT ĐỐI KHÔNG tự bịa các ngữ cảnh công nghệ rườm rà**: Không tự ý chèn các bối cảnh vi mạch bán dẫn, mạng 5G, đài radar viễn thông... vào bài toán toán học thuần túy. Đề bài phải giữ trọn vẹn văn phong sư phạm trong sáng, gãy gọn, gần gũi của SGK.
 * **Kỹ thuật biến chế cốt lõi**:
   1. **Đổi số liệu toán học**: Toạ độ điểm, hệ số vectơ, số đo góc, độ dài đoạn thẳng được tính toán cẩn thận để kết quả ra số nguyên hoặc phân số tối giản rất đẹp.
-  2. **Đổi tên điểm & ký hiệu**: Với các bài toán chứng minh hình học phẳng, đổi luân phiên các đỉnh ($A, B, C, D \leftrightarrow M, N, P, Q$) để học sinh không thể tra cứu lời giải mạng mà phải tự tư duy vẽ hình và lập luận.
+  2. **Đổi tên điểm & ký hiệu**: Với các bài toán chứng minh hình học phẳng và không gian, đổi luân phiên các đỉnh ($A, B, C, D \leftrightarrow M, N, P, Q$) để học sinh không thể tra cứu lời giải mạng mà phải tự tư duy vẽ hình và lập luận.
   3. **Lời giải chi tiết từng bước**: Trình bày mạch lạc, lập luận logic, nêu rõ căn cứ định lí/hệ thức áp dụng, có kết luận nghiệm rõ ràng.
 
-### Nguyên tắc 4: Bắt Buộc Vẽ Hình Minh Họa 300 DPI Vào Cả Đề Bài Và Lời Giải
+### Nguyên tắc 5: Bắt Buộc Vẽ Hình Minh Họa 300 DPI Vào Cả Đề Bài Và Lời Giải
 * **Tuyệt đối không để tài liệu hình học/vectơ/đồ thị trở thành văn bản chay thiếu hình vẽ**.
 * **Trong Phiếu đề bài (`_De_Bai.docx`)**: Những câu hỏi có hình minh họa đề (lưới ô vuông, bàn cờ, sơ đồ chuyển động, các lực...) phải chèn hình vẽ ngay dưới câu hỏi qua hàm `add_question_figure`.
 * **Trong Bản lời giải (`_Loi_Giai.docx`)**: BẮT BUỘC chèn hình vẽ minh họa từng bước giải toán trực tiếp bên trong khung lời giải (`IMAGE:<path>`, `CAPTION:<text>`).
