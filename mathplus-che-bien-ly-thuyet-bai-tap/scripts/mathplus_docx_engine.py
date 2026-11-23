@@ -79,7 +79,12 @@ def add_display_math(doc_or_cell, latex_code, space_before=Pt(2), space_after=Pt
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_before = space_before
     p.paragraph_format.space_after = space_after
-    omml = latex_to_omml(latex_code, display=True)
+    clean_code = latex_code.strip()
+    if clean_code.startswith("$$") and clean_code.endswith("$$"):
+        clean_code = clean_code[2:-2].strip()
+    elif clean_code.startswith("$") and clean_code.endswith("$"):
+        clean_code = clean_code[1:-1].strip()
+    omml = latex_to_omml(clean_code, display=True)
     p._p.append(omml)
     return p
 
@@ -149,12 +154,13 @@ def add_rich_text(p, text, default_font="Times New Roman", default_size=Pt(11),
                     run.font.italic = default_italic
 
 class MathPlusDocxBuilder:
-    def __init__(self, title, subtitle="Năm học 2026 – 2027", time_limit="90 phút", is_solved=False, logo_path=None, **kwargs):
+    def __init__(self, title, subtitle="Năm học 2026 – 2027", time_limit="90 phút", is_solved=False, logo_path=None, show_student_info=True, **kwargs):
         self.doc = Document()
         self.title = title
         self.subtitle = subtitle
         self.time_limit = time_limit
         self.is_solved = is_solved
+        self.show_student_info = show_student_info
         self.logo_path = find_mathplus_logo(logo_path)
         self._setup_page()
         self._setup_header_footer()
@@ -316,54 +322,55 @@ class MathPlusDocxBuilder:
         r_r3.font.italic = True
         r_r3.font.color.rgb = COLOR_BLACK
         
-        # Khung thông tin học sinh (Nền trắng, viền mảnh đen)
-        p_sp = self.doc.add_paragraph()
-        p_sp.paragraph_format.space_before = Pt(0)
-        p_sp.paragraph_format.space_after = Pt(4)
-        
-        info_t = self.doc.add_table(rows=1, cols=1)
-        info_t.alignment = WD_TABLE_ALIGNMENT.CENTER
-        info_t.autofit = False
-        c_info = info_t.cell(0, 0)
-        c_info.width = Mm(172)
-        style_cell(c_info, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
-        
-        p_i = c_info.paragraphs[0]
-        p_i.paragraph_format.space_before = Pt(3)
-        p_i.paragraph_format.space_after = Pt(3)
-        p_i.paragraph_format.line_spacing = 1.2
-        
-        r1 = p_i.add_run("Họ và tên học sinh: ")
-        r1.bold = True
-        r1.font.size = Pt(11)
-        r1.font.color.rgb = COLOR_BLACK
-        r1_dot = p_i.add_run("……………………………………………………………………    ")
-        r1_dot.font.size = Pt(11)
-        r1_dot.font.color.rgb = COLOR_BLACK
-        
-        r2 = p_i.add_run("Lớp: ")
-        r2.bold = True
-        r2.font.size = Pt(11)
-        r2.font.color.rgb = COLOR_BLACK
-        r2_dot = p_i.add_run("……………………\n")
-        r2_dot.font.size = Pt(11)
-        r2_dot.font.color.rgb = COLOR_BLACK
-        
-        r3 = p_i.add_run("Ngày làm bài: ")
-        r3.bold = True
-        r3.font.size = Pt(11)
-        r3.font.color.rgb = COLOR_BLACK
-        r3_dot = p_i.add_run("………………………………………………    ")
-        r3_dot.font.size = Pt(11)
-        r3_dot.font.color.rgb = COLOR_BLACK
-        
-        r4 = p_i.add_run("Điểm số / Đánh giá: ")
-        r4.bold = True
-        r4.font.size = Pt(11)
-        r4.font.color.rgb = COLOR_BLACK
-        r4_dot = p_i.add_run("………………………………")
-        r4_dot.font.size = Pt(11)
-        r4_dot.font.color.rgb = COLOR_BLACK
+        if self.show_student_info:
+            # Khung thông tin học sinh (Nền trắng, viền mảnh đen)
+            p_sp = self.doc.add_paragraph()
+            p_sp.paragraph_format.space_before = Pt(0)
+            p_sp.paragraph_format.space_after = Pt(4)
+            
+            info_t = self.doc.add_table(rows=1, cols=1)
+            info_t.alignment = WD_TABLE_ALIGNMENT.CENTER
+            info_t.autofit = False
+            c_info = info_t.cell(0, 0)
+            c_info.width = Mm(172)
+            style_cell(c_info, bg_color=None, border_color="000000", top="single", bottom="single", left="single", right="single", sz="4")
+            
+            p_i = c_info.paragraphs[0]
+            p_i.paragraph_format.space_before = Pt(3)
+            p_i.paragraph_format.space_after = Pt(3)
+            p_i.paragraph_format.line_spacing = 1.2
+            
+            r1 = p_i.add_run("Họ và tên học sinh: ")
+            r1.bold = True
+            r1.font.size = Pt(11)
+            r1.font.color.rgb = COLOR_BLACK
+            r1_dot = p_i.add_run("……………………………………………………………………    ")
+            r1_dot.font.size = Pt(11)
+            r1_dot.font.color.rgb = COLOR_BLACK
+            
+            r2 = p_i.add_run("Lớp: ")
+            r2.bold = True
+            r2.font.size = Pt(11)
+            r2.font.color.rgb = COLOR_BLACK
+            r2_dot = p_i.add_run("……………………\n")
+            r2_dot.font.size = Pt(11)
+            r2_dot.font.color.rgb = COLOR_BLACK
+            
+            r3 = p_i.add_run("Ngày làm bài: ")
+            r3.bold = True
+            r3.font.size = Pt(11)
+            r3.font.color.rgb = COLOR_BLACK
+            r3_dot = p_i.add_run("………………………………………………    ")
+            r3_dot.font.size = Pt(11)
+            r3_dot.font.color.rgb = COLOR_BLACK
+            
+            r4 = p_i.add_run("Điểm số / Đánh giá: ")
+            r4.bold = True
+            r4.font.size = Pt(11)
+            r4.font.color.rgb = COLOR_BLACK
+            r4_dot = p_i.add_run("………………………………")
+            r4_dot.font.size = Pt(11)
+            r4_dot.font.color.rgb = COLOR_BLACK
 
     def add_header_banner(self):
         pass
@@ -500,8 +507,38 @@ class MathPlusDocxBuilder:
         
         first = True
         for step in solution_steps:
-            kind = step[0]
-            content = step[1]
+            if isinstance(step, dict) and 'display_math' in step:
+                kind = 'display_math'
+                content = step['display_math']
+            elif isinstance(step, str):
+                s = step.strip()
+                if s.startswith("DISPLAY:"):
+                    kind = 'display_math'
+                    content = s[len("DISPLAY:"):].strip()
+                elif s.startswith("$$") and s.endswith("$$") and len(s) >= 4:
+                    kind = 'display_math'
+                    content = s[2:-2].strip()
+                elif s.startswith("IMAGE:"):
+                    kind = 'image'
+                    content = s[len("IMAGE:"):].strip()
+                elif s.startswith("CAPTION:"):
+                    kind = 'caption'
+                    content = s[len("CAPTION:"):].strip()
+                elif s.startswith("Lời giải chi tiết") or s.startswith("✎ LỜI GIẢI") or s.startswith("✎ Lời giải"):
+                    kind = 'title'
+                    content = s
+                elif s.startswith("•"):
+                    kind = 'bullet'
+                    content = s.lstrip("• ").strip()
+                else:
+                    kind = 'p'
+                    content = s
+            elif isinstance(step, (tuple, list)) and len(step) >= 2:
+                kind = step[0]
+                content = step[1]
+            else:
+                continue
+
             if kind == 'title':
                 p = c.paragraphs[0] if first else c.add_paragraph()
                 p.paragraph_format.space_before = Pt(3)
@@ -534,13 +571,14 @@ class MathPlusDocxBuilder:
                 add_rich_text(p, content, default_size=Pt(11), default_color=COLOR_BLACK)
             elif kind == 'image':
                 img_path = content
-                img_w = step[2] if len(step) > 2 else Mm(110)
-                p = c.add_paragraph()
-                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                p.paragraph_format.space_before = Pt(4)
-                p.paragraph_format.space_after = Pt(2)
-                run_img = p.add_run()
-                run_img.add_picture(img_path, width=img_w)
+                img_w = step[2] if (isinstance(step, (tuple, list)) and len(step) > 2) else Mm(110)
+                if os.path.exists(img_path):
+                    p = c.add_paragraph()
+                    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    p.paragraph_format.space_before = Pt(4)
+                    p.paragraph_format.space_after = Pt(2)
+                    run_img = p.add_run()
+                    run_img.add_picture(img_path, width=img_w)
             elif kind == 'caption':
                 p = c.add_paragraph()
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -748,6 +786,8 @@ def add_bullet_point(doc, text, level=1):
 
 def add_sgk_box(doc, title, lines):
     """Khung kiến thức chuẩn SGK 100% (Viền cam đậm, nền trắng, chữ đen tuyền)."""
+    if isinstance(lines, str):
+        lines = [lines]
     t = doc.add_table(rows=1, cols=1)
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
@@ -762,15 +802,15 @@ def add_sgk_box(doc, title, lines):
     r_icon.font.name = "Times New Roman"
     r_icon.font.size = Pt(11)
     
-    r_title = p0.add_run(title)
-    r_title.font.name = "Times New Roman"
-    r_title.font.size = Pt(11)
-    r_title.font.bold = True
-    r_title.font.color.rgb = RGBColor(230, 81, 0)
+    add_rich_text(p0, title, default_size=Pt(11), default_bold=True, default_color=RGBColor(230, 81, 0))
     
     for line in lines:
         if line.startswith("DISPLAY:"):
             latex_code = line[len("DISPLAY:"):].strip()
+            if latex_code.startswith("$$") and latex_code.endswith("$$"):
+                latex_code = latex_code[2:-2].strip()
+            elif latex_code.startswith("$") and latex_code.endswith("$"):
+                latex_code = latex_code[1:-1].strip()
             add_display_math(c, latex_code)
         else:
             p = c.add_paragraph()
@@ -781,6 +821,8 @@ def add_sgk_box(doc, title, lines):
 
 def add_callout(doc, title, lines, box_type="ghi_nho"):
     """Thêm khung ghi nhớ / giải mã thuật ngữ tiếng Anh, nền trắng sạch sẽ, viền mảnh."""
+    if isinstance(lines, str):
+        lines = [lines]
     t = doc.add_table(rows=1, cols=1)
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
@@ -806,6 +848,10 @@ def add_callout(doc, title, lines, box_type="ghi_nho"):
     for line in lines:
         if line.startswith("DISPLAY:"):
             latex_code = line[len("DISPLAY:"):].strip()
+            if latex_code.startswith("$$") and latex_code.endswith("$$"):
+                latex_code = latex_code[2:-2].strip()
+            elif latex_code.startswith("$") and latex_code.endswith("$"):
+                latex_code = latex_code[1:-1].strip()
             add_display_math(c, latex_code)
         else:
             p = c.add_paragraph()
@@ -816,6 +862,10 @@ def add_callout(doc, title, lines, box_type="ghi_nho"):
 
 def add_example_box(doc, ex_title, problem_desc, solution_lines):
     """Thêm khung ví dụ minh họa chuẩn SGK với đề bài nghiệp vụ mới và lời giải chi tiết."""
+    if isinstance(problem_desc, str):
+        problem_desc = [problem_desc]
+    if isinstance(solution_lines, str):
+        solution_lines = [solution_lines]
     t = doc.add_table(rows=1, cols=1)
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
@@ -872,6 +922,8 @@ def add_figure_box(doc, image_path, caption_title, explanation_lines=None):
     if not os.path.exists(image_path):
         print(f"Warning: Image not found: {image_path}")
         return
+    if isinstance(explanation_lines, str):
+        explanation_lines = [explanation_lines]
     p_img = doc.add_paragraph()
     p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_img.paragraph_format.space_before = Pt(8)
@@ -883,12 +935,7 @@ def add_figure_box(doc, image_path, caption_title, explanation_lines=None):
     p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_cap.paragraph_format.space_before = Pt(2)
     p_cap.paragraph_format.space_after = Pt(4)
-    run_cap = p_cap.add_run(caption_title)
-    run_cap.font.name = "Times New Roman"
-    run_cap.font.size = Pt(10)
-    run_cap.font.bold = True
-    run_cap.font.italic = True
-    run_cap.font.color.rgb = RGBColor(0, 51, 102)
+    add_rich_text(p_cap, caption_title, default_size=Pt(10), default_bold=True, default_italic=True, default_color=RGBColor(0, 51, 102))
     
     if explanation_lines:
         for line in explanation_lines:
