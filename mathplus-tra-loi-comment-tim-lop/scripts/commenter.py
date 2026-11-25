@@ -276,31 +276,60 @@ def scan_candidate_posts_chrome(target_count: int = 20) -> List[Dict]:
 def post_comment_chrome(post_url: str, comment_text: str) -> bool:
     """Truy cập bài viết và đăng 1 bình luận qua Google Chrome (macOS)."""
     log(f"\n--- Đang mở bài viết qua Chrome: {post_url} ---")
-    b64_comment = base64.b64encode(json.dumps(comment_text).encode("utf-8")).decode("ascii")
-    js = f'''(() => {{
-        try {{
-            if (document.body.innerText.includes("0977961189")) {{
+    
+    # Đặt nội dung comment vào clipboard macOS qua pbcopy
+    try:
+        subprocess.run(['pbcopy'], input=comment_text.encode('utf-8'), check=True)
+    except Exception as e:
+        log(f"⚠️ Lỗi copy clipboard: {e}")
+
+    js_focus = '''(() => {
+        try {
+            if (document.body.innerText.includes("0977961189")) {
                 return "ALREADY_COMMENTED";
-            }}
-            let box = document.querySelector("div[role='textbox'][contenteditable='true']");
-            if (!box) {{
+            }
+            let boxes = Array.from(document.querySelectorAll("div[role='textbox'][contenteditable='true']"));
+            let box = boxes.find(b => {
+                const aria = (b.getAttribute('aria-label') || '').toLowerCase();
+                return !aria.includes('write to') && !aria.includes('nhắn tin') && !aria.includes('chat') && !aria.includes('tin nhắn');
+            });
+            if (!box) {
                 const btns = Array.from(document.querySelectorAll("div[role='button']"));
                 const cBtn = btns.find(b => b.innerText && (b.innerText.includes('Bình luận') || b.innerText.includes('Comment')));
-                if (cBtn) {{
+                if (cBtn) {
                     cBtn.click();
-                }}
-            }}
-            box = document.querySelector("div[role='textbox'][contenteditable='true']");
+                }
+            }
+            boxes = Array.from(document.querySelectorAll("div[role='textbox'][contenteditable='true']"));
+            box = boxes.find(b => {
+                const aria = (b.getAttribute('aria-label') || '').toLowerCase();
+                return !aria.includes('write to') && !aria.includes('nhắn tin') && !aria.includes('chat') && !aria.includes('tin nhắn');
+            });
             if (!box) return "BOX_NOT_FOUND";
+            box.scrollIntoView({ behavior: 'instant', block: 'center' });
             box.focus();
-            const textToInsert = JSON.parse(atob('{b64_comment}'));
-            document.execCommand('insertText', false, textToInsert);
-            return "FILLED_OK";
-        }} catch(e) {{
+            return "BOX_FOCUSED";
+        } catch(e) {
             return "ERR: " + e.toString();
-        }}
-    }})()'''
-    b64_js = base64.b64encode(js.encode('utf-8')).decode('ascii')
+        }
+    })()'''
+
+    js_verify = '''(() => {
+        try {
+            const boxes = Array.from(document.querySelectorAll("div[role='textbox'][contenteditable='true']"));
+            const box = boxes.find(b => {
+                const aria = (b.getAttribute('aria-label') || '').toLowerCase();
+                return !aria.includes('write to') && !aria.includes('nhắn tin') && !aria.includes('chat') && !aria.includes('tin nhắn');
+            });
+            return (box && box.innerText.includes("0977961189")) ? "PASTED_OK" : "PASTE_FAILED";
+        } catch(e) {
+            return "ERR: " + e.toString();
+        }
+    })()'''
+
+    b64_focus = base64.b64encode(js_focus.encode('utf-8')).decode('ascii')
+    b64_verify = base64.b64encode(js_verify.encode('utf-8')).decode('ascii')
+
     scpt = f'''
     tell application "Google Chrome"
         tell front window
@@ -310,24 +339,62 @@ def post_comment_chrome(post_url: str, comment_text: str) -> bool:
         end tell
         delay 5
         tell application "Google Chrome"
-            set fillRes to (execute (last tab of front window) javascript "eval(atob('{b64_js}'))") as text
+            set focusRes to "BOX_NOT_FOUND"
+            repeat with i from 1 to 5
+                set focusRes to (execute (last tab of front window) javascript "eval(atob('{b64_focus}'))") as text
+                if focusRes is not "BOX_NOT_FOUND" then
+                    exit repeat
+                end if
+                delay 3
+            end repeat
         end tell
-        if fillRes is "FILLED_OK" then
-            delay 1
-            tell application "Google Chrome" to activate
-            delay 0.5
-            tell application "System Events"
-                key code 36
-            end tell
-            delay 5
-        end if
-        tell application "Google Chrome"
+        
+        if focusRes is "ALREADY_COMMENTED" then
             close (last tab of front window)
             try
                 set active tab index of front window to oldTabIdx
             end try
-        end tell
-        return fillRes
+            return "ALREADY_COMMENTED"
+        end if
+
+        if focusRes is "BOX_FOCUSED" then
+            tell application "Google Chrome" to activate
+            delay 0.5
+            tell application "System Events"
+                keystroke "v" using command down
+            end tell
+            delay 1.2
+            
+            tell application "Google Chrome"
+                set vRes to (execute (last tab of front window) javascript "eval(atob('{b64_verify}'))") as text
+            end tell
+            
+            if vRes is "PASTED_OK" then
+                tell application "Google Chrome" to activate
+                delay 0.3
+                tell application "System Events"
+                    key code 36
+                end tell
+                delay 5
+                close (last tab of front window)
+                try
+                    set active tab index of front window to oldTabIdx
+                end try
+                return "POSTED_OK"
+            else
+                close (last tab of front window)
+                try
+                    set active tab index of front window to oldTabIdx
+                end try
+                return "PASTE_VERIFY_FAILED"
+            end if
+        end if
+
+        close (last tab of front window)
+        try
+            set active tab index of front window to oldTabIdx
+        end try
+        return focusRes
     end tell
     '''
     res = subprocess.run(['osascript', '-'], input=scpt, text=True, capture_output=True)
@@ -335,7 +402,7 @@ def post_comment_chrome(post_url: str, comment_text: str) -> bool:
     if out == "ALREADY_COMMENTED":
         log("ℹ️ Bài này đã có bình luận số 0977961189 trước đó, bỏ qua để tránh spam.")
         return True
-    elif out == "FILLED_OK":
+    elif out == "POSTED_OK":
         log("✅ ĐÃ ĐĂNG BÌNH LUẬN THÀNH CÔNG QUA CHROME!")
         return True
     else:
